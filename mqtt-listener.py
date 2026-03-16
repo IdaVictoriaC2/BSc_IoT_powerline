@@ -60,19 +60,24 @@ def on_connect(client, userdata, flags, reason_code, properties):
 def decode_payload(base64_data):
     try:
         raw_bytes = base64.b64decode(base64_data)
-        if len(raw_bytes) == 8:
-            # Manuel parsing baseret på jeres hex-mønster
-            status = raw_bytes[0]
-            t_amb = raw_bytes[1] / 10.0
-            t_imm = int.from_bytes(raw_bytes[2:4], byteorder='big', signed=True) / 10.0
-            t_con = int.from_bytes(raw_bytes[4:6], byteorder='big', signed=True) / 10.0
-            t_cpu = int.from_bytes(raw_bytes[6:8], byteorder='big', signed=True) / 10.0
+        measurements = []
+        for i in range(0, len(raw_bytes), 8):
+            block = raw_bytes[i:i+8]
+            
+            if len(block) == 8:
+                if block == b'\x00' * 8:
+                    continue
+                # Manuel parsing baseret på jeres hex-mønster
+                t_amb = block[1] / 10.0
+                t_imm = int.from_bytes(block[2:4], byteorder='big', signed=True) / 10.0
+                t_con = int.from_bytes(block[4:6], byteorder='big', signed=True) / 10.0
+                t_cpu = int.from_bytes(block[6:8], byteorder='big', signed=True) / 10.0
+                measurements.append((t_amb, t_imm, t_con, t_cpu))
 
-            return t_amb, t_imm, t_con, t_cpu, raw_bytes.hex()
-        return None, None, None, None, raw_bytes.hex()
+        return measurements, raw_bytes.hex()
     except Exception as e:
         print(f"Error decoding: {e}")
-        return None, None, None, None, str(base64_data)
+        return [], str(base64_data)
 
 def auto_purge_old_data():
     """Automated Retention Policy (NFR15). Purges data older than 30 days."""
@@ -115,25 +120,30 @@ def on_message(client, userdata, msg):
             return
 
         # Udpak de 4 nye temperaturer
-        ambient, immediate, conductor, cpu, raw_hex = decode_payload(base64_data)
+        measurements, raw_hex = decode_payload(base64_data)
 
         if ambient is not None:
-            print(f"DevEUI: {dev_eui} | Hex: {raw_hex}")
-            print(f"Amb: {ambient}C, Imm: {immediate}C, Con: {conductor}C, CPU: {cpu}C")
+            print(f"\n--- Processing {len(measurements)} measurements from {dev_eui} ---")
 
             # Gem i den nye tabelstruktur
             conn = get_db_connection()
             if conn:
-                cursor = conn.cursor()
-                insert_query = """
-                    INSERT INTO sensor_data (device_eui, ambient_temp, immediate_temp, conductor_temp, cpu_temp, raw_payload)
-                    VALUES (%s, %s, %s, %s, %s, %s)
-                """
-                cursor.execute(insert_query, (dev_eui, ambient, immediate, conductor, cpu, raw_hex))
+                for amb, imm, con, cpu in measurements:
+                    try:
+                        # ON CONFLICT DO NOTHING sørger for at redundante data sorteres fra
+                        insert_query = """
+                            INSERT INTO sensor_data 
+                            (device_eui, ambient_temp, immediate_temp, conductor_temp, cpu_temp, raw_payload)
+                            VALUES (%s, %s, %s, %s, %s, %s)
+                            ON CONFLICT ON CONSTRAINT unique_measurement DO NOTHING
+                        """
+                        cursor.execute(insert_query, (dev_eui, amb, imm, con, cpu, raw_hex))
+                    except Exception as inner_e:
+                        print(f"Failed to insert one measurement: {inner_e}")
                 conn.commit()
                 cursor.close()
                 conn.close()
-                print("DLR Data successfully saved to database.")
+                print("Aggregated Data successfully saved to database.")
 
     except Exception as e:
         print(f"Error processing message: {e}")
