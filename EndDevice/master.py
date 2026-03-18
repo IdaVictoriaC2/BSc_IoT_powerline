@@ -39,13 +39,13 @@ def is_lora_alive(lora_serial):
         if lora_serial.in_waiting >0:
             raw_data = lora_serial.read_all()
             response_text = raw_data.decode(errors='ignore').strip()
-            
+
             if "OK" in response_text:
                 return True
             else:
                 # Log hvad vi rent faktisk fik, så vi kan se fejlen
                 print(f"Watchdog: Got unexpected string: '{response_text}'")
-        
+
         print(f"Watchdog: Attempt {attempt + 1}/3 failed")
         time.sleep(0.5)
 
@@ -53,17 +53,22 @@ def is_lora_alive(lora_serial):
 
 def lora_setup_connection(lora_serial):
     """
-    Configures the LoRaWAN connection. 
+    Configures the LoRaWAN connection.
     Uses OTAA as primary and sets parameters to avoid constant re-joins.
     """
+    lora_serial.write(b'AT+BAND=4\r\n') # EU868
+    time.sleep(0.5)
     # Set to OTAA mode (1 = OTAA, 0 = ABP)
-    lora_serial.write(b'AT+NWM=1\r\n')
-    time.sleep(0.5)    
+    lora_serial.write(b'AT+NWM=1\r\n') # LoRaWAN mode
+    time.sleep(0.5)
+    lora_serial.write(b'AT+NJM=1\r\n') # OTAA mode
+    time.sleep(0.5)
+
     # Check if we are already joined to avoid generating new keys unnecessarily
     lora_serial.write(b'AT+NJS=?\r\n')
-    time.sleep(0.5)
+    time.sleep(1)
     response = lora_serial.read_all().decode(errors='ignore')
-    
+
     if "1" in response: # 1 means already joined
         print("Device already joined. Skipping join process.")
         return True
@@ -81,7 +86,7 @@ def lora_setup_connection(lora_serial):
         time.sleep(1)
     print("OTAA Join failed (Timeout/No Network).")
     return False
-    
+
 def get_pi_cpu_temp():
     """ Read the physical CPU-temperature of the Raspberry Pi's chip"""
     try:
@@ -137,7 +142,7 @@ def send_sensor_data(lora_serial):
         save_to_buffer(payload)
         return False
 
-def send_combined_data(lora_serial):
+def get_combined_payload():
     global last_payload
     current_payload = get_hex_data()
     buffer_payloads = []
@@ -158,26 +163,73 @@ def send_combined_data(lora_serial):
             final_payload += buffer_payloads[i]
         else:
             final_payload += "0000000000000000"
-    print(f"Aggregated Payload (32 bytes): {final_payload}")
-    lora_serial.write(f"AT+SEND=2:{final_payload}\r\n".encode())
+    
     last_payload = current_payload
+    return final_payload
+
+def send_payload_and_listen(lora_serial, hex_payload):
+    # Send på Port 2
+    command = f"AT+SEND=2:{hex_payload}\r\n"
+    lora_serial.write(command.encode())
+    
+    # LoRaWAN Class A lytter kun i ca. 5 sekunder efter send
+    timeout = 5 
+    start_wait = time.time()
+    
+    while time.time() - start_wait < timeout:
+        if lora_serial.in_waiting > 0:
+            response = lora_serial.read_all().decode(errors='ignore').strip()
+            print(f"Modul svar: {response.strip()}")
+            
+            # Tjek om der er en indkommende besked (Downlink)
+            if "+EVT:RX" in response:
+                # Formatet er ofte +EVT:RX:<PORT>:<HEX_DATA>
+                parts = response.split(':')
+                if len(parts) >= 7:
+                    port = parts[5+1]
+                    received_hex = parts[6+1]
+                    print(f"--- DOWNLINK VERIFIED ---")
+                    print(f"Port: {port}")
+                    print(f"Data (Hex): {received_hex}")
+                    handle_downlink(received_hex, lora_serial)
+                return True
+        time.sleep(0.5)
+    return False
+
+def handle_downlink(hex_cmd, lora_serial):
+    if hex_cmd == "01":
+        print("ACTION: Server requests retransmission!")
+        if os.path.isfile(BUFFER_FILE):
+            with open(BUFFER_FILE, mode='r') as f:
+                rows = list(csv.reader(f))
+            print(f"Sending {len(rows)} buffer-messages...")
+            for timestamp, payload in rows:
+                print(f"Retransmitting: {timestamp}")
+                lora_serial.write(f"AT+SEND=2:{payload}\r\n".encode())
+                time.sleep(4)
+            os.remove(BUFFER_FILE)
+            print("Buffer empty")
+            pass
+        else:
+            print("Buffer is already empty")
 
 def process_buffer(lora_serial):
     """Tries to send buffered data when online again"""
     if not os.path.isfile(BUFFER_FILE):
         return
     rows = []
-    
+
     with open(BUFFER_FILE, mode='r') as f:
         rows = list(csv.reader(f))
     if not rows:
-        if os.path.exists(BUFFER_FILE): os.remove(BUFFER_FILE)
+        if os.path.exists(BUFFER_FILE):
+            os.remove(BUFFER_FILE)
             return
 
     timestamp, payload = rows[0]
     print(f"Sending buffer data from {timestamp}...")
     lora_serial.write(f"AT+SEND=2:{payload}\r\n".encode())
-    time.sleep(4) 
+    time.sleep(4)
     response = lora_serial.read_all().decode(errors='ignore')
     if "OK" in response:
         print("Buffer data send successfully")
@@ -187,10 +239,10 @@ def process_buffer(lora_serial):
                 writer = csv.writer(f)
                 writer.writerows(remaining_rows)
         else:
-            os.remove(BUFFER_FILE) 
+            os.remove(BUFFER_FILE)
     else:
         print("Buffer data not send, waiting ..")
-    
+
 
 def main():
     consecutive_failures = 0
@@ -215,11 +267,9 @@ def main():
             lora_serial.write(b'AT+NJS=?\r\n')
             time.sleep(0.5)
             if b'1' in lora_serial.read_all():
-                process_buffer(lora_serial)
-            # CHECK 2: If alive, generate and send the sensor data
-            send_combined_data(lora_serial)
+                aggregated_payload = get_combined_payload()
+                send_payload_and_listen(lora_serial, aggregated_payload)
 
-            # CHECK 3: Wait for the next transmission window to respect Duty Cycle constraints
             print(f"Waiting {SEND_INTERVAL} seconds...\n---------------------------")
             time.sleep(SEND_INTERVAL)
 
