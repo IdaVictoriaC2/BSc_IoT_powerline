@@ -17,9 +17,7 @@ DB_PORT = "5433" # mapped in docker-compose
 DB_NAME = "powerline_telemetry"
 DB_USER = "app_user"
 DB_PASS = "IMbachelor26"
-
 last_cleanup_date = None
-
 # --- Database Connection ---
 def get_db_connection():
     """Establishes a connection to the PostgreSQL database."""
@@ -48,13 +46,8 @@ def log_event(event_type, description):
 # --- MQTT Callbacks ---
 def on_connect(client, userdata, flags, reason_code, properties):
     """Callback for when the client receives a CONNACK response from the server."""
-    if reason_code == 0:
-        print(f"Connected to MQTT Broker at {MQTT_BROKER}:{MQTT_PORT}")
-        client.subscribe(MQTT_TOPIC)
-        print(f"Subscribed to topic: {MQTT_TOPIC}")
-        log_event("MQTT_CONNECTED", "Listener established connection to Mosquitto Broker")
-    else:
-        print(f"Failed to connect to MQTT Broker. Return code: {reason_code}")
+    print(f"Connected to MQTT, listening at {MQTT_TOPIC}")
+    client.subscribe(MQTT_TOPIC)
 
 # --- Payload Decoding Logic ---
 def decode_payload(base64_data):
@@ -64,20 +57,18 @@ def decode_payload(base64_data):
         for i in range(0, len(raw_bytes), 8):
             block = raw_bytes[i:i+8]
             
-            if len(block) == 8:
-                if block == b'\x00' * 8:
-                    continue
-                # Manuel parsing baseret på jeres hex-mønster
-                t_amb = block[1] / 10.0
-                t_imm = int.from_bytes(block[2:4], byteorder='big', signed=True) / 10.0
-                t_con = int.from_bytes(block[4:6], byteorder='big', signed=True) / 10.0
-                t_cpu = int.from_bytes(block[6:8], byteorder='big', signed=True) / 10.0
+            if len(block) == 8 and block != b'\x00' * 8:
+                vals = struct.unpack('>hhhh', block)
+                t_amb = vals[0] / 10.0
+                t_imm = vals[1] / 10.0
+                t_con = vals[2] / 10.0
+                t_cpu = vals[3] / 10.0
                 measurements.append((t_amb, t_imm, t_con, t_cpu))
 
         return measurements, raw_bytes.hex()
     except Exception as e:
         print(f"Error decoding: {e}")
-        return [], str(base64_data)
+        return [], ""
 
 def auto_purge_old_data():
     """Automated Retention Policy (NFR15). Purges data older than 30 days."""
@@ -118,16 +109,13 @@ def on_message(client, userdata, msg):
 
         if not base64_data:
             return
-
-        # Udpak de 4 nye temperaturer
         measurements, raw_hex = decode_payload(base64_data)
 
-        if ambient is not None:
+        if measurements:
             print(f"\n--- Processing {len(measurements)} measurements from {dev_eui} ---")
-
-            # Gem i den nye tabelstruktur
             conn = get_db_connection()
             if conn:
+                cursor = conn.cursor()
                 for amb, imm, con, cpu in measurements:
                     try:
                         # ON CONFLICT DO NOTHING sørger for at redundante data sorteres fra
@@ -138,9 +126,11 @@ def on_message(client, userdata, msg):
                             ON CONFLICT ON CONSTRAINT unique_measurement DO NOTHING
                         """
                         cursor.execute(insert_query, (dev_eui, amb, imm, con, cpu, raw_hex))
+                        conn.commit()
                     except Exception as inner_e:
                         print(f"Failed to insert one measurement: {inner_e}")
-                conn.commit()
+                        conn.rollback()
+                
                 cursor.close()
                 conn.close()
                 print("Aggregated Data successfully saved to database.")
