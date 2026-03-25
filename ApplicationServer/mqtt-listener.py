@@ -4,6 +4,7 @@ import json
 import base64
 import struct
 import datetime
+import time
 
 # MQTT Broker (ChirpStack Mosquitto)
 MQTT_BROKER = "localhost"
@@ -18,6 +19,7 @@ DB_NAME = "powerline_telemetry"
 DB_USER = "app_user"
 DB_PASS = "IMbachelor26"
 last_cleanup_date = None
+last_seen = {}
 # --- Database Connection ---
 def get_db_connection():
     """Establishes a connection to the PostgreSQL database."""
@@ -56,7 +58,7 @@ def decode_payload(base64_data):
         measurements = []
         for i in range(0, len(raw_bytes), 8):
             block = raw_bytes[i:i+8]
-            
+
             if len(block) == 8 and block != b'\x00' * 8:
                 vals = struct.unpack('>hhhh', block)
                 t_amb = vals[0] / 10.0
@@ -98,6 +100,26 @@ def auto_purge_old_data():
             except Exception as e:
                 print(f"Error during auto-purge: {e}")
 
+def check_for_missing_data(client, dev_eui, application_id):
+    current_time = time.time()
+    if dev_eui in last_seen:
+        elapsed = current_time - last_seen[dev_eui]
+        if elapsed > 45:
+            print(f"!!! WARNING: Cap detected for {dev_eui}. Missing data for {int(elapsed)} sec.")
+            send_retransmission_request(client, application_id, dev_eui)
+    last_seen[dev_eui] = current_time
+
+def send_retransmission_request(client, app_id, dev_eui):
+    downlink_topic = f"application/{app_id}/device/{dev_eui}/command/down"
+    downlink_payload = json.dumps({
+        "devEui": dev_eui,
+        "confirmed": False,
+        "fPort": 2,
+        "data": "AQ=="
+    })
+    client.publish(downlink_topic, downlink_payload)
+    print(f"Downlink send: Request of retransmission send to {dev_eui}")
+
 # --- MQTT Callbacks ---
 def on_message(client, userdata, msg):
     auto_purge_old_data()
@@ -105,7 +127,9 @@ def on_message(client, userdata, msg):
     try:
         payload_json = json.loads(msg.payload.decode('utf-8'))
         dev_eui = payload_json.get("deviceInfo", {}).get("devEui", "UNKNOWN")
+        app_id = payload_json.get("deviceInfo", {}).get("applicationId")
         base64_data = payload_json.get("data", "")
+        check_for_missing_data(client, dev_eui, app_id)
 
         if not base64_data:
             return
@@ -120,7 +144,7 @@ def on_message(client, userdata, msg):
                     try:
                         # ON CONFLICT DO NOTHING sørger for at redundante data sorteres fra
                         insert_query = """
-                            INSERT INTO sensor_data 
+                            INSERT INTO sensor_data
                             (device_eui, ambient_temp, immediate_temp, conductor_temp, cpu_temp, raw_payload)
                             VALUES (%s, %s, %s, %s, %s, %s)
                             ON CONFLICT ON CONSTRAINT unique_measurement DO NOTHING
@@ -130,7 +154,7 @@ def on_message(client, userdata, msg):
                     except Exception as inner_e:
                         print(f"Failed to insert one measurement: {inner_e}")
                         conn.rollback()
-                
+
                 cursor.close()
                 conn.close()
                 print("Aggregated Data successfully saved to database.")
