@@ -49,7 +49,7 @@ def log_event(event_type, description):
 def on_connect(client, userdata, flags, reason_code, properties):
     """Callback for when the client receives a CONNACK response from the server."""
     print(f"Connected to MQTT, listening at {MQTT_TOPIC}")
-    client.subscribe(MQTT_TOPIC)
+    client.subscribe(MQTT_TOPIC, qos=1)
 
 # --- Payload Decoding Logic ---
 def decode_payload(base64_data):
@@ -166,7 +166,7 @@ def main():
     print("Starting Application Server MQTT Listener...")
 
     # Initialize MQTT Client
-    client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
+    client = mqtt.Client(callback_api_version=mqtt.CallbackAPIVersion.VERSION2, client_id="scada_app_server_v1", clean_session=False)
     client.on_connect = on_connect
     client.on_message = on_message
 
