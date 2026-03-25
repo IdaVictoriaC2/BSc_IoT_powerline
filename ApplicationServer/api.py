@@ -48,7 +48,7 @@ async def get_current_user(api_key: str = Depends(api_key_header)):
         return USERS[api_key]
     raise HTTPException(status_code=401, detail="Invalid API Key")
 
-def check_role(required_roles: list):
+def require_role(required_roles: list):
     """Tjekker om brugerens rolle er på den tilladte liste."""
     async def role_verifier(current_user: dict = Depends(get_current_user)):
         if current_user["role"] not in required_roles:
@@ -99,6 +99,6 @@ def purge_data(user: dict = Depends(require_role(["admin"]))):
     log_to_audit("DATA_PURGE", user["name"], user["role"], f"Slettede {count} gamle rækker")
     return {"status": "success", "deleted": count}
 
-if __name__ = "__main__":
+if __name__ == "__main__":
     print("Starting SCADA REST API on port 8005...")
     uvicorn.run("api:app", host="0.0.0.0", port=8005, reload=True)
