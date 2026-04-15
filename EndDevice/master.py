@@ -113,19 +113,20 @@ def get_combined_payload():
     buffer_payloads = []
 
     if os.path.isfile(BUFFER_FILE):
-        with open(BUFFER_FILE, mode='r') as f:
-            rows = list(csv.reader(f))
-            for i in range(min(len(rows), 2)):
-                buffer_payloads.append(rows[i][1])
-        # Update buffer: remove the 2 we just took
-        remaining = rows[2:] if len(rows) > 2 else []
-        if remaining:
-            with open(BUFFER_FILE, mode='w', newline='') as f:
-                csv.writer(f).writerows(remaining)
-        else:
-            os.remove(BUFFER_FILE)
-    except Exception as e:
-        print(f"Buffer error: {e}")
+        try:
+            with open(BUFFER_FILE, mode='r') as f:
+                rows = list(csv.reader(f))
+                for i in range(min(len(rows), 2)):
+                    buffer_payloads.append(rows[i][1])
+            # Update buffer: remove the 2 we just took
+            remaining = rows[2:] if len(rows) > 2 else []
+            if remaining:
+                with open(BUFFER_FILE, mode='w', newline='') as f:
+                    csv.writer(f).writerows(remaining)
+            else:
+                os.remove(BUFFER_FILE)
+        except Exception as e:
+            print(f"Buffer error: {e}")
 
     final_payload = current_payload + last_payload
     for i in range(2):
