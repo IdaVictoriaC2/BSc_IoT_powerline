@@ -140,6 +140,7 @@ def on_message(client, userdata, msg):
             conn = get_db_connection()
             if conn:
                 cursor = conn.cursor()
+                saved_count = 0
                 for amb, imm, con, cpu in measurements:
                     try:
                         # ON CONFLICT DO NOTHING sørger for at redundante data sorteres fra
@@ -150,6 +151,8 @@ def on_message(client, userdata, msg):
                             ON CONFLICT ON CONSTRAINT unique_measurement DO NOTHING
                         """
                         cursor.execute(insert_query, (dev_eui, amb, imm, con, cpu, raw_hex))
+                        if cursor.rowcount > 0:
+                            saved_count +=1
                         conn.commit()
                     except Exception as inner_e:
                         print(f"Failed to insert one measurement: {inner_e}")
@@ -157,7 +160,10 @@ def on_message(client, userdata, msg):
 
                 cursor.close()
                 conn.close()
-                print("Aggregated Data successfully saved to database.")
+                if saved_count >0:
+                    print("Data successfully saved to database.")
+                else:
+                    print("No new measurements were saved (due to errors or duplicates)")
 
     except Exception as e:
         print(f"Error processing message: {e}")
