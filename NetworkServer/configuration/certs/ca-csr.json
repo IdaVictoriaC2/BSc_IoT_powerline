@@ -1,0 +1,15 @@
+{
+  "CN": "PowerLineMonitoring-CA",
+  "key": {
+    "algo": "rsa",
+    "size": 2048
+  },
+  "names": [
+    {
+      "C": "DK",
+      "L": "Aarhus",
+      "O": "PowerLineMonitoring",
+      "OU": "IoT"
+    }
+  ]
+}
