@@ -28,7 +28,7 @@ app = FastAPI(title="Power Line SCADA API", version="1.2.0")
 def get_db_connection():
     try:
         return psycopg2.connect(**DB_CONFIG)
-    except Exception:    
+    except Exception:
         return None
 
 def log_to_audit(action: str, username: str, role: str, details: str):
@@ -41,7 +41,7 @@ def log_to_audit(action: str, username: str, role: str, details: str):
         conn.commit()
         cursor.close()
         conn.close()
-      
+
 # --- Dependency for Security ---
 async def get_current_user(api_key: str = Depends(api_key_header)):
     if api_key in USERS:
