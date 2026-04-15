@@ -1,0 +1,15 @@
+{
+  "CN": "mqtt.local",
+  "hosts": [
+    "mqtt.local",
+    "mosquitto",
+    "chirpstack",
+    "localhost",
+    "127.0.0.1",
+    "10.187.120.189"
+  ],
+  "key": {
+    "algo": "rsa",
+    "size": 2048
+  }
+}
