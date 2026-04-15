@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  scada-postgres:
+    image: postgres:14-alpine
+    container_name: scada_database
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=app_user
+      - POSTGRES_PASSWORD=IMbachelor26
+      - POSTGRES_DB=powerline_telemetry
+    ports:
+      - "5433:5432" # VIGTIGT: Host port 5433 mappes til containerens port 5432
+    volumes:
+      # Gemmer dataene permanent på din pc, så de overlever genstart
+      - scada_db_data:/var/lib/postgresql/data
+      # Kører automatisk vores init.sql script første gang
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  grafana:
+    image: grafana/grafana-oss:latest
+    container_name: scada_grafana
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin # I kan ændre dette senere
+    volumes:
+      - grafana_storage:/var/lib/grafana
+
+volumes:
+  scada_db_data:
+  grafana_storage:
