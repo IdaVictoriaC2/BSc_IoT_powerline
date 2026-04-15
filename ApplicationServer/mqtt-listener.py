@@ -86,7 +86,7 @@ def auto_purge_old_data():
             try:
                 cursor = conn.cursor()
                 # SQL: Slet alt der er ældre end 30 dage
-                query = "DELETE FROM sensor_data WHERE received_at < NOW() - INTERVAL '30 days';"
+                query = "DELETE FROM sensor_data WHERE server_timestamp < NOW() - INTERVAL '30 days';"
                 cursor.execute(query)
                 deleted_rows = cursor.rowcount
                 conn.commit()
@@ -148,7 +148,7 @@ def on_message(client, userdata, msg):
                         insert_query = """
                             INSERT INTO sensor_data
                             (device_eui, device_timestamp, ambient_temp, immediate_temp, conductor_temp, cpu_temp, raw_payload)
-                            VALUES (%s, %s, %s, %s, %s, %s)
+                            VALUES (%s, %s, %s, %s, %s, %s, %s)
                             ON CONFLICT ON CONSTRAINT unique_measurement DO NOTHING
                         """
                         cursor.execute(insert_query, (dev_eui, dt, amb, imm, con, cpu, raw_hex))
