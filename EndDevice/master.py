@@ -93,14 +93,18 @@ def save_to_buffer(payload):
     print(f"CRITICAL: Data saved to local buffer ({BUFFER_FILE})")
 
 def get_hex_data():
-    """Generates 8-byte (4x16-bit) sensor payload."""
+    """Generates 12-byte payload: 4-byte timestamp + 8-byte sensor payload."""
+    timestamp = int(time.time())
+    ts_hex = f"{timestamp:08X}"
+    
     cpu_temp = get_pi_cpu_temp()
     amb = cpu_temp - 25.0
     imm = amb + random.uniform(2.0, 5.0)
     con = imm + random.uniform(30.0, 50.0)
 
     t_amb, t_imm, t_con, t_cpu = int(amb*10), int(imm*10), int(con*10), int(cpu_temp*10)
-    return f"{(t_amb & 0xFFFF):04X}{(t_imm & 0xFFFF):04X}{(t_con & 0xFFFF):04X}{(t_cpu & 0xFFFF):04X}"
+    sensor_hex = f"{(t_amb & 0xFFFF):04X}{(t_imm & 0xFFFF):04X}{(t_con & 0xFFFF):04X}{(t_cpu & 0xFFFF):04X}"
+    return ts_hex + sensor_hex
 
 def get_combined_payload():
     """Constructs 32-byte aggregated payload (Current + Last + 2 Buffer)."""
