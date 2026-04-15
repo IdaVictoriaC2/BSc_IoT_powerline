@@ -142,7 +142,7 @@ def on_message(client, userdata, msg):
             if conn:
                 cursor = conn.cursor()
                 saved_count = 0
-                for amb, imm, con, cpu in measurements:
+                for dt, amb, imm, con, cpu in measurements:
                     try:
                         # ON CONFLICT DO NOTHING sørger for at redundante data sorteres fra
                         insert_query = """
