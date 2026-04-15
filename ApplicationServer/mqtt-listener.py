@@ -56,16 +56,17 @@ def decode_payload(base64_data):
     try:
         raw_bytes = base64.b64decode(base64_data)
         measurements = []
-        for i in range(0, len(raw_bytes), 8):
-            block = raw_bytes[i:i+8]
+        for i in range(0, len(raw_bytes), 12):
+            block = raw_bytes[i:i+12]
 
-            if len(block) == 8 and block != b'\x00' * 8:
-                vals = struct.unpack('>hhhh', block)
-                t_amb = vals[0] / 10.0
-                t_imm = vals[1] / 10.0
-                t_con = vals[2] / 10.0
-                t_cpu = vals[3] / 10.0
-                measurements.append((t_amb, t_imm, t_con, t_cpu))
+            if len(block) == 12 and block != b'\x00' * 12:
+                vals = struct.unpack('>Lhhhh', block)
+                dt = datetime.datetime.fromtimestamp(vals[0], datetime.timezone.utc)
+                t_amb = vals[1] / 10.0
+                t_imm = vals[2] / 10.0
+                t_con = vals[3] / 10.0
+                t_cpu = vals[4] / 10.0
+                measurements.append((dt, t_amb, t_imm, t_con, t_cpu))
 
         return measurements, raw_bytes.hex()
     except Exception as e:
@@ -146,11 +147,11 @@ def on_message(client, userdata, msg):
                         # ON CONFLICT DO NOTHING sørger for at redundante data sorteres fra
                         insert_query = """
                             INSERT INTO sensor_data
-                            (device_eui, ambient_temp, immediate_temp, conductor_temp, cpu_temp, raw_payload)
+                            (device_eui, device_timestamp, ambient_temp, immediate_temp, conductor_temp, cpu_temp, raw_payload)
                             VALUES (%s, %s, %s, %s, %s, %s)
                             ON CONFLICT ON CONSTRAINT unique_measurement DO NOTHING
                         """
-                        cursor.execute(insert_query, (dev_eui, amb, imm, con, cpu, raw_hex))
+                        cursor.execute(insert_query, (dev_eui, dt, amb, imm, con, cpu, raw_hex))
                         if cursor.rowcount > 0:
                             saved_count +=1
                         conn.commit()
