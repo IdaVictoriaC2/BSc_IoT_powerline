@@ -19,7 +19,7 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setup(RST_PIN, GPIO.OUT, initial=GPIO.HIGH)
 
 BUFFER_FILE = "buffer.csv"
-last_payload = "0000000000000000"
+last_payload = "0" * 24
 
 def reset_rak_module():
     """Forces a hardware restart of the RAK module via the GPIO pin."""
@@ -107,7 +107,7 @@ def get_hex_data():
     return ts_hex + sensor_hex
 
 def get_combined_payload():
-    """Constructs 32-byte aggregated payload (Current + Last + 2 Buffer)."""
+    """Constructs 48-byte aggregated payload (Current + Last + 2 Buffer)."""
     global last_payload
     current_payload = get_hex_data()
     buffer_payloads = []
@@ -124,10 +124,15 @@ def get_combined_payload():
                 csv.writer(f).writerows(remaining)
         else:
             os.remove(BUFFER_FILE)
+    except Exception as e:
+        print(f"Buffer error: {e}")
 
     final_payload = current_payload + last_payload
     for i in range(2):
-        final_payload += buffer_payloads[i] if i < len(buffer_payloads) else "0000000000000000"
+        if i < len(buffer_payloads):
+            final_payload += buffer_payloads[i] 
+        else: 
+            final_payload += "0" * 24
 
     last_payload = current_payload
     return final_payload
