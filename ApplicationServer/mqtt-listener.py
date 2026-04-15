@@ -56,10 +56,10 @@ def decode_payload(base64_data):
     try:
         raw_bytes = base64.b64decode(base64_data)
         measurements = []
-        for i in range(0, len(raw_bytes), 12):
+        for i in range(0, len(raw_bytes) - (len(raw_bytes) % 12), 12):
             block = raw_bytes[i:i+12]
 
-            if len(block) == 12 and block != b'\x00' * 12:
+            if block != b'\x00' * 12:
                 vals = struct.unpack('>Lhhhh', block)
                 dt = datetime.datetime.fromtimestamp(vals[0], datetime.timezone.utc)
                 t_amb = vals[1] / 10.0
@@ -67,6 +67,7 @@ def decode_payload(base64_data):
                 t_con = vals[3] / 10.0
                 t_cpu = vals[4] / 10.0
                 measurements.append((dt, t_amb, t_imm, t_con, t_cpu))
+        measurements.sort(key=lambda x: x[0]) #sort by time from buffer (oldest first)
 
         return measurements, raw_bytes.hex()
     except Exception as e:
