@@ -8,7 +8,7 @@ import time
 
 # MQTT Broker (ChirpStack Mosquitto)
 MQTT_BROKER = "localhost"
-MQTT_PORT = 1883
+MQTT_PORT = 8883
 # Listen to all uplink events from all applications and devices
 MQTT_TOPIC = "application/+/device/+/event/up"
 
@@ -166,7 +166,10 @@ def main():
     print("Starting Application Server MQTT Listener...")
 
     # Initialize MQTT Client
-    client = mqtt.Client(callback_api_version=mqtt.CallbackAPIVersion.VERSION2, client_id="scada_app_server_v1", clean_session=False)
+    client = mqtt.Client(callback_api_version=mqtt.CallbackAPIVersion.VERSION2, client_id="scada_app_server_v1")
+    ca_cert_path = "../chirpstack-docker/configuration/certs/ca.pem"
+    client.tls_set(ca_certs=ca_cert_path)
+    client.tls_insecure_set(True)
     client.on_connect = on_connect
     client.on_message = on_message
 
