@@ -56,10 +56,10 @@ def decode_payload(base64_data):
     try:
         raw_bytes = base64.b64decode(base64_data)
         measurements = []
-        for i in range(0, len(raw_bytes) - (len(raw_bytes) % 12), 12):
+        for i in range(0, len(raw_bytes), 12):
             block = raw_bytes[i:i+12]
 
-            if block != b'\x00' * 12:
+            if len(block) == 12:
                 vals = struct.unpack('>Lhhhh', block)
                 dt = datetime.datetime.fromtimestamp(vals[0], datetime.timezone.utc)
                 t_amb = vals[1] / 10.0
