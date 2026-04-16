@@ -110,6 +110,11 @@ def get_combined_payload():
     """Constructs 48-byte aggregated payload (Current + Last + 2 Buffer)."""
     global last_payload
     current_payload = get_hex_data()
+    payload_list = [current_payload]
+
+    if last_payload:
+        payload_list.append(last_payload)
+        
     buffer_payloads = []
 
     if os.path.isfile(BUFFER_FILE):
@@ -128,12 +133,11 @@ def get_combined_payload():
         except Exception as e:
             print(f"Buffer error: {e}")
 
-    final_payload = current_payload + last_payload
+    final_payload = "".join(payload_list)
     for i in range(2):
         if i < len(buffer_payloads):
             final_payload += buffer_payloads[i] 
-        else: 
-            final_payload += "0" * 24
+        
 
     last_payload = current_payload
     return final_payload
