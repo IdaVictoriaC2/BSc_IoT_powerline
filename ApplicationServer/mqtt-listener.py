@@ -56,13 +56,17 @@ def decode_payload(base64_data):
     try:
         raw_bytes = base64.b64decode(base64_data)
         measurements = []
+        if len(raw_bytes) % 12 != 0:
+            print(f"Warning: Received malformed payload of {len(raw_bytes)} bytes. Skipping.")
+            return []
+
         for i in range(0, len(raw_bytes), 12):
             block = raw_bytes[i:i+12]
 
             if len(block) == 12 and block != b'\x00' * 12:
                 vals = struct.unpack('>Lhhhh', block)
                 dt = datetime.datetime.fromtimestamp(vals[0], datetime.timezone.utc)
-                measurements.append((dt, vals[1]/10.0, vals[2]/10.0, vals[3]/10.0, vals[4]/10.0, block.hex()))
+                measurements.append((dt, round(vals[1]/100.0, 2), round(vals[2]/100.0, 2), round(vals[3]/100.0, 2), round(vals[4]/100.0, 2), block.hex()))
         measurements.sort(key=lambda x: x[0]) #sort by time from buffer (oldest first)
         return measurements, raw_bytes.hex()
     except Exception as e:
