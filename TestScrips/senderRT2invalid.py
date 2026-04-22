@@ -53,15 +53,15 @@ def main():
             # 1) String payload (ikke i master-format)
             ("String payload", "invalid payload".encode("utf-8").hex()),
 
-            # 2) Edge case 65535 (max for 16-bit unsigned) i temperaturfelt
+            # 2) Edge case 32767 (max for 16-bit signed) i temperaturfelt
             (
-                "Edge case 655.35 temperature field",
-                f"{timestamp_hex}{(65535 & 0xFFFF):04X}{valid_temps[1]}{valid_temps[2]}{valid_temps[3]}",
+                "Edge case 327.67 temperature field",
+                f"{timestamp_hex}{(32767 & 0xFFFF):04X}{valid_temps[1]}{valid_temps[2]}{valid_temps[3]}",
             ),
-            # 3) Edge case 65536 (for høj temperatur) i temperaturfelt
+            # 3) Edge case 32768 (for høj temperatur) i temperaturfelt
             (
-                "Past edge case 655.36 temperature field",
-                f"{timestamp_hex}{(65536 & 0xFFFF):04X}{valid_temps[1]}{valid_temps[2]}{valid_temps[3]}",
+                "Over edge case 327.68 temperature field",
+                f"{timestamp_hex}{(32768 & 0xFFFF):04X}{valid_temps[1]}{valid_temps[2]}{valid_temps[3]}",
             ),
             # 4) Negativ temperatur med 3 tegn (indeholder '-')
             (
@@ -75,7 +75,7 @@ def main():
             ),
             # 6) Edgecase (signed) over 16-bit minimum (-32769) i temperaturfelt
             (
-                "Edge case -327.69 temperature field",
+                "Over case -327.69 temperature field",
                 f"{timestamp_hex}{(-32769 & 0xFFFF):04X}{valid_temps[1]}{valid_temps[2]}{valid_temps[3]}",
             ),
         ]
