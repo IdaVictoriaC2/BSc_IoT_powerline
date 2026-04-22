@@ -59,16 +59,11 @@ def decode_payload(base64_data):
         for i in range(0, len(raw_bytes), 12):
             block = raw_bytes[i:i+12]
 
-            if len(block) == 12:
+            if len(block) == 12 and block != b'\x00' * 12:
                 vals = struct.unpack('>Lhhhh', block)
                 dt = datetime.datetime.fromtimestamp(vals[0], datetime.timezone.utc)
-                t_amb = vals[1] / 10.0
-                t_imm = vals[2] / 10.0
-                t_con = vals[3] / 10.0
-                t_cpu = vals[4] / 10.0
-                measurements.append((dt, t_amb, t_imm, t_con, t_cpu))
+                measurements.append((dt, vals[1]/10.0, vals[2]/10.0, vals[3]/10.0, vals[4]/10.0, block.hex()))
         measurements.sort(key=lambda x: x[0]) #sort by time from buffer (oldest first)
-
         return measurements, raw_bytes.hex()
     except Exception as e:
         print(f"Error decoding: {e}")
@@ -143,7 +138,7 @@ def on_message(client, userdata, msg):
             if conn:
                 cursor = conn.cursor()
                 saved_count = 0
-                for dt, amb, imm, con, cpu in measurements:
+                for dt, amb, imm, con, cpu, m_hex in measurements:
                     try:
                         # ON CONFLICT DO NOTHING sørger for at redundante data sorteres fra
                         insert_query = """
@@ -152,7 +147,7 @@ def on_message(client, userdata, msg):
                             VALUES (%s, %s, %s, %s, %s, %s, %s)
                             ON CONFLICT ON CONSTRAINT unique_measurement DO NOTHING
                         """
-                        cursor.execute(insert_query, (dev_eui, dt, amb, imm, con, cpu, raw_hex))
+                        cursor.execute(insert_query, (dev_eui, dt, amb, imm, con, cpu, m_hex))
                         if cursor.rowcount > 0:
                             saved_count +=1
                         conn.commit()
