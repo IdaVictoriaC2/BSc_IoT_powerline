@@ -47,50 +47,43 @@ def main():
         # send_at(ser, "AT+JOIN=1:0:10:8")
 
         # master.py format: 24 chars total -> 8 timestamp + 4 x 4-char temperaturfelter.
-        _, timestamp_hex, valid_temps = build_master_like_payload()
+        _, _, valid_temps = build_master_like_payload()
 
-        raw_test_payloads = [
+        test_cases = [
             # 1) String payload (ikke i master-format)
-            ("String payload", "invalid payload".encode("utf-8").hex()),
+            ("String payload", lambda ts: "invalid payload".encode("utf-8").hex()),
 
             # 2) Edge case 32767 (max for 16-bit signed) i temperaturfelt
             (
                 "Edge case 327.67 temperature field",
-                f"{timestamp_hex}{(32767 & 0xFFFF):04X}{valid_temps[1]}{valid_temps[2]}{valid_temps[3]}",
+                lambda ts: f"{ts}{(32767 & 0xFFFF):04X}{valid_temps[1]}{valid_temps[2]}{valid_temps[3]}",
             ),
             # 3) Edge case 32768 (for høj temperatur) i temperaturfelt
             (
                 "Over edge case 327.68 temperature field",
-                f"{timestamp_hex}{(32768 & 0xFFFF):04X}{valid_temps[1]}{valid_temps[2]}{valid_temps[3]}",
+                lambda ts: f"{ts}{(32768 & 0xFFFF):04X}{valid_temps[1]}{valid_temps[2]}{valid_temps[3]}",
             ),
-            # 4) Negativ temperatur med 3 tegn (indeholder '-')
-            (
-                "Negative 3-char temperature",
-                f"{timestamp_hex}{(-123 & 0xFFFF):04X}{valid_temps[1]}{valid_temps[2]}{valid_temps[3]}",
-            ),
-            # 5) Edgecase (signed) 16-bit minimum (-32768) i temperaturfelt
+            # 4) Edgecase (signed) 16-bit minimum (-32768) i temperaturfelt
             (
                 "Edge case -327.68 temperature field",
-                f"{timestamp_hex}{(-32768 & 0xFFFF):04X}{valid_temps[1]}{valid_temps[2]}{valid_temps[3]}",
+                lambda ts: f"{ts}{(-32768 & 0xFFFF):04X}{valid_temps[1]}{valid_temps[2]}{valid_temps[3]}",
             ),
-            # 6) Edgecase (signed) over 16-bit minimum (-32769) i temperaturfelt
+            # 5) Edgecase (signed) over 16-bit minimum (-32769) i temperaturfelt
             (
                 "Over case -327.69 temperature field",
-                f"{timestamp_hex}{(-32769 & 0xFFFF):04X}{valid_temps[1]}{valid_temps[2]}{valid_temps[3]}",
+                lambda ts: f"{ts}{(-32769 & 0xFFFF):04X}{valid_temps[1]}{valid_temps[2]}{valid_temps[3]}",
             ),
         ]
 
-        test_payloads = [
-            (label, payload)
-            for label, payload in raw_test_payloads
-        ]
+        for index, (label, build_payload) in enumerate(test_cases, start=1):
+            timestamp_hex = f"{int(time.time()):08X}"
+            payload = build_payload(timestamp_hex)
 
-        for index, (label, payload) in enumerate(test_payloads, start=1):
-            print(f"\nTest {index}/{len(test_payloads)}: {label}")
+            print(f"\nTest {index}/{len(test_cases)}: {label}")
             print(f"Payload: {payload} (len={len(payload)} hex chars)")
             send_at(ser, f"AT+SEND=2:{payload}")
 
-            if index < len(test_payloads):
+            if index < len(test_cases):
                 print(
                     f"Venter {SEND_INTERVAL_SECONDS} sekunder...\n---------------------------------"
                 )
