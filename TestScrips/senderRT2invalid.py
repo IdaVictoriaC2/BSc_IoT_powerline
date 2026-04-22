@@ -1,11 +1,33 @@
 import serial
 import time
-import random
 
 # Konfiguration af UART-porten
 # Vi bruger serial0, da det automatisk finder den rigtige hardware-port på Pi 3
 PORT = '/dev/serial0'
 BAUD = 115200
+SEND_INTERVAL_SECONDS = 10
+
+def pad_hex_to_multiple_of_12(payload_hex):
+    """Padder med '0' så hex-længden bliver delelig med 12."""
+    remainder = len(payload_hex) % 12
+    if remainder == 0:
+        return payload_hex
+    return payload_hex + ("0" * (12 - remainder))
+
+def encode_temp_like_master(temp_c):
+    """Matcher master.py: temp * 10, cast til int, og 16-bit hex."""
+    return f"{(int(temp_c * 10) & 0xFFFF):04X}"
+
+def build_master_like_payload():
+    """Bygger en gyldig 24-char payload i samme stil som master.py."""
+    timestamp_hex = f"{int(time.time()):08X}"
+    temp_fields = (
+        encode_temp_like_master(20.0),
+        encode_temp_like_master(24.5),
+        encode_temp_like_master(58.2),
+        encode_temp_like_master(43.7),
+    )
+    return timestamp_hex + "".join(temp_fields), timestamp_hex, temp_fields
 
 def send_at(ser, command):
     """Sender en AT-kommando og returnerer svaret"""
@@ -31,21 +53,55 @@ def main():
         # Slet # foran næste linje, hvis modulet skal joine netværket først:
         # send_at(ser, "AT+JOIN=1:0:10:8")
 
-        while True:
-            # --- SEND INVALID PAYLOAD ---
-            # Lav til HEX-string (2 bytes for hver for at være sikker)
-            # f.feks. 225 bliver '00E1', 45 bliver '002D'
-            string = "invalid payload"
-            payload = string.encode("utf-8").hex()
+        # master.py format: 24 chars total -> 8 timestamp + 4 x 4-char temperaturfelter.
+        _, timestamp_hex, valid_temps = build_master_like_payload()
 
-            print(f"\nSender et invalid payload")
+        raw_test_payloads = [
+            # 1) String payload (ikke i master-format)
+            ("String payload", "invalid payload".encode("utf-8").hex()),
 
-            # 3. Send data via LoRaWAN (Port 2)
+            # 2) Temperatur med 6 cifre i ét felt (for langt felt)
+            (
+                "999.99 temperature field",
+                f"{timestamp_hex}{99999:04X}{valid_temps[1]}{valid_temps[2]}{valid_temps[3]}",
+            ),
+
+            # 3) Negativ temperatur med 3 tegn (indeholder '-')
+            (
+                "Negative 3-char temperature",
+                f"{timestamp_hex}{-123:04X}{valid_temps[1]}{valid_temps[2]}{valid_temps[3]}",
+            ),
+
+            # 4) Negativ temperatur med 5 tegn (indeholder '-')
+            (
+                "Negative 5-char temperature",
+                f"{timestamp_hex}{-12345:04X}{valid_temps[1]}{valid_temps[2]}{valid_temps[3]}",
+            ),
+
+            # 5) Tom temperatur i første felt, resten korrekt struktur
+            (
+                "Missing temperature field",
+                f"{timestamp_hex}{valid_temps[1]}{valid_temps[2]}{valid_temps[3]}",
+            ),
+        ]
+
+        test_payloads = [
+            (label, pad_hex_to_multiple_of_12(payload))
+            for label, payload in raw_test_payloads
+        ]
+
+        for index, (label, payload) in enumerate(test_payloads, start=1):
+            print(f"\nTest {index}/{len(test_payloads)}: {label}")
+            print(f"Payload: {payload} (len={len(payload)} hex chars)")
             send_at(ser, f"AT+SEND=2:{payload}")
 
-            # Vent 30 sekunder før næste måling (Husk Duty Cycle regler!)
-            print("Venter 30 sekunder...\n---------------------------------")
-            time.sleep(30)
+            if index < len(test_payloads):
+                print(
+                    f"Venter {SEND_INTERVAL_SECONDS} sekunder...\n---------------------------------"
+                )
+                time.sleep(SEND_INTERVAL_SECONDS)
+
+        print("\nFærdig med testsekvens.")
 
     except KeyboardInterrupt:
         print("\nStopper scriptet...")
