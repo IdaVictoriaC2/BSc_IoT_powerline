@@ -7,13 +7,6 @@ PORT = '/dev/serial0'
 BAUD = 115200
 SEND_INTERVAL_SECONDS = 10
 
-def pad_hex_to_multiple_of_12(payload_hex):
-    """Padder med '0' så hex-længden bliver delelig med 12."""
-    remainder = len(payload_hex) % 12
-    if remainder == 0:
-        return payload_hex
-    return payload_hex + ("0" * (12 - remainder))
-
 def encode_temp_like_master(temp_c):
     """Matcher master.py: temp * 10, cast til int, og 16-bit hex."""
     return f"{(int(temp_c * 10) & 0xFFFF):04X}"
@@ -60,33 +53,35 @@ def main():
             # 1) String payload (ikke i master-format)
             ("String payload", "invalid payload".encode("utf-8").hex()),
 
-            # 2) Temperatur med 6 cifre i ét felt (for langt felt)
+            # 2) Edge case 65535 (max for 16-bit unsigned) i temperaturfelt
             (
-                "999.99 temperature field",
-                f"{timestamp_hex}{99999:04X}{valid_temps[1]}{valid_temps[2]}{valid_temps[3]}",
+                "Edge case 655.35 temperature field",
+                f"{timestamp_hex}{(65535 & 0xFFFF):04X}{valid_temps[1]}{valid_temps[2]}{valid_temps[3]}",
             ),
-
-            # 3) Negativ temperatur med 3 tegn (indeholder '-')
+            # 3) Edge case 65536 (for høj temperatur) i temperaturfelt
+            (
+                "Past edge case 655.36 temperature field",
+                f"{timestamp_hex}{(65536 & 0xFFFF):04X}{valid_temps[1]}{valid_temps[2]}{valid_temps[3]}",
+            ),
+            # 4) Negativ temperatur med 3 tegn (indeholder '-')
             (
                 "Negative 3-char temperature",
-                f"{timestamp_hex}{-123:04X}{valid_temps[1]}{valid_temps[2]}{valid_temps[3]}",
+                f"{timestamp_hex}{(-123 & 0xFFFF):04X}{valid_temps[1]}{valid_temps[2]}{valid_temps[3]}",
             ),
-
-            # 4) Negativ temperatur med 5 tegn (indeholder '-')
+            # 5) Edgecase (signed) 16-bit minimum (-32768) i temperaturfelt
             (
-                "Negative 5-char temperature",
-                f"{timestamp_hex}{-12345:04X}{valid_temps[1]}{valid_temps[2]}{valid_temps[3]}",
+                "Edge case -327.68 temperature field",
+                f"{timestamp_hex}{(-32768 & 0xFFFF):04X}{valid_temps[1]}{valid_temps[2]}{valid_temps[3]}",
             ),
-
-            # 5) Tom temperatur i første felt, resten korrekt struktur
+            # 6) Edgecase (signed) over 16-bit minimum (-32769) i temperaturfelt
             (
-                "Missing temperature field",
-                f"{timestamp_hex}{valid_temps[1]}{valid_temps[2]}{valid_temps[3]}",
+                "Edge case -327.69 temperature field",
+                f"{timestamp_hex}{(-32769 & 0xFFFF):04X}{valid_temps[1]}{valid_temps[2]}{valid_temps[3]}",
             ),
         ]
 
         test_payloads = [
-            (label, pad_hex_to_multiple_of_12(payload))
+            (label, payload)
             for label, payload in raw_test_payloads
         ]
 
