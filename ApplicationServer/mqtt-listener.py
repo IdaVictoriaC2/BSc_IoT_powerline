@@ -187,12 +187,12 @@ def on_message(client, userdata, msg):
                             continue
 
                         if last_vals:
-                            last_con = float(last_vals[2])
-                            jump = abs(con - last_con)
+                            last_amb = float(last_vals[0])
+                            jump = abs(amb - last_amb)
 
                             if jump > MAX_TEMP_JUMP:
                                 warn_msg = (f"Rejected record from {dev_eui}: Sudden jump detected! "
-                                           f"Previous: {last_con}°C, New: {con}°C (Delta: {jump}°C)")
+                                           f"Previous: {last_amb}°C, New: {amb}°C (Delta: {jump}°C)")
                                 print(f"{warn_msg}")
                                 log_event("JUMP_ANOMALY", warn_msg)
                                 continue
