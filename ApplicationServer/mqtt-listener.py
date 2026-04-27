@@ -20,6 +20,9 @@ DB_USER = "app_user"
 DB_PASS = "IMbachelor26"
 last_cleanup_date = None
 last_seen = {}
+
+TEMP_LIMIT_MAX = 327.67
+TEMP_LIMIT_MIN = -327.67
 # --- Database Connection ---
 def get_db_connection():
     """Establishes a connection to the PostgreSQL database."""
@@ -144,6 +147,13 @@ def on_message(client, userdata, msg):
                 saved_count = 0
                 for dt, amb, imm, con, cpu, m_hex in measurements:
                     try:
+                        all_temps = [amb, imm, con, cpu]
+                        if any (t < TEMP_LIMIT_MIN or t > TEMP_LIMIT_MAX for t in all_temps):
+                            warn_msg = (f"Rejected record from {dev_eui}: Out of bounds detected. "
+                                        f"Values: Amb:{amb}, Imm:{imm}, Con:{con}, CPU:{cpu}")
+                            print(f"{warn_msg}")
+                            log_event("SANITY_REJECTION", warn_msg)
+                            continue
                         # ON CONFLICT DO NOTHING sørger for at redundante data sorteres fra
                         insert_query = """
                             INSERT INTO sensor_data
