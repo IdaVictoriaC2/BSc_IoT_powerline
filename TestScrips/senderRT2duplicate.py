@@ -37,7 +37,7 @@ def payload_hex():
     imm = amb + random.uniform(2.0, 5.0)
     con = imm + random.uniform(30.0, 50.0)
 
-    t_amb, t_imm, t_con, t_cpu = int(amb*10), int(imm*10), int(con*10), int(cpu_temp*10)
+    t_amb, t_imm, t_con, t_cpu = int(amb*100), int(imm*100), int(con*100), int(cpu_temp*100)
     sensor_hex = f"{(t_amb & 0xFFFF):04X}{(t_imm & 0xFFFF):04X}{(t_con & 0xFFFF):04X}{(t_cpu & 0xFFFF):04X}"
     return ts_hex + sensor_hex
 
@@ -56,7 +56,7 @@ def main():
 
         while True:
             # --- GENERER DUPLICATE PAYLOAD ---
-            payload = duplicate_payload_hex()
+            payload = payload_hex()
             duplicate = payload + payload
 
             print(f"\nSender duplicate payload")
