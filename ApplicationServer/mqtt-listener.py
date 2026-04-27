@@ -21,8 +21,9 @@ DB_PASS = "IMbachelor26"
 last_cleanup_date = None
 last_seen = {}
 
-TEMP_LIMIT_MAX = 327.67
-TEMP_LIMIT_MIN = -327.68
+TEMP_LIMIT_MAX = 150
+TEMP_LIMIT_MIN = -40
+MAX_TEMP_JUMP = 15.0
 MIN_VALID_TIME = 1767225600  # 2026-01-01 00:00:00
 MAX_FUTURE_BUFFER = 60     # 60 sec
 
@@ -127,6 +128,18 @@ def send_retransmission_request(client, app_id, dev_eui):
     client.publish(downlink_topic, downlink_payload)
     print(f"Downlink send: Request of retransmission send to {dev_eui}")
 
+def get_last_measurement(cursor, dev_eui):
+    """Henter den seneste valide måling for en specifik enhed fra databasen."""
+    query = """
+        SELECT ambient_temp, immediate_temp, conductor_temp, cpu_temp 
+        FROM sensor_data 
+        WHERE device_eui = %s 
+        ORDER BY device_timestamp DESC 
+        LIMIT 1
+    """
+    cursor.execute(query, (dev_eui,))
+    return cursor.fetchone() # Returnerer (amb, imm, con, cpu) eller None
+
 # --- MQTT Callbacks ---
 def on_message(client, userdata, msg):
     auto_purge_old_data()
@@ -147,6 +160,7 @@ def on_message(client, userdata, msg):
             conn = get_db_connection()
             if conn:
                 cursor = conn.cursor()
+                last_vals = get_last_measurement(cursor, dev_eui)
                 saved_count = 0
                 for dt, amb, imm, con, cpu, m_hex in measurements:
                     try:
@@ -171,6 +185,17 @@ def on_message(client, userdata, msg):
                             print(f"{warn_msg}")
                             log_event("SANITY_REJECTION", warn_msg)
                             continue
+
+                        if last_vals:
+                            last_con = float(last_vals[2])
+                            jump = abs(con - last_con)
+
+                            if jump > MAX_TEMP_JUMP:
+                                warn_msg = (f"Rejected record from {dev_eui}: Sudden jump detected! "
+                                           f"Previous: {last_con}°C, New: {con}°C (Delta: {jump}°C)")
+                                print(f"{warn_msg}")
+                                log_event("JUMP_ANOMALY", warn_msg)
+                                continue
                         # ON CONFLICT DO NOTHING sørger for at redundante data sorteres fra
                         insert_query = """
                             INSERT INTO sensor_data
