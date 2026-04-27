@@ -23,6 +23,9 @@ last_seen = {}
 
 TEMP_LIMIT_MAX = 327.67
 TEMP_LIMIT_MIN = -327.67
+MIN_VALID_TIME = 1767225600  # 2026-01-01 00:00:00
+MAX_FUTURE_BUFFER = 60     # 60 sec
+
 # --- Database Connection ---
 def get_db_connection():
     """Establishes a connection to the PostgreSQL database."""
@@ -147,7 +150,21 @@ def on_message(client, userdata, msg):
                 saved_count = 0
                 for dt, amb, imm, con, cpu, m_hex in measurements:
                     try:
+                        ts_unix = dt.timestamp()
+                        current_time = time.time()
+                        if ts_unix < MIN_VALID_TIME:
+                            error_msg = f"Rejected: Timestamp is in the past (Epoch error: {dt})"
+                            print(f"{error_msg}")
+                            log_event("TIME_ANOMALY", error_msg)
+                            continue
+                        elif ts_unix > (current_time + MAX_FUTURE_BUFFER):
+                            error_msg = f"Rejected: Future timestamp ({dt}). Server time is {datetime.datetime.now()}"
+                            print(f"{error_msg}")
+                            log_event("TIME_ANOMALY", error_msg)
+                            continue
+                        
                         all_temps = [amb, imm, con, cpu]
+                        
                         if any (t < TEMP_LIMIT_MIN or t > TEMP_LIMIT_MAX for t in all_temps):
                             warn_msg = (f"Rejected record from {dev_eui}: Out of bounds detected. "
                                         f"Values: Amb:{amb}, Imm:{imm}, Con:{con}, CPU:{cpu}")
