@@ -50,20 +50,20 @@ def sync_pi_time(lora_serial):
     time.sleep(0.5)
     res = ""
     if lora_serial.in_waiting > 0:
-        res = lora_serial.read_all()decode(errors='ignore').strip()
+        res = lora_serial.read_all().decode(errors='ignore').strip()
         print(f"RAK LTIME response: {res}")
         
-        if "OK" in res and ":" in res:
-            try:
-                timestr = res.replace("OK ", "").strip()
-                # 'date -s' format (YYYY-MM-DD HH:MM:SS)
-                p = timestr.split(':')
-                if len(p) >= 6:
-                    formatted_time = f"{p[0]}-{p[1]}-{p[2]} {p[3]}:{p[4]}:{p[5]}"
-                    os.system(f"sudo date -s '{formatted_time}'")
-                    print(f"System Clock Synced: {formatted_time}")
-            except Exception as e:
-                print(f"Failed to parse LTIME: {e}")
+        try:
+            if "=" in res:
+                time_part = res.split('=')[1].split('\n')[0].strip()
+                dt_obj = datetime.datetime.strptime(time_part, "%Hh%Mm%Ss on %m/%d/%Y")
+                formatted_time = dt_obj.strftime("%Y-%m-%d %H:%M:%S")
+                os.system(f"sudo date -s '{formatted_time} UTC'")
+                print(f"System Clock Synced to UTC: {formatted_time}")
+            else:
+                print(f"could not find '=' in response")
+        except Exception as e:
+            print(f"Failed to parse LTIME: {e}")
     else:
         print(f"NO response from RAK module during LTIME request")
 
