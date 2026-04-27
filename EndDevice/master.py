@@ -1,5 +1,6 @@
 import serial
 import time
+import datetime
 import random
 import RPi.GPIO as GPIO
 import csv
@@ -42,6 +43,29 @@ def is_lora_alive(lora_serial):
                 return True
         time.sleep(0.5)
     return False
+
+def sync_pi_time(lora_serial):
+    """Fetches Time from RAK and updates Raspberry PI system time"""
+    lora_serial.write(b'AT+LTIME=?\r\n')
+    time.sleep(0.5)
+    res = ""
+    if lora_serial.in_waiting > 0:
+        res = lora_serial.read_all()decode(errors='ignore').strip()
+        print(f"RAK LTIME response: {res}")
+        
+        if "OK" in res and ":" in res:
+            try:
+                timestr = res.replace("OK ", "").strip()
+                # 'date -s' format (YYYY-MM-DD HH:MM:SS)
+                p = timestr.split(':')
+                if len(p) >= 6:
+                    formatted_time = f"{p[0]}-{p[1]}-{p[2]} {p[3]}:{p[4]}:{p[5]}"
+                    os.system(f"sudo date -s '{formatted_time}'")
+                    print(f"System Clock Synced: {formatted_time}")
+            except Exception as e:
+                print(f"Failed to parse LTIME: {e}")
+    else:
+        print(f"NO response from RAK module during LTIME request")
 
 def lora_setup_connection(lora_serial):
     """Initializes LoRaWAN OTAA session."""
@@ -148,9 +172,12 @@ def send_payload_and_listen(lora_serial, hex_payload):
     lora_serial.write(f"AT+SEND=2:{hex_payload}\r\n".encode())
 
     start_wait = time.time()
-    while time.time() - start_wait < 8: # Class A RX1/RX2 window
+    while time.time() - start_wait < 10: # Class A RX1/RX2 window
         if lora_serial.in_waiting > 0:
             response = lora_serial.read_all().decode(errors='ignore').strip()
+            if "+EVT:TIMEREQ_OK" in response:
+                print(f"Time Request Successful!")
+                sync_pi_time(lora_serial)
             if "+EVT:RX" in response:
                 print(f"Downlink detected!")
                 parts = response.split(':')
@@ -175,6 +202,7 @@ def handle_downlink(hex_cmd, lora_serial):
 
 def main():
     consecutive_failures = 0
+    last_sync_date = None
     print("DLR Sensor Node Active...")
 
     try:
@@ -190,6 +218,14 @@ def main():
     while True:
         if is_lora_alive(lora_serial):
             consecutive_failures = 0
+            current_date = datetime.date.today()
+
+            if last_sync_date != current_date:
+                print(f"New day registered ({current_date}). Requesting time...")
+                lora_serial.write(b'AT+TIMEREQ=1\r\n')
+                time.sleep(0.5)
+                last_sync_date = current_date
+            
             lora_serial.read_all()
             lora_serial.write(b'AT+NJS=?\r\n')
             time.sleep(1.0)
