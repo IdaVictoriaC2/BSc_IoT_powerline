@@ -22,7 +22,7 @@ last_cleanup_date = None
 last_seen = {}
 
 TEMP_LIMIT_MAX = 327.67
-TEMP_LIMIT_MIN = -327.67
+TEMP_LIMIT_MIN = -327.68
 MIN_VALID_TIME = 1767225600  # 2026-01-01 00:00:00
 MAX_FUTURE_BUFFER = 60     # 60 sec
 
