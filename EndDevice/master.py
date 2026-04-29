@@ -203,16 +203,14 @@ def handle_downlink(hex_cmd, lora_serial):
                         if start_req <= row_ts <= end_req:
                             to_send.append(payload)
                         
-                    print(f"Found {len(to_send=} mathcing records in buffer")
+                    print(f"Found {len(to_send)} mathcing records in buffer")
                     for p in to_send:
                         lora_serial.write(f"AT+SEND=2:{p}\r\n".encode())
                         time.sleep(5)
                 os.remove(BUFFER_FILE)
                 print("Buffer cleared and sent.")
-            except Exception as e:
-                print(f"Error during buffer dump: {e}")
-        else:
-            print(f"No Buffer file")
+        except Exception as e:
+            print(f"Error during buffer dump: {e}")
 
 
 def main():
