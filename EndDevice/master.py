@@ -187,19 +187,26 @@ def send_payload_and_listen(lora_serial, hex_payload):
 
 def handle_downlink(hex_cmd, lora_serial):
     """Executes commands received from Network Server."""
-    cmd = hex_cmd.strip().upper()
-    if cmd == "01": # Logic for mass retransmission
-        print("ACTION: Server requested buffer dump.")
-        if os.path.isfile(BUFFER_FILE):
-            try:
+    
+    if hex_cmd.startswith("02") and len(hex_cmd) == 18:
+        try:
+            start_ts = int(hex_cmd[2:10], 16)
+            end_ts = int(hex_cmd[10:18], 16)
+            
+        print(f"ACTION: Server requested buffer data between {start_ts} to {end_ts}.")
+            if os.path.isfile(BUFFER_FILE):
                 with open(BUFFER_FILE, mode='r') as f:
-                    reader = csv.reader(f)
+                    reader = lis(csv.reader(f))
+                    to_send = []
                     for row in reader:
-                        if len(row) < 2: 
-                            continue
                         payload = row[1]
-                        print(f"Retransmitting buffered packet: {payload}")
-                        lora_serial.write(f"AT+SEND=2:{payload}\r\n".encode())
+                        ro_ts = int(payload[0:8], 16)
+                        if start_req <= row_ts <= end_req:
+                            to_send.append(payload)
+                        
+                    print(f"Found {len(to_send=} mathcing records in buffer")
+                    for p in to_send:
+                        lora_serial.write(f"AT+SEND=2:{p}\r\n".encode())
                         time.sleep(5)
                 os.remove(BUFFER_FILE)
                 print("Buffer cleared and sent.")
