@@ -5,6 +5,7 @@ import base64
 import struct
 import datetime
 import time
+import threading
 
 # MQTT Broker (ChirpStack Mosquitto)
 MQTT_BROKER = "localhost"
@@ -27,7 +28,7 @@ MAX_TEMP_JUMP_PER_MINUTE = 5.0
 MIN_VALID_TIME = 1767225600  # 2026-01-01 00:00:00
 MAX_FUTURE_BUFFER = 60     # 60 sec
 
-
+pending_gaps = {}
 # --- Database Connection ---
 def get_db_connection():
     """Establishes a connection to the PostgreSQL database."""
@@ -125,8 +126,22 @@ def check_for_missing_data(client, dev_eui, app_id, current_device_ts):
         if gap > 45:
             start_ts = int(last_ts.timestamp()) +1
             end_ts = int(current_device_ts.timestamp())-1
-            print(f"!!! GAP DETECTED: {int(gap)}s gap for {dev_eui}. Requesting specific range.")
-            send_retransmission_request(client, app_id, dev_eui, start_ts, end_ts)
+            gap_key = (dev_eui, start_ts, end_ts)
+            if gap_key not in pending_gaps:
+                pending_gaps[gap_key]={"app_id": app_id, "requested_at": time.time()}
+                print(f"!!! GAP DETECTED: {int(gap)}s gap for {dev_eui}. Requesting specific range.")
+                send_retransmission_request(client, app_id, dev_eui, start_ts, end_ts)
+                verify_gap_after_delay(client, app_id, dev_eui, start_ts, end_ts)
+
+def check_pending_gaps_after_insert(client):
+    for gap_key in list(pending_gaps.keys()):
+        dev_eui, start_ts, end_ts = gap_key
+        app_id = pending_gaps[gap_key]["app_id"]
+
+        if is_gap_filled(dev_eui, start_ts, end_ts):
+            print(f"Pending gap filled for {dev_eui}. Sending ACK 03 / clear buffer.")
+            send_clear_buffer_command(client, app_id, dev_eui)
+            pending_gaps.pop(gap_key, None)
 
 def send_clear_buffer_command(client, app_id, dev_eui):
     """Sender kommando 03 (Base64: Aw==) via MQTT."""
@@ -137,6 +152,57 @@ def send_clear_buffer_command(client, app_id, dev_eui):
         "data": "Aw==" # Hex 03 i Base64
     })
     client.publish(topic, payload)
+
+def is_gap_filled(dev_eui, start_ts, end_ts):
+    conn = get_db_connection()
+    if not conn:
+        return False
+
+    try:
+        cursor = conn.cursor()
+        query = """
+            SELECT device_timestamp
+            FROM sensor_data
+            WHERE device_eui = %s
+              AND device_timestamp >= to_timestamp(%s)
+              AND device_timestamp <= to_timestamp(%s)
+            ORDER BY device_timestamp ASC
+        """
+
+        cursor.execute(query, (dev_eui, start_ts, end_ts))
+        rows = cursor.fetchall()
+
+        cursor.close()
+        conn.close()
+
+        if not rows:
+            return False
+
+        first_ts = int(rows[0][0].timestamp())
+        last_ts = int(rows[-1][0].timestamp())
+
+        return first_ts <= start_ts and last_ts >= end_ts
+
+    except Exception as e:
+        print(f"Error checking gap fill: {e}")
+        return False
+
+def verify_gap_after_delay(client, app_id, dev_eui, start_ts, end_ts):
+    gap_seconds = max(end_ts - start_ts, 1)
+
+    def delayed_check():
+        gap_key = (dev_eui, start_ts, end_ts)
+
+        if is_gap_filled(dev_eui, start_ts, end_ts):
+            print(f"Gap filled for {dev_eui}. Sending ACK 03 / clear buffer.")
+            send_clear_buffer_command(client, app_id, dev_eui)
+            pending_gaps.pop(gap_key, None)
+        else:
+            print(f"Gap still not filled for {dev_eui}. Keeping buffer pending.")
+
+    timer = threading.Timer(gap_seconds, delayed_check)
+    timer.daemon = True
+    timer.start()
 
 def send_retransmission_request(client, app_id, dev_eui, start_ts, end_ts):
     downlink_topic = f"application/{app_id}/device/{dev_eui}/command/down"
@@ -246,6 +312,7 @@ def on_message(client, userdata, msg):
                 conn.close()
                 if saved_count >0:
                     print("Data successfully saved to database.")
+                    check_pending_gaps_after_insert(client)
                 else:
                     print("No new measurements were saved (due to errors or duplicates)")
 
