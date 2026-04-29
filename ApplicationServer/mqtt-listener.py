@@ -128,6 +128,16 @@ def check_for_missing_data(client, dev_eui, app_id, current_device_ts):
             print(f"!!! GAP DETECTED: {int(gap)}s gap for {dev_eui}. Requesting specific range.")
             send_retransmission_request(client, app_id, dev_eui, start_ts, end_ts)
 
+def send_clear_buffer_command(client, app_id, dev_eui):
+    """Sender kommando 03 (Base64: Aw==) via MQTT."""
+    topic = f"application/{app_id}/device/{dev_eui}/command/down"
+    payload = json.dumps({
+        "confirmed": False,
+        "fPort": 2,
+        "data": "Aw==" # Hex 03 i Base64
+    })
+    client.publish(topic, payload)
+
 def send_retransmission_request(client, app_id, dev_eui, start_ts, end_ts):
     downlink_topic = f"application/{app_id}/device/{dev_eui}/command/down"
     binary_payload = struct.pack('>BII', 2, start_ts, end_ts)
