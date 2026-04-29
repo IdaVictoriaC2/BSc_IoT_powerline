@@ -192,8 +192,7 @@ def handle_downlink(hex_cmd, lora_serial):
         try:
             start_ts = int(hex_cmd[2:10], 16)
             end_ts = int(hex_cmd[10:18], 16)
-            
-        print(f"ACTION: Server requested buffer data between {start_ts} to {end_ts}.")
+            print(f"ACTION: Server requested buffer data between {start_ts} to {end_ts}.")
             if os.path.isfile(BUFFER_FILE):
                 with open(BUFFER_FILE, mode='r') as f:
                     reader = lis(csv.reader(f))
