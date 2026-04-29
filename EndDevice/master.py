@@ -253,7 +253,8 @@ def main():
                 send_payload_and_listen(lora_serial, payload)
                 save_to_buffer(get_hex_data())
             else:
-                print("Connection lost. Re-joining...")
+                print("Connection lost. Saving to buffer and re-joining...")
+                save_to_buffer(get_hex_data())
                 lora_setup_connection(lora_serial)
 
             time.sleep(SEND_INTERVAL)
