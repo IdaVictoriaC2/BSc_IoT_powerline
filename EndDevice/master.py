@@ -249,7 +249,8 @@ def main():
             time.sleep(1.0)
             if "1" in lora_serial.read_all().decode(errors='ignore'):
                 payload = get_combined_payload()
-                print(f"Sending: {payload}")
+                print(f"SENDING PACKET")
+                print(f"Current: {payload[0:24]}, Last: {payload[24:48]}, Buffer 1: {payload[48:72]}, Buffer 2: {payload[72:96]}")
                 send_payload_and_listen(lora_serial, payload)
                 save_to_buffer(get_hex_data())
             else:
