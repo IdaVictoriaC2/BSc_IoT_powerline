@@ -135,29 +135,13 @@ def get_combined_payload():
     """Constructs 48-byte aggregated payload (Current + Last + 2 Buffer)."""
     global last_payload
     current_payload = get_hex_data()
-    payload_list = [current_payload]
+    final_payload = current_payload
 
     if last_payload:
-        payload_list.append(last_payload)
+        final_payload += lat_payload
+    else:
+        final_payload += current_payload
         
-    buffer_payloads = []
-
-    if os.path.isfile(BUFFER_FILE):
-        try:
-            with open(BUFFER_FILE, mode='r') as f:
-                rows = list(csv.reader(f))
-                for i in range(min(len(rows), 2)):
-                    buffer_payloads.append(rows[i][1])
-            
-        except Exception as e:
-            print(f"Buffer error: {e}")
-
-    final_payload = "".join(payload_list)
-    for i in range(2):
-        if i < len(buffer_payloads):
-            final_payload += buffer_payloads[i] 
-        
-
     last_payload = current_payload
     return final_payload
 
