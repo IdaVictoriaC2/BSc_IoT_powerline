@@ -27,3 +27,32 @@ openssl x509 -req -in mqtt-server.csr -CA ca.pem -CAkey ca-key.pem -CAcreateseri
 
 # Genstart Mosquitto-containeren
 docker-compose restart mosquitto
+```
+### 4. Verificer certifikatet (PC)
+Tjek om "Subject Alternative Name" (SAN) indeholder den rigtige nye IP:
+
+```Bash
+openssl x509 -in mqtt-server.pem -text -noout | grep -A 1 "Subject Alternative Name"
+```
+### 5. Overfør tillid (PC ➡️ Gateway)
+Hvis certifikatkæden er opdateret, skal gatewayen have den nyeste ca.pem for at stole på serveren.
+
+Kopiér CA fra PC til Gateway:
+
+```Bash
+scp ca.pem root@[gateway_ip]:/etc/chirpstack-mqtt-forwarder/ca.pem
+```
+Genstart forwarder-servicen på Gatewayen:
+
+```Bash
+/etc/init.d/chirpstack-mqtt-forwarder restart
+```
+### 6. Tjek forbindelsen
+Hold øje med Mosquitto-loggen på din PC for at se gatewayen logge på:
+
+```Bash
+docker logs -f chirpstack-docker_mosquitto_1
+```
+Succes-tegn: Client 0016c001f1237a90 negotiated TLSv1.3.
+
+
