@@ -137,7 +137,7 @@ def send_retransmission_request(client, app_id, dev_eui, start_ts, end_ts):
         "fPort": 2,
         "data": b64_payload
     })
-    client.publish(downlink_topic, downlink_payload)
+    client.publish(downlink_topic, downlink_json)
     print(f"Retransmit send: Interval {start_ts} to {end_ts} (Base64: {b64_payload})")
 
 def get_last_measurement(cursor, dev_eui):
