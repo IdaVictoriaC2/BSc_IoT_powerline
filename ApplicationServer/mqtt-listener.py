@@ -119,7 +119,9 @@ def check_for_missing_data(client, dev_eui, app_id, current_device_ts):
     conn.close()
     if last_record:
         last_ts = last_record[0]
-        gap = (current_device_ts - last_ts.total_seconds())
+        if last_ts.tzinfo is None:
+            last_ts = last_ts.replace(tzinfo=datetime.timezone.utc)
+        gap = (current_device_ts.timestamp() - last_ts.timestamp())
         if gap > 45:
             start_ts = int(last_ts.timestamp()) +1
             end_ts = int(current_device_ts.timestamp())-1
@@ -198,9 +200,9 @@ def on_message(client, userdata, msg):
                             continue
 
                         if last_vals:
-                            last_ts = last_vals[0]
+                            last_ts = last_vals[0].timestamp()
                             last_amb = float(last_vals[1])
-                            time_delta = (dt - last_ts).total_seconds() / 60
+                            time_delta = (ts_unix - last_ts) / 60
                             jump = abs(amb - last_amb)
 
                             # if measurements with time_delta < 1 min
