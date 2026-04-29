@@ -210,6 +210,8 @@ def handle_downlink(hex_cmd, lora_serial):
                 print("Buffer cleared and sent.")
             except Exception as e:
                 print(f"Error during buffer dump: {e}")
+        else:
+            print(f"No Buffer file")
 
 
 def main():
