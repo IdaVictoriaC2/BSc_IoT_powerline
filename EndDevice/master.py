@@ -193,11 +193,11 @@ def handle_downlink(hex_cmd, lora_serial):
             print(f"ACTION: Server requested buffer data between {start_ts} to {end_ts}.")
             if os.path.isfile(BUFFER_FILE):
                 with open(BUFFER_FILE, mode='r') as f:
-                    reader = lis(csv.reader(f))
+                    reader = list(csv.reader(f))
                     for row in reader:
                         payload = row[1]
                         row_ts = int(payload[0:8], 16)
-                        if start_req <= row_ts <= end_req:
+                        if start_ts <= row_ts <= end_ts:
                             base = get_combined_payload()
                             full_packet = assemble_packet(base, [payload])
                             print(f"📦 Sending: {full_packet}")
@@ -253,7 +253,7 @@ def main():
                 payload = get_combined_payload()
                 print(f"SENDING: Current: {payload[0:24]}, Last: {payload[24:48]}")
                 send_payload_and_listen(lora_serial, payload)
-                save_to_buffer(get_hex_data())
+                save_to_buffer(payload[0:24])
             else:
                 print("Connection lost. Saving to buffer and re-joining...")
                 save_to_buffer(get_hex_data())
