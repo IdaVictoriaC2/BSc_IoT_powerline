@@ -201,7 +201,7 @@ def on_message(client, userdata, msg):
                             if jump > dynamic_limit:
                                 warn_msg = (f"Rejected record from {dev_eui}: Sudden jump detected! "
                                             f"Changed {jump}°C over {round(time_delta, 2)} min. "
-                                            f"Max allowed for this gap: {round(dynamic_limit, 2)}°C"))
+                                            f"Max allowed for this gap: {round(dynamic_limit, 2)}°C")
                                 print(f"{warn_msg}")
                                 log_event("JUMP_ANOMALY", warn_msg)
                                 continue
