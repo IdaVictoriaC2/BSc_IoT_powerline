@@ -132,18 +132,32 @@ def get_hex_data():
     return ts_hex + sensor_hex
 
 def get_combined_payload():
-    """Constructs 48-byte aggregated payload (Current + Last + 2 Buffer)."""
+    """Constructs 24-byte aggregated payload (Current + Last)."""
     global last_payload
     current_payload = get_hex_data()
     final_payload = current_payload
 
     if last_payload:
-        final_payload += lat_payload
+        final_payload += last_payload
     else:
         final_payload += current_payload
         
     last_payload = current_payload
     return final_payload
+
+def assemble_packet(base_24, buffer_items):
+    """
+    Combines 24-byte base with a list of buffer items (max 2).
+    Always returns a 48-byte (96 hex chars) payload.
+    """
+    final = base_24
+    
+    # Vi har plads til 2 buffer-slots i vores 48-byte struktur
+    for i in range(2):
+        if i < len(buffer_items):
+            final += buffer_items[i]
+            
+    return final
 
 def send_payload_and_listen(lora_serial, hex_payload):
     """Transmits data and listens for Class A Downlink commands."""
@@ -171,8 +185,8 @@ def send_payload_and_listen(lora_serial, hex_payload):
 
 def handle_downlink(hex_cmd, lora_serial):
     """Executes commands received from Network Server."""
-    
-    if hex_cmd.startswith("02") and len(hex_cmd) == 18:
+    cmd = hex_cmd.strip().upper()
+    if cmd.startswith("02") and len(cmd) == 18:
         try:
             start_ts = int(hex_cmd[2:10], 16)
             end_ts = int(hex_cmd[10:18], 16)
@@ -180,21 +194,25 @@ def handle_downlink(hex_cmd, lora_serial):
             if os.path.isfile(BUFFER_FILE):
                 with open(BUFFER_FILE, mode='r') as f:
                     reader = lis(csv.reader(f))
-                    to_send = []
                     for row in reader:
                         payload = row[1]
-                        ro_ts = int(payload[0:8], 16)
+                        row_ts = int(payload[0:8], 16)
                         if start_req <= row_ts <= end_req:
-                            to_send.append(payload)
-                        
-                    print(f"Found {len(to_send)} mathcing records in buffer")
-                    for p in to_send:
-                        lora_serial.write(f"AT+SEND=2:{p}\r\n".encode())
-                        time.sleep(5)
-                os.remove(BUFFER_FILE)
-                print("Buffer cleared and sent.")
+                            base = get_combined_payload()
+                            full_packet = assemble_packet(base, [payload])
+                            print(f"📦 Sending: {full_packet}")
+                            
+                            lora_serial.write(f"AT+SEND=2:{full_packet}\r\n".encode())
+                            time.sleep(5)
         except Exception as e:
             print(f"Error during buffer dump: {e}")
+    elif cmd == "03":
+        print("ACTION: Server confirmed data receipt. Clearing buffer...")
+        if os.path.isfile(BUFFER_FILE):
+            os.remove(BUFFER_FILE)
+            print("Buffer file deleted.")
+        else:
+            print("Buffer already empty.")
 
 
 def main():
@@ -233,8 +251,7 @@ def main():
             time.sleep(1.0)
             if "1" in lora_serial.read_all().decode(errors='ignore'):
                 payload = get_combined_payload()
-                print(f"SENDING PACKET")
-                print(f"Current: {payload[0:24]}, Last: {payload[24:48]}, Buffer 1: {payload[48:72]}, Buffer 2: {payload[72:96]}")
+                print(f"SENDING: Current: {payload[0:24]}, Last: {payload[24:48]}")
                 send_payload_and_listen(lora_serial, payload)
                 save_to_buffer(get_hex_data())
             else:
