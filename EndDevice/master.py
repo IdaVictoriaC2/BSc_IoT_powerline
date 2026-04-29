@@ -110,11 +110,13 @@ def get_pi_cpu_temp():
 
 def save_to_buffer(payload):
     """ Saves data locally in case LoRa-module fails og network fails """
-    file = os.path.isfile(BUFFER_FILE)
-    with open(BUFFER_FILE, mode='a', newline='') as f:
-        writer = csv.writer(f)
-        writer.writerow([time.strftime("%Y-%m-%d %H:%M:%S"), payload])
-    print(f"CRITICAL: Data saved to local buffer ({BUFFER_FILE})")
+    try:
+        with open(BUFFER_FILE, mode='a', newline='') as f:
+            writer = csv.writer(f)
+            writer.writerow([time.strftime("%Y-%m-%d %H:%M:%S"), payload])
+        print(f"CRITICAL: Data saved to local buffer ({BUFFER_FILE})")
+    except Exception as e:
+        print(f" Failed to write to buffer: {e}")
 
 def get_hex_data():
     """Generates 12-byte payload: 4-byte timestamp + 8-byte sensor payload."""
@@ -147,13 +149,7 @@ def get_combined_payload():
                 rows = list(csv.reader(f))
                 for i in range(min(len(rows), 2)):
                     buffer_payloads.append(rows[i][1])
-            # Update buffer: remove the 2 we just took
-            remaining = rows[2:] if len(rows) > 2 else []
-            if remaining:
-                with open(BUFFER_FILE, mode='w', newline='') as f:
-                    csv.writer(f).writerows(remaining)
-            else:
-                os.remove(BUFFER_FILE)
+            
         except Exception as e:
             print(f"Buffer error: {e}")
 
