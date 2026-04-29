@@ -23,9 +23,10 @@ last_seen = {}
 
 TEMP_LIMIT_MAX = 150
 TEMP_LIMIT_MIN = -40
-MAX_TEMP_JUMP = 15.0
+MAX_TEMP_JUMP_PER_MINUTE = 5.0
 MIN_VALID_TIME = 1767225600  # 2026-01-01 00:00:00
 MAX_FUTURE_BUFFER = 60     # 60 sec
+
 
 # --- Database Connection ---
 def get_db_connection():
@@ -131,14 +132,14 @@ def send_retransmission_request(client, app_id, dev_eui):
 def get_last_measurement(cursor, dev_eui):
     """Henter den seneste valide måling for en specifik enhed fra databasen."""
     query = """
-        SELECT ambient_temp, immediate_temp, conductor_temp, cpu_temp 
+        SELECT device_timestamp, ambient_temp, immediate_temp, conductor_temp, cpu_temp 
         FROM sensor_data 
         WHERE device_eui = %s 
         ORDER BY device_timestamp DESC 
         LIMIT 1
     """
     cursor.execute(query, (dev_eui,))
-    return cursor.fetchone() # Returnerer (amb, imm, con, cpu) eller None
+    return cursor.fetchone() # Returnerer (time, amb, imm, con, cpu) eller None
 
 # --- MQTT Callbacks ---
 def on_message(client, userdata, msg):
@@ -187,12 +188,20 @@ def on_message(client, userdata, msg):
                             continue
 
                         if last_vals:
-                            last_amb = float(last_vals[0])
+                            last_ts = last_vals[0]
+                            last_amb = float(last_vals[1])
+                            time_delta = (dt - last_ts).total_seconds() / 60
                             jump = abs(amb - last_amb)
 
-                            if jump > MAX_TEMP_JUMP:
+                            # if measurements with time_delta < 1 min
+                            effective_min = max(time_delta, 1.0)
+                            allowed_jump = effective_min * MAX_TEMP_JUMP_PER_MINUTE 
+                            dynamic_limit = min(allowed_jump, 80.0) # wont accept crazy changes
+
+                            if jump > dynamic_limit:
                                 warn_msg = (f"Rejected record from {dev_eui}: Sudden jump detected! "
-                                           f"Previous: {last_amb}°C, New: {amb}°C (Delta: {jump}°C)")
+                                            f"Changed {jump}°C over {round(time_delta, 2)} min. "
+                                            f"Max allowed for this gap: {round(dynamic_limit, 2)}°C")
                                 print(f"{warn_msg}")
                                 log_event("JUMP_ANOMALY", warn_msg)
                                 continue
