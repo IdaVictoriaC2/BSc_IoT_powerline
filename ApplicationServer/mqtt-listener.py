@@ -195,7 +195,7 @@ def on_message(client, userdata, msg):
 
                             # if measurements with time_delta < 1 min
                             effective_min = max(time_delta, 1.0)
-                            allowed jump = effective_min * MAX_TEMP_JUMP_PER_MINUTE 
+                            allowed_jump = effective_min * MAX_TEMP_JUMP_PER_MINUTE 
                             dynamic_limit = min(allowed_jump, 80.0) # wont accept crazy changes
 
                             if jump > dynamic_limit:
