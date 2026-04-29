@@ -19,7 +19,7 @@ GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(RST_PIN, GPIO.OUT, initial=GPIO.HIGH)
 
-BUFFER_FILE = "buffer.csv"
+BUFFER_FILE = "/home/pi3/buffer.csv"
 last_payload = "0" * 24
 
 def reset_rak_module():
@@ -114,7 +114,6 @@ def save_to_buffer(payload):
         with open(BUFFER_FILE, mode='a', newline='') as f:
             writer = csv.writer(f)
             writer.writerow([time.strftime("%Y-%m-%d %H:%M:%S"), payload])
-        print(f"CRITICAL: Data saved to local buffer ({BUFFER_FILE})")
     except Exception as e:
         print(f" Failed to write to buffer: {e}")
 
@@ -235,6 +234,7 @@ def main():
                 lora_serial.write(b'AT+TIMEREQ=1\r\n')
                 time.sleep(0.5)
                 last_sync_date = current_date
+                os.remove(BUFFER_FILE)
             
             lora_serial.read_all()
             lora_serial.write(b'AT+NJS=?\r\n')
@@ -243,6 +243,7 @@ def main():
                 payload = get_combined_payload()
                 print(f"Sending: {payload}")
                 send_payload_and_listen(lora_serial, payload)
+                save_to_buffer(get_hex_data())
             else:
                 print("Connection lost. Re-joining...")
                 lora_setup_connection(lora_serial)
