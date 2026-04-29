@@ -238,7 +238,11 @@ def main():
                 lora_serial.write(b'AT+TIMEREQ=1\r\n')
                 time.sleep(0.5)
                 last_sync_date = current_date
-                os.remove(BUFFER_FILE)
+                if os.path.exists(BUFFER_FILE):
+                    os.remove(BUFFER_FILE)
+                    print(f"Daily cleanup: {BUFFER_FILE} removed.")
+                else:
+                    print("Daily cleanup: No buffer file to remove.")
             
             lora_serial.read_all()
             lora_serial.write(b'AT+NJS=?\r\n')
