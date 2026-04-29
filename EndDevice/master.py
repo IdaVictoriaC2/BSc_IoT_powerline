@@ -169,35 +169,47 @@ def get_combined_payload():
 def send_payload_and_listen(lora_serial, hex_payload):
     """Transmits data and listens for Class A Downlink commands."""
     lora_serial.read_all()
+    if len(hex_payload) > 102: # 102 hex chars = 51 bytes
+        print("Warning: Payload might be too large for high Spreading Factors!")
     lora_serial.write(f"AT+SEND=2:{hex_payload}\r\n".encode())
 
     start_wait = time.time()
-    while time.time() - start_wait < 10: # Class A RX1/RX2 window
+    while time.time() - start_wait < 12: # Class A RX1/RX2 window
         if lora_serial.in_waiting > 0:
-            response = lora_serial.read_all().decode(errors='ignore').strip()
-            if "+EVT:TIMEREQ_OK" in response:
+            line = lora_serial.readline().decode(errors='ignore').strip()
+            if "+EVT:TIMEREQ_OK" in line:
                 print(f"Time Request Successful!")
                 sync_pi_time(lora_serial)
-            if "+EVT:RX" in response:
+            if "+EVT:RX" in line:
                 print(f"Downlink detected!")
-                parts = response.split(':')
-                if len(parts) >= 7:
-                    handle_downlink(parts[6].strip(), lora_serial)
+                parts = line.split(':')
+                if len(parts) >= 6:
+                    downlink_hex = parts[-1].strip()
+                    handle_downlink(downlink_hex, lora_serial)
                 return True
         time.sleep(0.1)
     return False
 
 def handle_downlink(hex_cmd, lora_serial):
     """Executes commands received from Network Server."""
-    if hex_cmd == "01": # Logic for mass retransmission
+    cmd = hex_cmd.strip().upper()
+    if cmd == "01": # Logic for mass retransmission
         print("ACTION: Server requested buffer dump.")
         if os.path.isfile(BUFFER_FILE):
-            with open(BUFFER_FILE, mode='r') as f:
-                for _, payload in csv.reader(f):
-                    lora_serial.write(f"AT+SEND=2:{payload}\r\n".encode())
-                    time.sleep(4)
-            os.remove(BUFFER_FILE)
-            print("Buffer cleared and sent.")
+            try:
+                with open(BUFFER_FILE, mode='r') as f:
+                    reader = csv.reader(f)
+                    for row in reader:
+                        if len(row) < 2: 
+                            continue
+                        payload = row[1]
+                        print(f"Retransmitting buffered packet: {payload}")
+                        lora_serial.write(f"AT+SEND=2:{payload}\r\n".encode())
+                        time.sleep(5)
+                os.remove(BUFFER_FILE)
+                print("Buffer cleared and sent.")
+            except Exception as e:
+                print(f"Error during buffer dump: {e}")
 
 
 def main():
