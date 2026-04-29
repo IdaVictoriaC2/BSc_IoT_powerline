@@ -109,25 +109,34 @@ def auto_purge_old_data():
             except Exception as e:
                 print(f"Error during auto-purge: {e}")
 
-def check_for_missing_data(client, dev_eui, application_id):
-    current_time = time.time()
-    if dev_eui in last_seen:
-        elapsed = current_time - last_seen[dev_eui]
-        if elapsed > 45:
-            print(f"!!! WARNING: Cap detected for {dev_eui}. Missing data for {int(elapsed)} sec.")
-            send_retransmission_request(client, application_id, dev_eui)
-    last_seen[dev_eui] = current_time
+def check_for_missing_data(client, dev_eui, app_id, current_device_ts):
+    conn = get_db_connection()
+    if not conn:
+        return
+    cursor = conn.cursor()
+    last_record = get_last_measurement(cursor, dev_eui)
+    cursor.close()
+    conn.close()
+    if last_record:
+        last_ts = last_record[0]
+        gap = (current_device_ts - last_ts.total_seconds())
+        if gap > 45:
+            start_ts = int(last_ts.timestamp()) +1
+            end_ts = int(current_device_ts.timestamp())-1
+            print(f"!!! GAP DETECTED: {int(gap)}s gap for {dev_eui}. Requesting specific range.")
+            send_retransmission_request(client, app_id, dev_eui, start_ts, end_ts)
 
-def send_retransmission_request(client, app_id, dev_eui):
+def send_retransmission_request(client, app_id, dev_eui, start_ts, end_ts):
     downlink_topic = f"application/{app_id}/device/{dev_eui}/command/down"
-    downlink_payload = json.dumps({
-        "devEui": dev_eui,
+    binary_payload = struct.pack('>BII', 2, start_ts, end_ts)
+    b64_payload = base64.b64encode(binary_payload).decode('utf-8')
+    downlink_json = json.dumps({
         "confirmed": False,
         "fPort": 2,
-        "data": "AQ=="
+        "data": b64_payload
     })
     client.publish(downlink_topic, downlink_payload)
-    print(f"Downlink send: Request of retransmission send to {dev_eui}")
+    print(f"Retransmit send: Interval {start_ts} to {end_ts} (Base64: {b64_payload})")
 
 def get_last_measurement(cursor, dev_eui):
     """Henter den seneste valide måling for en specifik enhed fra databasen."""
@@ -150,11 +159,12 @@ def on_message(client, userdata, msg):
         dev_eui = payload_json.get("deviceInfo", {}).get("devEui", "UNKNOWN")
         app_id = payload_json.get("deviceInfo", {}).get("applicationId")
         base64_data = payload_json.get("data", "")
-        check_for_missing_data(client, dev_eui, app_id)
 
         if not base64_data:
             return
         measurements, raw_hex = decode_payload(base64_data)
+        check_for_missing_data(client, dev_eui, app_id, measurements[0][0])
+
 
         if measurements:
             print(f"\n--- Processing {len(measurements)} measurements from {dev_eui} ---")
