@@ -215,24 +215,19 @@ def handle_downlink(hex_cmd, lora_serial):
 
             # Stream requested payloads (oldest-first), skipping those already sent
             idx = 0
-            packet = ""
             while idx < len(payloads):
+                packet = ""
                 base = get_combined_payload()
                 if base: packet = base
-                p = payloads[idx]
                 # try to append to current packet, ensure <= 96 hex chars (48 bytes)
-                while len(packet) + len(p) <= 96:
-                    packet += p
-                    if idx + 1 < len(payloads):
-                        idx += 1
-                        p = payloads[idx]
-                    else: break
+                while idx < len(payloads) and len(packet) + len(payloads[idx]) <= 96:
+                    packet += payloads[idx]
+                    idx += 1
 
-                    # send current packet, then start new one with p
+                # send current packet, then start new one with p
                 print(f"📦 Sending packet: {packet}")
                 lora_serial.write(f"AT+SEND=2:{packet}\r\n".encode())
                 time.sleep(5)
-                packet = ""
 
         except Exception as e:
             print(f"Error during buffer dump: {e}")
