@@ -158,10 +158,7 @@ def send_clear_buffer_command(client, app_id, dev_eui):
         "data": "Aw=="
     })
 
-    result = client.publish(topic, payload, qos=1)
-    result.wait_for_publish()
-
-    print(f"ACK 03 send")
+    client.publish(topic, payload, qos=1)
 
 def is_gap_filled(dev_eui, start_ts, end_ts):
     conn = get_db_connection()
