@@ -5,7 +5,6 @@ import base64
 import struct
 import datetime
 import time
-import threading
 
 # MQTT Broker (ChirpStack Mosquitto)
 MQTT_BROKER = "localhost"
@@ -20,7 +19,6 @@ DB_NAME = "powerline_telemetry"
 DB_USER = "app_user"
 DB_PASS = "IMbachelor26"
 last_cleanup_date = None
-last_seen = {}
 
 TEMP_LIMIT_MAX = 150
 TEMP_LIMIT_MIN = -40
@@ -67,7 +65,7 @@ def decode_payload(base64_data):
         measurements = []
         if len(raw_bytes) % 12 != 0:
             print(f"Warning: Received malformed payload of {len(raw_bytes)} bytes. Skipping.")
-            return []
+            return [], raw_bytes.hex()
 
         for i in range(0, len(raw_bytes), 12):
             block = raw_bytes[i:i+12]
@@ -122,6 +120,8 @@ def check_for_missing_data(client, dev_eui, app_id, current_device_ts):
         last_ts = last_record[0]
         if last_ts.tzinfo is None:
             last_ts = last_ts.replace(tzinfo=datetime.timezone.utc)
+        if current_device_ts.tzinfo is None:
+            current_device_ts = current_device_ts.replace(tzinfo=datetime.timezone.utc)
         gap = (current_device_ts.timestamp() - last_ts.timestamp())
         if gap > 45:
             start_ts = int(last_ts.timestamp()) +1
@@ -131,7 +131,6 @@ def check_for_missing_data(client, dev_eui, app_id, current_device_ts):
                 pending_gaps[gap_key]={"app_id": app_id, "requested_at": time.time()}
                 print(f"!!! GAP DETECTED: {int(gap)}s gap for {dev_eui}. Requesting specific range.")
                 send_retransmission_request(client, app_id, dev_eui, start_ts, end_ts)
-                verify_gap_after_delay(client, app_id, dev_eui, start_ts, end_ts)
 
 def check_pending_gaps_after_insert(client):
     for gap_key in list(pending_gaps.keys()):
@@ -160,49 +159,25 @@ def is_gap_filled(dev_eui, start_ts, end_ts):
 
     try:
         cursor = conn.cursor()
-        query = """
-            SELECT device_timestamp
+        cursor.execute("""
+            SELECT COUNT(*)
             FROM sensor_data
             WHERE device_eui = %s
               AND device_timestamp >= to_timestamp(%s)
               AND device_timestamp <= to_timestamp(%s)
-            ORDER BY device_timestamp ASC
-        """
+        """, (dev_eui, start_ts, end_ts))
 
-        cursor.execute(query, (dev_eui, start_ts, end_ts))
-        rows = cursor.fetchall()
-
+        count = cursor.fetchone()[0]
         cursor.close()
         conn.close()
 
-        if not rows:
-            return False
+        expected_min_count = max(1, int((end_ts - start_ts) / 30))
 
-        first_ts = int(rows[0][0].timestamp())
-        last_ts = int(rows[-1][0].timestamp())
-
-        return first_ts <= start_ts and last_ts >= end_ts
+        return count >= expected_min_count
 
     except Exception as e:
         print(f"Error checking gap fill: {e}")
         return False
-
-def verify_gap_after_delay(client, app_id, dev_eui, start_ts, end_ts):
-    gap_seconds = max(end_ts - start_ts, 1)
-
-    def delayed_check():
-        gap_key = (dev_eui, start_ts, end_ts)
-
-        if is_gap_filled(dev_eui, start_ts, end_ts):
-            print(f"Gap filled for {dev_eui}. Sending ACK 03 / clear buffer.")
-            send_clear_buffer_command(client, app_id, dev_eui)
-            pending_gaps.pop(gap_key, None)
-        else:
-            print(f"Gap still not filled for {dev_eui}. Keeping buffer pending.")
-
-    timer = threading.Timer(gap_seconds, delayed_check)
-    timer.daemon = True
-    timer.start()
 
 def send_retransmission_request(client, app_id, dev_eui, start_ts, end_ts):
     downlink_topic = f"application/{app_id}/device/{dev_eui}/command/down"
@@ -240,8 +215,9 @@ def on_message(client, userdata, msg):
 
         if not base64_data:
             return
-        measurements, raw_hex = decode_payload(base64_data)
-        check_for_missing_data(client, dev_eui, app_id, measurements[0][0])
+        measurements, _ = decode_payload(base64_data)
+        
+        check_for_missing_data(client, dev_eui, app_id, measurements[-1][0]) #gap detection på nyeste measurement ikke buffer data
 
 
         if measurements:
@@ -249,7 +225,6 @@ def on_message(client, userdata, msg):
             conn = get_db_connection()
             if conn:
                 cursor = conn.cursor()
-                last_vals = get_last_measurement(cursor, dev_eui)
                 saved_count = 0
                 for dt, amb, imm, con, cpu, m_hex in measurements:
                     try:
@@ -275,7 +250,7 @@ def on_message(client, userdata, msg):
                             log_event("SANITY_REJECTION", warn_msg)
                             continue
 
-                        if last_vals:
+                        if last_vals and ts_unix > last_vals[0].timestamp():
                             last_ts = last_vals[0].timestamp()
                             last_amb = float(last_vals[1])
                             time_delta = (ts_unix - last_ts) / 60
@@ -303,6 +278,7 @@ def on_message(client, userdata, msg):
                         cursor.execute(insert_query, (dev_eui, dt, amb, imm, con, cpu, m_hex))
                         if cursor.rowcount > 0:
                             saved_count +=1
+                            last_vals = (dt, amb, imm, con, cpu)
                         conn.commit()
                     except Exception as inner_e:
                         print(f"Failed to insert one measurement: {inner_e}")
