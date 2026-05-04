@@ -40,7 +40,7 @@ def init_db():
     cursor = conn.cursor()
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS readings (
-            timestamp TEXT PRIMARY KEY,
+            timestamp INTEGER PRIMARY KEY,
             payload TEXT NOT NULL
         )
     """)
@@ -54,15 +54,13 @@ def save_to_buffer(payload, timestamp):
         conn = sqlite3.connect(BUFFER_DB)
         cursor = conn.cursor()
         
-        timestamp_str = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(timestamp))
-        
         max_retries = 3
         for attempt in range(max_retries):
             try:
                 cursor.execute("""
                     INSERT INTO readings (timestamp, payload)
                     VALUES (?, ?)
-                """, (timestamp_str, payload))
+                """, (timestamp, payload))
                 break
             except sqlite3.OperationalError as e:
                 if "locked" in str(e) and attempt < max_retries - 1:
@@ -92,3 +90,6 @@ def main():
         payload, timestamp = get_hex_data()
         save_to_buffer(payload, timestamp)
         time.sleep(30)
+
+if __name__ == "__main__":
+    main()
