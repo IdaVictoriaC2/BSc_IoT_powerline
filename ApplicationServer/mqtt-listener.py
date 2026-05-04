@@ -161,9 +161,7 @@ def send_clear_buffer_command(client, app_id, dev_eui):
     result = client.publish(topic, payload, qos=1)
     result.wait_for_publish()
 
-    print(f"ACK 03 topic: {topic}")
-    print(f"ACK 03 payload: {payload}")
-    print(f"MQTT publish rc: {result.rc}")
+    print(f"ACK 03 send")
 
 def is_gap_filled(dev_eui, start_ts, end_ts):
     conn = get_db_connection()
@@ -213,9 +211,7 @@ def send_retransmission_request(client, app_id, dev_eui, start_ts, end_ts):
         f"{end_dt.strftime('%Y-%m-%d %H:%M:%S %Z')} "
         f"(Unix: {start_ts} to {end_ts}, Base64: {b64_payload})"
     )
-    print(f"Downlink topic: {downlink_topic}")
-    print(f"Downlink payload: {downlink_json}")
-    print(f"MQTT publish rc: {result.rc}")
+
 
 def get_last_measurement(cursor, dev_eui):
     """Henter den seneste valide måling for en specifik enhed fra databasen."""
