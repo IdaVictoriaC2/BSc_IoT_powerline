@@ -142,6 +142,8 @@ def check_pending_gaps_after_insert(client):
             print(f"Pending gap filled for {dev_eui}. Sending ACK 03 / clear buffer.")
             send_clear_buffer_command(client, app_id, dev_eui)
             pending_gaps.pop(gap_key, None)
+        else:
+            print(f"Gap not filled yet for {dev_eui}.")
 
 def send_clear_buffer_command(client, app_id, dev_eui):
     """Sender kommando 03 (Base64: Aw==) via MQTT."""
@@ -158,7 +160,10 @@ def send_clear_buffer_command(client, app_id, dev_eui):
         "data": "Aw=="
     })
 
-    client.publish(topic, payload, qos=1)
+    client.publish(topic, payload)
+    print(f"ACK 03 sent for {dev_eui}. Clear buffer command sent.")
+    print(f"ACK 03 topic: {topic}")
+    print(f"ACK 03 payload: {payload}")
 
 def is_gap_filled(dev_eui, start_ts, end_ts):
     conn = get_db_connection()
