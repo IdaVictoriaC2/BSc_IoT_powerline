@@ -5,6 +5,7 @@ import base64
 import struct
 import datetime
 import time
+from zoneinfo import ZoneInfo
 
 # MQTT Broker (ChirpStack Mosquitto)
 MQTT_BROKER = "localhost"
@@ -144,13 +145,25 @@ def check_pending_gaps_after_insert(client):
 
 def send_clear_buffer_command(client, app_id, dev_eui):
     """Sender kommando 03 (Base64: Aw==) via MQTT."""
+    if not app_id:
+        print("Cannot send ACK 03: applicationId missing.")
+        return
+
     topic = f"application/{app_id}/device/{dev_eui}/command/down"
+
     payload = json.dumps({
+        "devEui": dev_eui,
         "confirmed": False,
         "fPort": 2,
-        "data": "Aw==" # Hex 03 i Base64
+        "data": "Aw=="
     })
-    client.publish(topic, payload)
+
+    result = client.publish(topic, payload, qos=1)
+    result.wait_for_publish()
+
+    print(f"ACK 03 topic: {topic}")
+    print(f"ACK 03 payload: {payload}")
+    print(f"MQTT publish rc: {result.rc}")
 
 def is_gap_filled(dev_eui, start_ts, end_ts):
     conn = get_db_connection()
@@ -184,12 +197,25 @@ def send_retransmission_request(client, app_id, dev_eui, start_ts, end_ts):
     binary_payload = struct.pack('>BII', 2, start_ts, end_ts)
     b64_payload = base64.b64encode(binary_payload).decode('utf-8')
     downlink_json = json.dumps({
+        "devEui": dev_eui,
         "confirmed": False,
         "fPort": 2,
         "data": b64_payload
     })
     client.publish(downlink_topic, downlink_json)
-    print(f"Retransmit send: Interval {start_ts} to {end_ts} (Base64: {b64_payload})")
+    dk_tz = ZoneInfo("Europe/Copenhagen")
+    start_dt = datetime.datetime.fromtimestamp(start_ts, datetime.timezone.utc).astimezone(dk_tz)
+    end_dt = datetime.datetime.fromtimestamp(end_ts, datetime.timezone.utc).astimezone(dk_tz)
+
+    print(
+        f"Retransmit sent for {dev_eui}: "
+        f"{start_dt.strftime('%Y-%m-%d %H:%M:%S %Z')} to "
+        f"{end_dt.strftime('%Y-%m-%d %H:%M:%S %Z')} "
+        f"(Unix: {start_ts} to {end_ts}, Base64: {b64_payload})"
+    )
+    print(f"Downlink topic: {downlink_topic}")
+    print(f"Downlink payload: {downlink_json}")
+    print(f"MQTT publish rc: {result.rc}")
 
 def get_last_measurement(cursor, dev_eui):
     """Henter den seneste valide måling for en specifik enhed fra databasen."""
@@ -216,81 +242,83 @@ def on_message(client, userdata, msg):
         if not base64_data:
             return
         measurements, _ = decode_payload(base64_data)
-        
+        if not measurements:
+            print("No valid measurements decoded.")
+            return
         check_for_missing_data(client, dev_eui, app_id, measurements[-1][0]) #gap detection på nyeste measurement ikke buffer data
 
 
-        if measurements:
-            print(f"\n--- Processing {len(measurements)} measurements from {dev_eui} ---")
-            conn = get_db_connection()
-            if conn:
-                cursor = conn.cursor()
-                saved_count = 0
-                for dt, amb, imm, con, cpu, m_hex in measurements:
-                    try:
-                        ts_unix = dt.timestamp()
-                        current_time = time.time()
-                        if ts_unix < MIN_VALID_TIME:
-                            error_msg = f"Rejected: Timestamp is in the past (Epoch error: {dt})"
-                            print(f"{error_msg}")
-                            log_event("TIME_ANOMALY", error_msg)
-                            continue
-                        elif ts_unix > (current_time + MAX_FUTURE_BUFFER):
-                            error_msg = f"Rejected: Future timestamp ({dt}). Server time is {datetime.datetime.now()}"
-                            print(f"{error_msg}")
-                            log_event("TIME_ANOMALY", error_msg)
-                            continue
-                        
-                        all_temps = [amb, imm, con, cpu]
-                        
-                        if any (t < TEMP_LIMIT_MIN or t > TEMP_LIMIT_MAX for t in all_temps):
-                            warn_msg = (f"Rejected record from {dev_eui}: Out of bounds detected. "
-                                        f"Values: Amb:{amb}, Imm:{imm}, Con:{con}, CPU:{cpu}")
+
+        print(f"\n--- Processing {len(measurements)} measurements from {dev_eui} ---")
+        conn = get_db_connection()
+        if conn:
+            cursor = conn.cursor()
+            saved_count = 0
+            last_vals = get_last_measurement(cursor, dev_eui)
+            for dt, amb, imm, con, cpu, m_hex in measurements:
+                try:
+                    ts_unix = dt.timestamp()
+                    current_time = time.time()
+                    if ts_unix < MIN_VALID_TIME:
+                        error_msg = f"Rejected: Timestamp is in the past (Epoch error: {dt})"
+                        print(f"{error_msg}")
+                        log_event("TIME_ANOMALY", error_msg)
+                        continue
+                    elif ts_unix > (current_time + MAX_FUTURE_BUFFER):
+                        error_msg = f"Rejected: Future timestamp ({dt}). Server time is {datetime.datetime.now()}"
+                        print(f"{error_msg}")
+                        log_event("TIME_ANOMALY", error_msg)
+                        continue
+                    
+                    all_temps = [amb, imm, con, cpu]
+                    
+                    if any (t < TEMP_LIMIT_MIN or t > TEMP_LIMIT_MAX for t in all_temps):
+                        warn_msg = (f"Rejected record from {dev_eui}: Out of bounds detected. "
+                                    f"Values: Amb:{amb}, Imm:{imm}, Con:{con}, CPU:{cpu}")
+                        print(f"{warn_msg}")
+                        log_event("SANITY_REJECTION", warn_msg)
+                        continue
+
+                    if last_vals and ts_unix > last_vals[0].timestamp():
+                        last_ts = last_vals[0].timestamp()
+                        last_amb = float(last_vals[1])
+                        time_delta = (ts_unix - last_ts) / 60
+                        jump = abs(amb - last_amb)
+
+                        # if measurements with time_delta < 1 min
+                        effective_min = max(time_delta, 1.0)
+                        allowed_jump = effective_min * MAX_TEMP_JUMP_PER_MINUTE 
+                        dynamic_limit = min(allowed_jump, 80.0) # wont accept crazy changes
+                        if jump > dynamic_limit:
+                            warn_msg = (f"Rejected record from {dev_eui}: Sudden jump detected! "
+                                        f"Changed {jump}°C over {round(time_delta, 2)} min. "
+                                        f"Max allowed for this gap: {round(dynamic_limit, 2)}°C")
                             print(f"{warn_msg}")
-                            log_event("SANITY_REJECTION", warn_msg)
+                            log_event("JUMP_ANOMALY", warn_msg)
                             continue
+                    # ON CONFLICT DO NOTHING sørger for at redundante data sorteres fra
+                    insert_query = """
+                        INSERT INTO sensor_data
+                        (device_eui, device_timestamp, ambient_temp, immediate_temp, conductor_temp, cpu_temp, raw_payload)
+                        VALUES (%s, %s, %s, %s, %s, %s, %s)
+                        ON CONFLICT ON CONSTRAINT unique_measurement DO NOTHING
+                    """
+                    cursor.execute(insert_query, (dev_eui, dt, amb, imm, con, cpu, m_hex))
+                    if cursor.rowcount > 0:
+                        saved_count +=1
+                        last_vals = (dt, amb, imm, con, cpu)
+                    conn.commit()
+                except Exception as inner_e:
+                    print(f"Failed to insert one measurement: {inner_e}")
+                    conn.rollback()
 
-                        if last_vals and ts_unix > last_vals[0].timestamp():
-                            last_ts = last_vals[0].timestamp()
-                            last_amb = float(last_vals[1])
-                            time_delta = (ts_unix - last_ts) / 60
-                            jump = abs(amb - last_amb)
-
-                            # if measurements with time_delta < 1 min
-                            effective_min = max(time_delta, 1.0)
-                            allowed_jump = effective_min * MAX_TEMP_JUMP_PER_MINUTE 
-                            dynamic_limit = min(allowed_jump, 80.0) # wont accept crazy changes
-
-                            if jump > dynamic_limit:
-                                warn_msg = (f"Rejected record from {dev_eui}: Sudden jump detected! "
-                                            f"Changed {jump}°C over {round(time_delta, 2)} min. "
-                                            f"Max allowed for this gap: {round(dynamic_limit, 2)}°C")
-                                print(f"{warn_msg}")
-                                log_event("JUMP_ANOMALY", warn_msg)
-                                continue
-                        # ON CONFLICT DO NOTHING sørger for at redundante data sorteres fra
-                        insert_query = """
-                            INSERT INTO sensor_data
-                            (device_eui, device_timestamp, ambient_temp, immediate_temp, conductor_temp, cpu_temp, raw_payload)
-                            VALUES (%s, %s, %s, %s, %s, %s, %s)
-                            ON CONFLICT ON CONSTRAINT unique_measurement DO NOTHING
-                        """
-                        cursor.execute(insert_query, (dev_eui, dt, amb, imm, con, cpu, m_hex))
-                        if cursor.rowcount > 0:
-                            saved_count +=1
-                            last_vals = (dt, amb, imm, con, cpu)
-                        conn.commit()
-                    except Exception as inner_e:
-                        print(f"Failed to insert one measurement: {inner_e}")
-                        conn.rollback()
-
-                cursor.close()
-                conn.close()
-                if saved_count >0:
-                    print("Data successfully saved to database.")
-                    check_pending_gaps_after_insert(client)
-                else:
-                    print("No new measurements were saved (due to errors or duplicates)")
+            cursor.close()
+            conn.close()
+            if saved_count >0:
+                print("Data successfully saved to database.")
+                check_pending_gaps_after_insert(client)
+            else:
+                print("No new measurements were saved (due to errors or duplicates)")
 
     except Exception as e:
         print(f"Error processing message: {e}")
