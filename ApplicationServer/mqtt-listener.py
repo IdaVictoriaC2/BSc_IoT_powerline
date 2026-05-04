@@ -113,37 +113,73 @@ def check_for_missing_data(client, dev_eui, app_id, current_device_ts):
     conn = get_db_connection()
     if not conn:
         return
+
     cursor = conn.cursor()
     last_record = get_last_measurement(cursor, dev_eui)
     cursor.close()
     conn.close()
-    if last_record:
-        last_ts = last_record[0]
-        if last_ts.tzinfo is None:
-            last_ts = last_ts.replace(tzinfo=datetime.timezone.utc)
-        if current_device_ts.tzinfo is None:
-            current_device_ts = current_device_ts.replace(tzinfo=datetime.timezone.utc)
-        gap = (current_device_ts.timestamp() - last_ts.timestamp())
-        if gap > 45:
-            start_ts = int(last_ts.timestamp()) +1
-            end_ts = int(current_device_ts.timestamp())-1
-            gap_key = (dev_eui, start_ts, end_ts)
-            if gap_key not in pending_gaps:
-                pending_gaps[gap_key]={"app_id": app_id, "requested_at": time.time()}
-                print(f"!!! GAP DETECTED: {int(gap)}s gap for {dev_eui}. Requesting specific range.")
-                send_retransmission_request(client, app_id, dev_eui, start_ts, end_ts)
+
+    if not last_record:
+        return
+
+    last_ts = last_record[0]
+
+    if last_ts.tzinfo is None:
+        last_ts = last_ts.replace(tzinfo=datetime.timezone.utc)
+
+    if current_device_ts.tzinfo is None:
+        current_device_ts = current_device_ts.replace(tzinfo=datetime.timezone.utc)
+
+    gap = current_device_ts.timestamp() - last_ts.timestamp()
+
+    if gap <= 75:
+        return
+
+    start_ts = int(last_ts.timestamp()) + 1
+    end_ts = int(current_device_ts.timestamp()) - 1
+
+    if dev_eui in pending_gaps:
+        old_start = pending_gaps[dev_eui]["start_ts"]
+        old_end = pending_gaps[dev_eui]["end_ts"]
+
+        new_start = min(old_start, start_ts)
+        new_end = max(old_end, end_ts)
+
+        pending_gaps[dev_eui]["start_ts"] = new_start
+        pending_gaps[dev_eui]["end_ts"] = new_end
+        pending_gaps[dev_eui]["requested_at"] = time.time()
+
+        print(
+            f"Recovery interval extended for {dev_eui}: "
+            f"{old_start}-{old_end} -> {new_start}-{new_end}"
+        )
+
+        send_retransmission_request(client, app_id, dev_eui, new_start, new_end)
+
+    else:
+        pending_gaps[dev_eui] = {
+            "app_id": app_id,
+            "start_ts": start_ts,
+            "end_ts": end_ts,
+            "requested_at": time.time()
+        }
+
+        print(f"!!! GAP DETECTED: {int(gap)}s gap for {dev_eui}. Requesting specific range.")
+        send_retransmission_request(client, app_id, dev_eui, start_ts, end_ts)
 
 def check_pending_gaps_after_insert(client):
-    for gap_key in list(pending_gaps.keys()):
-        dev_eui, start_ts, end_ts = gap_key
-        app_id = pending_gaps[gap_key]["app_id"]
+    for dev_eui in list(pending_gaps.keys()):
+        gap = pending_gaps[dev_eui]
+        app_id = gap["app_id"]
+        start_ts = gap["start_ts"]
+        end_ts = gap["end_ts"]
 
         if is_gap_filled(dev_eui, start_ts, end_ts):
-            print(f"Pending gap filled for {dev_eui}. Sending ACK 03 / clear buffer.")
+            print(f"Pending recovery interval filled for {dev_eui}. Sending ACK 03 / clear buffer.")
             send_clear_buffer_command(client, app_id, dev_eui)
-            pending_gaps.pop(gap_key, None)
+            pending_gaps.pop(dev_eui, None)
         else:
-            print(f"Gap not filled yet for {dev_eui}.")
+            print(f"Recovery interval not filled yet for {dev_eui}.")
 
 def send_clear_buffer_command(client, app_id, dev_eui):
     """Sender kommando 03 (Base64: Aw==) via MQTT."""
@@ -152,12 +188,14 @@ def send_clear_buffer_command(client, app_id, dev_eui):
         return
 
     topic = f"application/{app_id}/device/{dev_eui}/command/down"
+    binary_payload = struct.pack('>B', 3)
+    b64_payload = base64.b64encode(binary_payload).decode('utf-8')
 
     payload = json.dumps({
         "devEui": dev_eui,
         "confirmed": False,
         "fPort": 2,
-        "data": "Aw=="
+        "data": b64_payload
     })
 
     client.publish(topic, payload)
@@ -173,20 +211,34 @@ def is_gap_filled(dev_eui, start_ts, end_ts):
     try:
         cursor = conn.cursor()
         cursor.execute("""
-            SELECT COUNT(*)
+            SELECT COUNT(*),
+                   MIN(EXTRACT(EPOCH FROM device_timestamp))::bigint,
+                   MAX(EXTRACT(EPOCH FROM device_timestamp))::bigint
             FROM sensor_data
             WHERE device_eui = %s
               AND device_timestamp >= to_timestamp(%s)
               AND device_timestamp <= to_timestamp(%s)
         """, (dev_eui, start_ts, end_ts))
 
-        count = cursor.fetchone()[0]
+        count, min_ts, max_ts = cursor.fetchone()
         cursor.close()
         conn.close()
 
-        expected_min_count = max(1, int((end_ts - start_ts) / 30))
+        print(
+            f"Recovery check for {dev_eui}: "
+            f"count={count}, min_ts={min_ts}, max_ts={max_ts}, "
+            f"requested={start_ts}-{end_ts}"
+        )
 
-        return count >= expected_min_count
+        if count == 0 or min_ts is None or max_ts is None:
+            return False
+
+        tolerance_seconds = 35
+
+        return (
+            min_ts <= start_ts + tolerance_seconds and
+            max_ts >= end_ts - tolerance_seconds
+        )
 
     except Exception as e:
         print(f"Error checking gap fill: {e}")
