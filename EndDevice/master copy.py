@@ -231,7 +231,7 @@ def handle_downlink(hex_cmd, lora_serial):
 
         except Exception as e:
             print(f"Error during buffer dump: {e}")
-    elif cmd == "03":
+    elif cmd.startswith("03"):
         print("ACTION: Server confirmed data receipt. Clearing buffer...")
         clear_buffer()
         print("Buffer cleared from database.")
