@@ -7,8 +7,8 @@ from starlette import status
 
 # --- Configuration ---
 DB_CONFIG = {
-    "host": "localhost",
-    "port": "5433",
+    "host": "scada-postgres",
+    "port": "5432",
     "dbname": "powerline_telemetry",
     "user": "app_user",
     "password": "IMbachelor26"
