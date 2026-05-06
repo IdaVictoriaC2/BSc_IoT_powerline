@@ -158,15 +158,27 @@ def get_combined_payload():
 
     conn = sqlite3.connect(BUFFER_DB)
     cursor = conn.cursor()
-    cursor.execute(
-        """
-        SELECT payload FROM readings
-        WHERE timestamp > ?
-        ORDER BY timestamp ASC
-        LIMIT 4
-        """,
-        (last_ts,),
-    )
+    
+    # If last_payload is default (fresh start after reboot), send only the newest payload
+    # Let the server downlink a request if it wants payloads from a time gap
+    if last_ts == -1:
+        cursor.execute(
+            """
+            SELECT payload FROM readings
+            WHERE timestamp = (SELECT MAX(timestamp) FROM readings)
+            """
+        )
+    else:
+        cursor.execute(
+            """
+            SELECT payload FROM readings
+            WHERE timestamp > ?
+            ORDER BY timestamp ASC
+            LIMIT 4
+            """,
+            (last_ts,),
+        )
+    
     rows = cursor.fetchall()
     conn.close()
 
@@ -265,8 +277,23 @@ def main():
                 lora_serial.write(b'AT+TIMEREQ=1\r\n')
                 time.sleep(0.5)
                 last_sync_date = current_date
-                clear_buffer()
-                print("Daily cleanup: Buffer database cleared.")
+                # Check if oldest DB entries are from a previous day before clearing
+                conn = sqlite3.connect(BUFFER_DB)
+                cursor = conn.cursor()
+                cursor.execute("SELECT MIN(timestamp) FROM readings")
+                result = cursor.fetchone()
+                conn.close()
+
+                oldest_ts = result[0] if result[0] is not None else None
+                if oldest_ts is not None:
+                    oldest_date = datetime.date.fromtimestamp(oldest_ts)
+                    if oldest_date < current_date:
+                        clear_buffer()
+                        print("Daily cleanup: Buffer database cleared (oldest entries from previous day).")
+                    else:
+                        print(f"Buffer contains entries from today or incomplete. Keeping buffer.")
+                else:
+                    print("Buffer is empty. No cleanup needed.")
 
             lora_serial.read_all()
             lora_serial.write(b'AT+NJS=?\r\n')
