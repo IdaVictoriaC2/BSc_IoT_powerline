@@ -26,6 +26,8 @@ TEMP_LIMIT_MIN = -40
 MAX_TEMP_JUMP_PER_MINUTE = 5.0
 MIN_VALID_TIME = 1767225600  # 2026-01-01 00:00:00
 MAX_FUTURE_BUFFER = 60     # 60 sec
+MAX_RECOVERY_WINDOW_SECONDS = 86400 # 24 hours
+MAX_GAP = 75
 
 pending_gaps = {}
 # --- Database Connection ---
@@ -132,11 +134,18 @@ def check_for_missing_data(client, dev_eui, app_id, current_device_ts):
 
     gap = current_device_ts.timestamp() - last_ts.timestamp()
 
-    if gap <= 75:
+    if gap <= MAX_GAP:
         return
 
     start_ts = int(last_ts.timestamp()) + 1
     end_ts = int(current_device_ts.timestamp()) - 1
+
+    if gap > MAX_RECOVERY_WINDOW_SECONDS:
+        start_ts = int(current_device_ts.timestamp()) - MAX_RECOVERY_WINDOW_SECONDS
+        print(
+            f"Large gap detected for {dev_eui}: {int(gap)}s. "
+            f"Limiting recovery request to the last 24 hours."
+        )
 
     if dev_eui in pending_gaps:
         old_start = pending_gaps[dev_eui]["start_ts"]
@@ -144,6 +153,13 @@ def check_for_missing_data(client, dev_eui, app_id, current_device_ts):
 
         new_start = min(old_start, start_ts)
         new_end = max(old_end, end_ts)
+        
+        if new_end - new_start > MAX_RECOVERY_WINDOW_SECONDS:
+            new_start = new_end - MAX_RECOVERY_WINDOW_SECONDS
+            print(
+                f"Recovery interval for {dev_eui} exceeded 24h. "
+                f"Trimming start to {new_start}."
+            )
 
         pending_gaps[dev_eui]["start_ts"] = new_start
         pending_gaps[dev_eui]["end_ts"] = new_end
@@ -211,34 +227,58 @@ def is_gap_filled(dev_eui, start_ts, end_ts):
     try:
         cursor = conn.cursor()
         cursor.execute("""
-            SELECT COUNT(*),
-                   MIN(EXTRACT(EPOCH FROM device_timestamp))::bigint,
-                   MAX(EXTRACT(EPOCH FROM device_timestamp))::bigint
+            SELECT EXTRACT(EPOCH FROM device_timestamp)::bigint
             FROM sensor_data
             WHERE device_eui = %s
               AND device_timestamp >= to_timestamp(%s)
               AND device_timestamp <= to_timestamp(%s)
+            ORDER BY device_timestamp ASC
         """, (dev_eui, start_ts, end_ts))
 
-        count, min_ts, max_ts = cursor.fetchone()
+        rows = cursor.fetchall()
         cursor.close()
         conn.close()
 
+        timestamps = [row[0] for row in rows]
+
+        if not timestamps:
+            print(
+                f"Recovery check for {dev_eui}: no data in requested interval "
+                f"{start_ts}-{end_ts}"
+            )
+            return False
         print(
             f"Recovery check for {dev_eui}: "
-            f"count={count}, min_ts={min_ts}, max_ts={max_ts}, "
+            f"count={len(timestamps)}, min_ts={timestamps[0]}, max_ts={timestamps[-1]}, "
             f"requested={start_ts}-{end_ts}"
         )
-
-        if count == 0 or min_ts is None or max_ts is None:
+        
+        # Check beginning coverage
+        if timestamps[0] - start_ts > 45:
+            print(
+                f"Recovery not complete: missing beginning of interval "
+                f"({timestamps[0] - start_ts}s after requested start)."
+            )
             return False
 
-        tolerance_seconds = 35
+        # Check end coverage
+        if end_ts - timestamps[-1] > 45:
+            print(
+                f"Recovery not complete: missing end of interval "
+                f"({end_ts - timestamps[-1]}s before requested end)."
+            )
+            return False
 
-        return (
-            min_ts <= start_ts + tolerance_seconds and
-            max_ts >= end_ts - tolerance_seconds
-        )
+        # Check internal gaps
+        for prev_ts, next_ts in zip(timestamps, timestamps[1:]):
+            if next_ts - prev_ts > 45:
+                print(
+                    f"Recovery not complete: internal gap detected "
+                    f"from {prev_ts} to {next_ts} ({next_ts - prev_ts}s)."
+                )
+                return False
+
+        return True
 
     except Exception as e:
         print(f"Error checking gap fill: {e}")
