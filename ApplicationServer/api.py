@@ -46,6 +46,12 @@ def log_to_audit(action: str, username: str, role: str, details: str):
 async def get_current_user(api_key: str = Depends(api_key_header)):
     if api_key in USERS:
         return USERS[api_key]
+    log_to_audit(
+        "INVALID_API_KEY",
+        "UNKNOWN",
+        "unauthenticated",
+        "Request rejected due to missing or invalid API key"
+    )
     raise HTTPException(status_code=401, detail="Invalid API Key")
 
 def require_role(required_roles: list):
@@ -63,7 +69,7 @@ def require_role(required_roles: list):
 def get_latest(user: dict = Depends(get_current_user)):
     conn = get_db_connection()
     cursor = conn.cursor(cursor_factory=RealDictCursor)
-    cursor.execute("SELECT * FROM sensor_data ORDER BY received_at DESC LIMIT 1;")
+    cursor.execute("SELECT * FROM sensor_data ORDER BY device_timestamp DESC LIMIT 1;")
     result = cursor.fetchone()
     conn.close()
     log_to_audit("GET_LATEST", user["name"], user["role"], "Hentede seneste måling")
@@ -73,7 +79,7 @@ def get_latest(user: dict = Depends(get_current_user)):
 def get_history(user: dict = Depends(get_current_user)):
     conn = get_db_connection()
     cursor = conn.cursor(cursor_factory=RealDictCursor)
-    cursor.execute("SELECT * FROM sensor_data ORDER BY received_at DESC LIMIT 10;")
+    cursor.execute("SELECT * FROM sensor_data ORDER BY device_timestamp DESC LIMIT 10;")
     results = cursor.fetchall()
     conn.close()
     log_to_audit("GET_HISTORY", user["name"], user["role"], "Hentede historik")
@@ -92,7 +98,7 @@ def view_audit(user: dict = Depends(require_role(["admin"]))):
 def purge_data(user: dict = Depends(require_role(["admin"]))):
     conn = get_db_connection()
     cursor = conn.cursor()
-    cursor.execute("DELETE FROM sensor_data WHERE received_at < NOW() - INTERVAL '30 days';")
+    cursor.execute("DELETE FROM sensor_data WHERE device_timestamp < NOW() - INTERVAL '30 days';")
     count = cursor.rowcount
     conn.commit()
     conn.close()
