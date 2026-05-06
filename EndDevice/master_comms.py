@@ -229,7 +229,7 @@ def handle_downlink(hex_cmd, lora_serial):
                 # send current packet, then start new one with p
                 print(f"📦 Sending packet: {packet}")
                 lora_serial.write(f"AT+SEND=2:{packet}\r\n".encode())
-                time.sleep(5)
+                time.sleep(10)
 
         except Exception as e:
             print(f"Error during buffer dump: {e}")
