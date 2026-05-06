@@ -210,7 +210,9 @@ def handle_downlink(hex_cmd, lora_serial):
         try:
             start_ts = int(hex_cmd[2:10], 16)
             end_ts = int(hex_cmd[10:18], 16)
-            print(f"ACTION: Server requested buffer data between {start_ts} to {end_ts}.")
+            start_s = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(start_ts))
+            end_s = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(end_ts))
+            print(f"ACTION: Server requested buffer data between {start_s} to {end_s}.")
             payloads = get_buffer_payloads_between(start_ts, end_ts)
 
             # Stream requested payloads (oldest-first), skipping those already sent
