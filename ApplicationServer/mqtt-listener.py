@@ -46,11 +46,16 @@ def get_db_connection():
         print(f"Database connection failed: {e}")
         return None
 
-def log_event(event_type, description):
+def log_event(event_type, description, performed_by="mqtt-listener", role="system"):
     conn = get_db_connection()
     if conn:
         cursor = conn.cursor()
-        cursor.execute("INSERT INTO audit_log (event_type, description) VALUES (%s, %s)", (event_type, description))
+        query = """
+            INSERT INTO audit_log (event_type, performed_by, details, description)
+            VALUES (%s, %s, %s, %s);
+        """
+        formatted_details = f"Role: {role} | {details}"
+        cursor.execute(query, (event_type, performed_by, formatted_details, details))
         conn.commit()
         cursor.close()
         conn.close()
@@ -96,7 +101,7 @@ def auto_purge_old_data():
             try:
                 cursor = conn.cursor()
                 # SQL: Slet alt der er ældre end 30 dage
-                query = "DELETE FROM sensor_data WHERE server_timestamp < NOW() - INTERVAL '30 days';"
+                query = "DELETE FROM sensor_data WHERE device_timestamp < NOW() - INTERVAL '30 days';"                
                 cursor.execute(query)
                 deleted_rows = cursor.rowcount
                 conn.commit()
@@ -192,6 +197,8 @@ def check_pending_gaps_after_insert(client):
 
         if is_gap_filled(dev_eui, start_ts, end_ts):
             print(f"Pending recovery interval filled for {dev_eui}. Recovery request completed")
+            log_event("RECOVERY_COMPLETED", f"Recovery interval {start_ts}-{end_ts} completed for {dev_eui}.")
+
             #send_clear_buffer_command(client, app_id, dev_eui)
             pending_gaps.pop(dev_eui, None)
         else:
@@ -304,6 +311,10 @@ def send_retransmission_request(client, app_id, dev_eui, start_ts, end_ts):
         f"{start_dt.strftime('%Y-%m-%d %H:%M:%S %Z')} to "
         f"{end_dt.strftime('%Y-%m-%d %H:%M:%S %Z')} "
         f"(Unix: {start_ts} to {end_ts}, Base64: {b64_payload})"
+    )
+    log_event(
+        "RECOVERY_REQUEST",
+        f"Requested retransmission from {dev_eui}: {start_ts} to {end_ts}, Base64: {b64_payload}"
     )
 
 
