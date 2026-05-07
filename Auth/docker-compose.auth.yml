@@ -91,7 +91,7 @@ services:
       - authentik-server
     environment:
       AUTHENTIK_HOST: http://authentik-server:9000
-      AUTHENTIK_HOST_BROWSER: http://10.71.213.189:9001
+      AUTHENTIK_HOST_BROWSER: http://localhost:9001
       AUTHENTIK_INSECURE: "true"
       AUTHENTIK_TOKEN: ho4pmz4L57KE4InEKuCPqysRhSqsXcHUZjMcV3T7mrEeJZg5pABT8UxvwLys
     networks:
