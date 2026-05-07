@@ -46,19 +46,28 @@ def get_db_connection():
         print(f"Database connection failed: {e}")
         return None
 
-def log_event(event_type, description, performed_by="mqtt-listener", role="system"):
+def log_event(event_type, details, performed_by="mqtt-listener", role="system"):
+    """
+    Logs system events in the same audit_log structure used by api.py.
+    mqtt-listener.py logs as a system component rather than an authenticated user.
+    """
     conn = get_db_connection()
     if conn:
-        cursor = conn.cursor()
-        query = """
-            INSERT INTO audit_log (event_type, performed_by, details, description)
-            VALUES (%s, %s, %s, %s);
-        """
-        formatted_details = f"Role: {role} | {details}"
-        cursor.execute(query, (event_type, performed_by, formatted_details, details))
-        conn.commit()
-        cursor.close()
-        conn.close()
+        try:
+            cursor = conn.cursor()
+            query = """
+                INSERT INTO audit_log (event_type, performed_by, details, description)
+                VALUES (%s, %s, %s, %s);
+            """
+            formatted_details = f"Role: {role} | {details}"
+            cursor.execute(query, (event_type, performed_by, formatted_details, details))
+            conn.commit()
+            cursor.close()
+            conn.close()
+        except Exception as e:
+            print(f"Failed to write audit log: {e}")
+            conn.rollback()
+            conn.close()
 
 # --- MQTT Callbacks ---
 def on_connect(client, userdata, flags, reason_code, properties):
