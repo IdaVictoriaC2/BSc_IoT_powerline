@@ -25,6 +25,15 @@ http:
         - authentik
       service: scada-api
 
+    network-server:
+      rule: Host(`chirpstack.localhost`)
+      entryPoints:
+        - web
+      priority: 10
+      middlewares:
+        - authentik
+      service: network-server
+
   middlewares:
     authentik:
       forwardAuth:
@@ -56,4 +65,4 @@ http:
     network-server:
       loadBalancer:
         servers:
-          - url: "http://localhost:8080"
+          - url: "http://chirpstack-docker_chirpstack_1:8080"
