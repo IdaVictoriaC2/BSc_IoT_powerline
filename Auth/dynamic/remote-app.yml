@@ -7,14 +7,23 @@ http:
       priority: 100
       service: authentik-outpost
 
-    protected:
-      rule: PathPrefix(`/`)
+    grafana:
+      rule: Host(`grafana.localhost`)
       entryPoints:
         - web
       priority: 10
       middlewares:
         - authentik
-      service: remote-app
+      service: grafana
+
+    scada-api:
+      rule: Host(`api.localhost`)
+      entryPoints:
+        - web
+      priority: 10
+      middlewares:
+        - authentik
+      service: scada-api
 
   middlewares:
     authentik:
@@ -34,7 +43,12 @@ http:
         servers:
           - url: "http://authentik-proxy:9000"
 
-    remote-app:
+    grafana:
       loadBalancer:
         servers:
-          - url: "http://localhost:8080"
+          - url: "http://scada_grafana:3000"
+
+    scada-api:
+      loadBalancer:
+        servers:
+          - url: "http://scada_api:8005"
