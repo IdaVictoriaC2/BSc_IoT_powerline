@@ -191,7 +191,7 @@ def check_pending_gaps_after_insert(client):
         end_ts = gap["end_ts"]
 
         if is_gap_filled(dev_eui, start_ts, end_ts):
-            print(f"Pending recovery interval filled for {dev_eui}. Sending ACK 03 / clear buffer.")
+            print(f"Pending recovery interval filled for {dev_eui}. Recovery request completed")
             #send_clear_buffer_command(client, app_id, dev_eui)
             pending_gaps.pop(dev_eui, None)
         else:
