@@ -1,0 +1,109 @@
+services:
+  traefik:
+    image: traefik:v3.0
+    container_name: traefik
+    restart: unless-stopped
+    volumes:
+      - ./dynamic:/etc/traefik/dynamic:ro
+    ports:
+      - "8088:80"
+    command:
+      - --providers.file.directory=/etc/traefik/dynamic
+      - --providers.file.watch=true
+      - --entrypoints.web.address=:80
+    networks:
+      - default
+      - scada_proxy
+
+  authentik-postgresql:
+    image: postgres:16-alpine
+    container_name: authentik-postgresql
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: authentik
+      POSTGRES_PASSWORD: IMbachelor26
+      POSTGRES_DB: authentik
+    volumes:
+      - authentik_postgres:/var/lib/postgresql/data
+
+  authentik-redis:
+    image: redis:7-alpine
+    container_name: authentik-redis
+    restart: unless-stopped
+    volumes:
+      - authentik_redis:/data
+
+  authentik-server:
+    image: ghcr.io/goauthentik/server:latest
+    container_name: authentik-server
+    restart: unless-stopped
+    command: server
+    depends_on:
+      - authentik-postgresql
+      - authentik-redis
+    environment:
+      AUTHENTIK_SECRET_KEY: long_random_secret26
+      AUTHENTIK_REDIS__HOST: authentik-redis
+      AUTHENTIK_POSTGRESQL__HOST: authentik-postgresql
+      AUTHENTIK_POSTGRESQL__USER: authentik
+      AUTHENTIK_POSTGRESQL__NAME: authentik
+      AUTHENTIK_POSTGRESQL__PASSWORD: IMbachelor26
+      AUTHENTIK_EMAIL__HOST: smtp.gmail.com
+      AUTHENTIK_EMAIL__PORT: 587
+      AUTHENTIK_EMAIL__USERNAME: IMbachelor26@gmail.com
+      AUTHENTIK_EMAIL__PASSWORD: "smmzknaddjchftty"
+      AUTHENTIK_EMAIL__USE_TLS: "true"
+      AUTHENTIK_EMAIL__USE_SSL: "false"
+      AUTHENTIK_EMAIL__TIMEOUT: 10
+      AUTHENTIK_EMAIL__FROM: IMbachelor26@gmail.com
+    ports:
+      - "9001:9000"
+
+  authentik-worker:
+    image: ghcr.io/goauthentik/server:latest
+    container_name: authentik-worker
+    restart: unless-stopped
+    command: worker
+    depends_on:
+      - authentik-postgresql
+      - authentik-redis
+    environment:
+      AUTHENTIK_SECRET_KEY: long_random_secret26
+      AUTHENTIK_REDIS__HOST: authentik-redis
+      AUTHENTIK_POSTGRESQL__HOST: authentik-postgresql
+      AUTHENTIK_POSTGRESQL__USER: authentik
+      AUTHENTIK_POSTGRESQL__NAME: authentik
+      AUTHENTIK_POSTGRESQL__PASSWORD: IMbachelor26
+      AUTHENTIK_EMAIL__HOST: smtp.gmail.com
+      AUTHENTIK_EMAIL__PORT: 587
+      AUTHENTIK_EMAIL__USERNAME: IMbachelor26@gmail.com
+      AUTHENTIK_EMAIL__PASSWORD: "smmzknaddjchftty"
+      AUTHENTIK_EMAIL__USE_TLS: "true"
+      AUTHENTIK_EMAIL__USE_SSL: "false"
+      AUTHENTIK_EMAIL__TIMEOUT: 10
+      AUTHENTIK_EMAIL__FROM: IMbachelor26@gmail.com
+
+  authentik-proxy:
+    image: ghcr.io/goauthentik/proxy:latest
+    container_name: authentik-proxy
+    restart: unless-stopped
+    depends_on:
+      - authentik-server
+    environment:
+      AUTHENTIK_HOST: http://authentik-server:9000
+      AUTHENTIK_HOST_BROWSER: http://10.71.213.189:9001
+      AUTHENTIK_INSECURE: "true"
+      AUTHENTIK_TOKEN: ho4pmz4L57KE4InEKuCPqysRhSqsXcHUZjMcV3T7mrEeJZg5pABT8UxvwLys
+    networks:
+      - default
+      - scada_proxy
+
+volumes:
+  authentik_postgres:
+    external: true
+  authentik_redis:
+    external: true
+
+networks:
+  scada_proxy:
+    external: true
