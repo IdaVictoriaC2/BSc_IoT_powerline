@@ -2,16 +2,17 @@ from fastapi import FastAPI, HTTPException, Depends, Header, Request
 from psycopg2.extras import RealDictCursor
 import psycopg2
 import os
+import re
 import uvicorn
 from typing import Optional
 
 # --- Configuration ---
 DB_CONFIG = {
-    "host": os.getenv("DB_HOST", "scada-postgres"),
-    "port": os.getenv("DB_PORT", "5432"),
-    "dbname": os.getenv("DB_NAME", "powerline_telemetry"),
-    "user": os.getenv("DB_USER", "app_user"),
-    "password": "IMbachelor26"
+    "host": os.environ["DB_HOST"],
+    "port": os.environ["DB_PORT"],
+    "dbname": os.environ["DB_NAME"],
+    "user": os.environ["DB_USER"],
+    "password": os.environ["DB_PASS"],
 }
 
 app = FastAPI(title="Power Line Monitoring SCADA API", version="1.3.0")
@@ -67,17 +68,34 @@ def parse_authentik_groups(groups_header: Optional[str]) -> list[str]:
     if not groups_header:
         return []
 
-    return [group.strip() for group in groups_header.split(",") if group.strip()]
+    return [
+        group.strip()
+        for group in re.split(r"[|,;]", groups_header)
+        if group.strip()
+    ]
 
 
 def map_groups_to_role(groups: list[str]) -> str:
     """
-    Returns the strongest API role based on Authentik group membership.
-    Priority matters: admin > as_admin > viewer > ns_admin.
+    Maps Authentik groups to API roles.
+    Matching is case-insensitive.
+    Priority:
+    authentik admins > AS access > Grafana access > NS access
     """
-    for group_name, role in GROUP_ROLE_PRIORITY:
-        if group_name in groups:
-            return role
+    
+    normalized_groups = {group.strip().lower() for group in groups}
+
+    if "authentik admins" in normalized_groups:
+        return "admin"
+
+    if "as access" in normalized_groups:
+        return "as_admin"
+
+    if "grafana access" in normalized_groups:
+        return "viewer"
+
+    if "ns access" in normalized_groups:
+        return "ns_admin"
 
     return "unauthorized"
 
@@ -155,6 +173,7 @@ def require_role(allowed_roles: list[str]):
 
 
 # --- API Endpoints ---
+
 @app.get("/api/status/latest")
 def get_latest(user: dict = Depends(require_role(["admin", "as_admin", "viewer"]))):
     conn = get_db_connection()
