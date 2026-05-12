@@ -6,6 +6,7 @@ import struct
 import datetime
 import time
 import os
+import threading
 from zoneinfo import ZoneInfo
 
 # MQTT Broker (ChirpStack Mosquitto)
@@ -23,15 +24,23 @@ DB_PASS = os.environ["DB_PASS"]
 CA_CERT_PATH = os.environ["MQTT_CA_CERT_PATH"]
 last_cleanup_date = None
 
-TEMP_LIMIT_MAX = 150
-TEMP_LIMIT_MIN = -40
-MAX_TEMP_JUMP_PER_MINUTE = 5.0
-MIN_VALID_TIME = 1767225600  # 2026-01-01 00:00:00
-MAX_FUTURE_BUFFER = 60     # 60 sec
-MAX_RECOVERY_WINDOW_SECONDS = 86400 # 24 hours
-MAX_GAP = 75
+TEMP_LIMIT_MAX = float(os.environ.get("TEMP_LIMIT_MAX", "150"))
+TEMP_LIMIT_MIN = float(os.environ.get("TEMP_LIMIT_MIN", "-40"))
+MAX_TEMP_JUMP_PER_MINUTE = float(os.environ.get("MAX_TEMP_JUMP_PER_MINUTE", "5.0"))
 
-pending_gaps = {}
+MIN_VALID_TIME = int(os.environ.get("MIN_VALID_TIME", "1767225600"))  # 2026-01-01 00:00:00 UTC
+MAX_FUTURE_BUFFER = int(os.environ.get("MAX_FUTURE_BUFFER", "60")) # 60 seconds
+
+MAX_RECOVERY_WINDOW_SECONDS = int(os.environ.get("MAX_RECOVERY_WINDOW_SECONDS", "86400")) # 24 hours
+MAX_GAP = int(os.environ.get("MAX_GAP", "75"))
+
+RECOVERY_RETRY_AFTER_SECONDS = int(os.environ.get("RECOVERY_RETRY_AFTER_SECONDS", "3600")) # 1 hour
+MAX_RECOVERY_RETRIES = int(os.environ.get("MAX_RECOVERY_RETRIES", "3"))
+PENDING_GAP_CHECK_INTERVAL = int(os.environ.get("PENDING_GAP_CHECK_INTERVAL", "60"))
+GAP_FILL_TOLERANCE_SECONDS = int(os.environ.get("GAP_FILL_TOLERANCE_SECONDS", "45"))
+
+pending_gaps_lock = threading.Lock()
+
 # --- Database Connection ---
 def get_db_connection():
     """Establishes a connection to the PostgreSQL database."""
@@ -71,11 +80,137 @@ def log_event(event_type, details, performed_by="mqtt-listener", role="system"):
             conn.rollback()
             conn.close()
 
+def get_pending_gap(dev_eui):
+    conn = get_db_connection()
+    if not conn:
+        return None
+
+    try:
+        cursor = conn.cursor()
+        cursor.execute("""
+            SELECT device_eui, app_id, start_ts, end_ts, last_requested_at, retry_count
+            FROM pending_recovery
+            WHERE device_eui = %s;
+        """, (dev_eui,))
+        row = cursor.fetchone()
+        cursor.close()
+        conn.close()
+
+        if not row:
+            return None
+
+        return {
+            "device_eui": row[0],
+            "app_id": row[1],
+            "start_ts": row[2],
+            "end_ts": row[3],
+            "last_requested_at": row[4],
+            "retry_count": row[5],
+        }
+
+    except Exception as e:
+        print(f"Failed to get pending recovery gap for {dev_eui}: {e}")
+        conn.close()
+        return None
+
+
+def upsert_pending_gap(dev_eui, app_id, start_ts, end_ts, last_requested_at, retry_count):
+    conn = get_db_connection()
+    if not conn:
+        return False
+
+    try:
+        cursor = conn.cursor()
+        cursor.execute("""
+            INSERT INTO pending_recovery
+                (device_eui, app_id, start_ts, end_ts, last_requested_at, retry_count, updated_at)
+            VALUES
+                (%s, %s, %s, %s, %s, %s, NOW())
+            ON CONFLICT (device_eui)
+            DO UPDATE SET
+                app_id = EXCLUDED.app_id,
+                start_ts = EXCLUDED.start_ts,
+                end_ts = EXCLUDED.end_ts,
+                last_requested_at = EXCLUDED.last_requested_at,
+                retry_count = EXCLUDED.retry_count,
+                updated_at = NOW();
+        """, (dev_eui, app_id, start_ts, end_ts, last_requested_at, retry_count))
+
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return True
+
+    except Exception as e:
+        print(f"Failed to upsert pending recovery gap for {dev_eui}: {e}")
+        conn.rollback()
+        conn.close()
+        return False
+
+
+def delete_pending_gap(dev_eui):
+    conn = get_db_connection()
+    if not conn:
+        return False
+
+    try:
+        cursor = conn.cursor()
+        cursor.execute("""
+            DELETE FROM pending_recovery
+            WHERE device_eui = %s;
+        """, (dev_eui,))
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return True
+
+    except Exception as e:
+        print(f"Failed to delete pending recovery gap for {dev_eui}: {e}")
+        conn.rollback()
+        conn.close()
+        return False
+
+
+def list_pending_gaps():
+    conn = get_db_connection()
+    if not conn:
+        return []
+
+    try:
+        cursor = conn.cursor()
+        cursor.execute("""
+            SELECT device_eui, app_id, start_ts, end_ts, last_requested_at, retry_count
+            FROM pending_recovery
+            ORDER BY updated_at ASC;
+        """)
+        rows = cursor.fetchall()
+        cursor.close()
+        conn.close()
+
+        return [
+            {
+                "device_eui": row[0],
+                "app_id": row[1],
+                "start_ts": row[2],
+                "end_ts": row[3],
+                "last_requested_at": row[4],
+                "retry_count": row[5],
+            }
+            for row in rows
+        ]
+
+    except Exception as e:
+        print(f"Failed to list pending recovery gaps: {e}")
+        conn.close()
+        return []
+
 # --- MQTT Callbacks ---
 def on_connect(client, userdata, flags, reason_code, properties):
-    """Callback for when the client receives a CONNACK response from the server."""
-    print(f"Connected to MQTT, listening at {MQTT_TOPIC}")
+    print(f"Connected to MQTT with reason code {reason_code}, listening at {MQTT_TOPIC}", flush=True)
     client.subscribe(MQTT_TOPIC, qos=1)
+
+def on_disconnect(client, userdata, disconnect_flags, reason_code, properties):
+    print(f"Disconnected from MQTT. Reason: {reason_code}", flush=True)
 
 # --- Payload Decoding Logic ---
 def decode_payload(base64_data):
@@ -162,47 +297,61 @@ def check_for_missing_data(client, dev_eui, app_id, current_device_ts):
             f"Large gap detected for {dev_eui}: {int(gap)}s. "
             f"Limiting recovery request to the last 24 hours."
         )
+    request_to_send = None
+    
+    with pending_gaps_lock:
+        existing_gap = get_pending_gap(dev_eui)
 
-    if dev_eui in pending_gaps:
-        old_start = pending_gaps[dev_eui]["start_ts"]
-        old_end = pending_gaps[dev_eui]["end_ts"]
-
-        new_start = min(old_start, start_ts)
-        new_end = max(old_end, end_ts)
-        
-        if new_end - new_start > MAX_RECOVERY_WINDOW_SECONDS:
-            new_start = new_end - MAX_RECOVERY_WINDOW_SECONDS
-            print(
-                f"Recovery interval for {dev_eui} exceeded 24h. "
-                f"Trimming start to {new_start}."
+        if existing_gap:
+            old_start = existing_gap["start_ts"]
+            old_end = existing_gap["end_ts"]
+    
+            new_start = min(old_start, start_ts)
+            new_end = max(old_end, end_ts)
+            
+            if new_end - new_start > MAX_RECOVERY_WINDOW_SECONDS:
+                new_start = new_end - MAX_RECOVERY_WINDOW_SECONDS
+                print(
+                    f"Recovery interval for {dev_eui} exceeded 24h. "
+                    f"Trimming start to {new_start}."
+                )
+    
+            upsert_pending_gap(
+                dev_eui=dev_eui,
+                app_id=app_id,
+                start_ts=new_start,
+                end_ts=new_end,
+                last_requested_at=time.time(),
+                retry_count=0,
             )
-
-        pending_gaps[dev_eui]["start_ts"] = new_start
-        pending_gaps[dev_eui]["end_ts"] = new_end
-        pending_gaps[dev_eui]["requested_at"] = time.time()
-
-        print(
-            f"Recovery interval extended for {dev_eui}: "
-            f"{old_start}-{old_end} -> {new_start}-{new_end}"
-        )
-
-        send_retransmission_request(client, app_id, dev_eui, new_start, new_end)
-
-    else:
-        pending_gaps[dev_eui] = {
-            "app_id": app_id,
-            "start_ts": start_ts,
-            "end_ts": end_ts,
-            "requested_at": time.time()
-        }
-
-        print(f"!!! GAP DETECTED: {int(gap)}s gap for {dev_eui}. Requesting specific range.")
-        send_retransmission_request(client, app_id, dev_eui, start_ts, end_ts)
+    
+            print(
+                f"Recovery interval extended for {dev_eui}: "
+                f"{old_start}-{old_end} -> {new_start}-{new_end}"
+            )
+            request_to_send = (app_id, dev_eui, new_start, new_end)
+    
+        else:
+            upsert_pending_gap(
+                dev_eui=dev_eui,
+                app_id=app_id,
+                start_ts=start_ts,
+                end_ts=end_ts,
+                last_requested_at=time.time(),
+                retry_count=0,
+            )
+    
+            print(f"!!! GAP DETECTED: {int(gap)}s gap for {dev_eui}. Requesting specific range.")
+            request_to_send = (app_id, dev_eui, start_ts, end_ts)
+            
+    if request_to_send:
+        send_retransmission_request(client, *request_to_send)
 
 def check_pending_gaps_after_insert(client):
-    for dev_eui in list(pending_gaps.keys()):
-        gap = pending_gaps[dev_eui]
-        app_id = gap["app_id"]
+    gaps_snapshot = list_pending_gaps()
+
+    for gap in gaps_snapshot:
+        dev_eui = gap["device_eui"]
         start_ts = gap["start_ts"]
         end_ts = gap["end_ts"]
 
@@ -210,32 +359,10 @@ def check_pending_gaps_after_insert(client):
             print(f"Pending recovery interval filled for {dev_eui}. Recovery request completed")
             log_event("RECOVERY_COMPLETED", f"Recovery interval {start_ts}-{end_ts} completed for {dev_eui}.")
 
-            #send_clear_buffer_command(client, app_id, dev_eui)
-            pending_gaps.pop(dev_eui, None)
+            with pending_gaps_lock:
+                delete_pending_gap(dev_eui)
         else:
             print(f"Recovery interval not filled yet for {dev_eui}.")
-
-def send_clear_buffer_command(client, app_id, dev_eui):
-    """Sender kommando 03 (Base64: Aw==) via MQTT."""
-    if not app_id:
-        print("Cannot send ACK 03: applicationId missing.")
-        return
-
-    topic = f"application/{app_id}/device/{dev_eui}/command/down"
-    binary_payload = struct.pack('>B', 3)
-    b64_payload = base64.b64encode(binary_payload).decode('utf-8')
-
-    payload = json.dumps({
-        "devEui": dev_eui,
-        "confirmed": False,
-        "fPort": 2,
-        "data": b64_payload
-    })
-
-    client.publish(topic, payload)
-    print(f"ACK 03 sent for {dev_eui}. Clear buffer command sent.")
-    print(f"ACK 03 topic: {topic}")
-    print(f"ACK 03 payload: {payload}")
 
 def is_gap_filled(dev_eui, start_ts, end_ts):
     conn = get_db_connection()
@@ -272,7 +399,7 @@ def is_gap_filled(dev_eui, start_ts, end_ts):
         )
         
         # Check beginning coverage
-        if timestamps[0] - start_ts > 45:
+        if timestamps[0] - start_ts > GAP_FILL_TOLERANCE_SECONDS:
             print(
                 f"Recovery not complete: missing beginning of interval "
                 f"({timestamps[0] - start_ts}s after requested start)."
@@ -280,7 +407,7 @@ def is_gap_filled(dev_eui, start_ts, end_ts):
             return False
 
         # Check end coverage
-        if end_ts - timestamps[-1] > 45:
+        if end_ts - timestamps[-1] > GAP_FILL_TOLERANCE_SECONDS:
             print(
                 f"Recovery not complete: missing end of interval "
                 f"({end_ts - timestamps[-1]}s before requested end)."
@@ -289,7 +416,7 @@ def is_gap_filled(dev_eui, start_ts, end_ts):
 
         # Check internal gaps
         for prev_ts, next_ts in zip(timestamps, timestamps[1:]):
-            if next_ts - prev_ts > 45:
+            if next_ts - prev_ts > GAP_FILL_TOLERANCE_SECONDS:
                 print(
                     f"Recovery not complete: internal gap detected "
                     f"from {prev_ts} to {next_ts} ({next_ts - prev_ts}s)."
@@ -303,16 +430,25 @@ def is_gap_filled(dev_eui, start_ts, end_ts):
         return False
 
 def send_retransmission_request(client, app_id, dev_eui, start_ts, end_ts):
+    if not app_id:
+        msg = f"Cannot request retransmission for {dev_eui}: applicationId missing."
+        print(msg)
+        log_event("RECOVERY_REQUEST_FAILED", msg)
+        return
+
     downlink_topic = f"application/{app_id}/device/{dev_eui}/command/down"
     binary_payload = struct.pack('>BII', 2, start_ts, end_ts)
     b64_payload = base64.b64encode(binary_payload).decode('utf-8')
+
     downlink_json = json.dumps({
         "devEui": dev_eui,
         "confirmed": False,
         "fPort": 2,
         "data": b64_payload
     })
+
     client.publish(downlink_topic, downlink_json)
+
     dk_tz = ZoneInfo("Europe/Copenhagen")
     start_dt = datetime.datetime.fromtimestamp(start_ts, datetime.timezone.utc).astimezone(dk_tz)
     end_dt = datetime.datetime.fromtimestamp(end_ts, datetime.timezone.utc).astimezone(dk_tz)
@@ -323,6 +459,7 @@ def send_retransmission_request(client, app_id, dev_eui, start_ts, end_ts):
         f"{end_dt.strftime('%Y-%m-%d %H:%M:%S %Z')} "
         f"(Unix: {start_ts} to {end_ts}, Base64: {b64_payload})"
     )
+
     log_event(
         "RECOVERY_REQUEST",
         f"Requested retransmission from {dev_eui}: {start_ts} to {end_ts}, Base64: {b64_payload}"
@@ -353,13 +490,16 @@ def on_message(client, userdata, msg):
 
         if not base64_data:
             return
-        measurements, _ = decode_payload(base64_data)
+        measurements, raw_payload_hex = decode_payload(base64_data)
         if not measurements:
-            print("No valid measurements decoded.")
+            msg = (
+                f"No valid measurements decoded from {dev_eui}. "
+                f"Raw payload hex: {raw_payload_hex if raw_payload_hex else 'unavailable'}"
+            )
+            print(msg)
+            log_event("MALFORMED_PAYLOAD", msg)
             return
         check_for_missing_data(client, dev_eui, app_id, measurements[-1][0]) #gap detection på nyeste measurement ikke buffer data
-
-
 
         print(f"\n--- Processing {len(measurements)} measurements from {dev_eui} ---")
         conn = get_db_connection()
@@ -435,19 +575,99 @@ def on_message(client, userdata, msg):
     except Exception as e:
         print(f"Error processing message: {e}")
 
+def recovery_retry_loop(client):
+    """
+    Periodically checks pending recovery intervals stored in PostgreSQL.
+    If a gap is still not filled after RECOVERY_RETRY_AFTER_SECONDS,
+    the retransmission request is sent again.
+    After MAX_RECOVERY_RETRIES, the system gives up and logs the failure.
+    """
+    while True:
+        time.sleep(PENDING_GAP_CHECK_INTERVAL)
+        now = time.time()
+
+        gaps_snapshot = list_pending_gaps()
+
+        for gap in gaps_snapshot:
+            dev_eui = gap["device_eui"]
+            app_id = gap["app_id"]
+            start_ts = gap["start_ts"]
+            end_ts = gap["end_ts"]
+            last_requested_at = gap.get("last_requested_at", 0)
+            retry_count = gap.get("retry_count", 0)
+
+            if is_gap_filled(dev_eui, start_ts, end_ts):
+                print(f"Pending recovery interval filled for {dev_eui}. Recovery request completed")
+                log_event(
+                    "RECOVERY_COMPLETED",
+                    f"Recovery interval {start_ts}-{end_ts} completed for {dev_eui}."
+                )
+
+                with pending_gaps_lock:
+                    delete_pending_gap(dev_eui)
+
+                continue
+
+            seconds_since_request = now - last_requested_at
+
+            if seconds_since_request < RECOVERY_RETRY_AFTER_SECONDS:
+                continue
+
+            if retry_count >= MAX_RECOVERY_RETRIES:
+                msg = (
+                    f"Recovery failed for {dev_eui}: interval {start_ts}-{end_ts} "
+                    f"was not filled after {MAX_RECOVERY_RETRIES} retries. "
+                    f"Giving up."
+                )
+                print(msg)
+                log_event("RECOVERY_FAILED", msg)
+
+                with pending_gaps_lock:
+                    delete_pending_gap(dev_eui)
+
+                continue
+
+            new_retry_count = retry_count + 1
+
+            print(
+                f"Retrying recovery request for {dev_eui}. "
+                f"Attempt {new_retry_count}/{MAX_RECOVERY_RETRIES}. "
+                f"Interval: {start_ts}-{end_ts}"
+            )
+
+            send_retransmission_request(client, app_id, dev_eui, start_ts, end_ts)
+
+            with pending_gaps_lock:
+                upsert_pending_gap(
+                    dev_eui=dev_eui,
+                    app_id=app_id,
+                    start_ts=start_ts,
+                    end_ts=end_ts,
+                    last_requested_at=now,
+                    retry_count=new_retry_count,
+                )
+                    
 def main():
     print("Starting Application Server MQTT Listener...")
 
     # Initialize MQTT Client
-    client = mqtt.Client(callback_api_version=mqtt.CallbackAPIVersion.VERSION2, client_id="scada_app_server_v1")
+    client = mqtt.Client(callback_api_version=mqtt.CallbackAPIVersion.VERSION2, client_id="scada_mqtt_listener_docker_v1")
     client.tls_set(ca_certs=CA_CERT_PATH)
     client.tls_insecure_set(False)
     client.on_connect = on_connect
+    client.on_disconnect = on_disconnect
     client.on_message = on_message
 
     try:
         client.connect(MQTT_BROKER, MQTT_PORT, 60)
-        # Blocking call that processes network traffic, dispatches callbacks and handles reconnecting.
+
+        retry_thread = threading.Thread(
+            target=recovery_retry_loop,
+            args=(client,),
+            daemon=True
+        )
+        retry_thread.start()
+        
         client.loop_forever()
     except KeyboardInterrupt:
         print("\nShutting down Application Server...")
