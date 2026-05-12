@@ -5,20 +5,22 @@ import base64
 import struct
 import datetime
 import time
+import os
 from zoneinfo import ZoneInfo
 
 # MQTT Broker (ChirpStack Mosquitto)
-MQTT_BROKER = "localhost"
-MQTT_PORT = 8883
-# Listen to all uplink events from all applications and devices
-MQTT_TOPIC = "application/+/device/+/event/up"
+MQTT_BROKER = os.environ["MQTT_BROKER"]
+MQTT_PORT = int(os.environ.get("MQTT_PORT", "8883"))
+MQTT_TOPIC = os.environ.get("MQTT_TOPIC", "application/+/device/+/event/up")
 
 # PostgreSQL SCADA Database
-DB_HOST = "localhost"
-DB_PORT = "5433" # mapped in docker-compose
-DB_NAME = "powerline_telemetry"
-DB_USER = "app_user"
-DB_PASS = "IMbachelor26"
+DB_HOST = os.environ["DB_HOST"]
+DB_PORT = os.environ["DB_PORT"]
+DB_NAME = os.environ["DB_NAME"]
+DB_USER = os.environ["DB_USER"]
+DB_PASS = os.environ["DB_PASS"]
+
+CA_CERT_PATH = os.environ["MQTT_CA_CERT_PATH"]
 last_cleanup_date = None
 
 TEMP_LIMIT_MAX = 150
@@ -438,9 +440,8 @@ def main():
 
     # Initialize MQTT Client
     client = mqtt.Client(callback_api_version=mqtt.CallbackAPIVersion.VERSION2, client_id="scada_app_server_v1")
-    ca_cert_path = "../chirpstack-docker/configuration/certs/ca.pem"
-    client.tls_set(ca_certs=ca_cert_path)
-    client.tls_insecure_set(True)
+    client.tls_set(ca_certs=CA_CERT_PATH)
+    client.tls_insecure_set(False)
     client.on_connect = on_connect
     client.on_message = on_message
 
