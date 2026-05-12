@@ -19,10 +19,8 @@ DB_CONFIG = {
 app = FastAPI(title="Power Line Monitoring SCADA API", version="1.4.0",
              description=""" 
              REST API for the Power Line Monitoring System.
-             
-             The API exposes validated telemetry data as JSON for dashboard, SCADA-related 
-             integration and administrative monitoring. Authentication is handled by
-             Authentik through Traefik forward-auth headers. Authorization is based on
+             The API exposes telemetry data as JSON for dashboard, SCADA-related 
+             integration and administrative monitoring. Authorization is based on
              Authentik group membership.
              
              Roles:
