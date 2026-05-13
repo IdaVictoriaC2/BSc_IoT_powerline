@@ -14,8 +14,11 @@ services:
       - MQTT_BROKER_HOST=mosquitto
       - REDIS_HOST=redis
       - POSTGRESQL_HOST=postgres
-    ports:
-      - "8080:8080"
+    expose:
+      - "8080"
+    networks:
+      - default
+      - scada_proxy
 
   chirpstack-gateway-bridge:
     image: chirpstack/chirpstack-gateway-bridge:4
@@ -46,8 +49,8 @@ services:
     image: chirpstack/chirpstack-rest-api:4
     restart: unless-stopped
     command: --server chirpstack:8080 --bind 0.0.0.0:8090 --insecure
-    ports:
-      - "8090:8090"
+    expose:
+      - "8090"
     depends_on:
       - chirpstack
 
@@ -73,7 +76,6 @@ services:
     image: eclipse-mosquitto:2
     restart: unless-stopped
     ports:
-      - "1883:1883"
       - "8883:8883"
     volumes:
       - ./configuration/mosquitto/config/:/mosquitto/config/
@@ -82,3 +84,7 @@ services:
 volumes:
   postgresqldata:
   redisdata:
+
+networks:
+  scada_proxy:
+    external: true
