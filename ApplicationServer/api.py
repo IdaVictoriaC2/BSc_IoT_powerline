@@ -17,12 +17,12 @@ DB_CONFIG = {
 }
 
 app = FastAPI(title="Power Line Monitoring SCADA API", version="1.4.0",
-             description=""" 
+             description="""
              REST API for the Power Line Monitoring System.
-             The API exposes telemetry data as JSON for dashboard, SCADA-related 
+             The API exposes telemetry data as JSON for dashboard, SCADA-related
              integration and administrative monitoring. Authorization is based on
              Authentik group membership.
-             
+
              Roles:
              - admin: full access
              - as_admin: Application Server administrator access
@@ -94,7 +94,7 @@ def map_groups_to_role(groups: list[str]) -> str:
     Priority:
     authentik admins > AS access > Grafana access > NS access
     """
-    
+
     normalized_groups = {group.strip().lower() for group in groups}
 
     if "authentik admins" in normalized_groups:
