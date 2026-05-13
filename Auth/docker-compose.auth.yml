@@ -21,7 +21,7 @@ services:
     restart: unless-stopped
     environment:
       POSTGRES_USER: authentik
-      POSTGRES_PASSWORD: IMbachelor26
+      POSTGRES_PASSWORD: ${DB_PASS}
       POSTGRES_DB: authentik
     volumes:
       - authentik_postgres:/var/lib/postgresql/data
@@ -42,20 +42,20 @@ services:
       - authentik-postgresql
       - authentik-redis
     environment:
-      AUTHENTIK_SECRET_KEY: long_random_secret26
+      AUTHENTIK_SECRET_KEY: ${AUTHENTIK_KEY}
       AUTHENTIK_REDIS__HOST: authentik-redis
       AUTHENTIK_POSTGRESQL__HOST: authentik-postgresql
       AUTHENTIK_POSTGRESQL__USER: authentik
       AUTHENTIK_POSTGRESQL__NAME: authentik
-      AUTHENTIK_POSTGRESQL__PASSWORD: IMbachelor26
+      AUTHENTIK_POSTGRESQL__PASSWORD: ${AUTHENTIK_DB_PASS}
       AUTHENTIK_EMAIL__HOST: smtp.gmail.com
       AUTHENTIK_EMAIL__PORT: 587
-      AUTHENTIK_EMAIL__USERNAME: IMbachelor26@gmail.com
-      AUTHENTIK_EMAIL__PASSWORD: "smmzknaddjchftty"
+      AUTHENTIK_EMAIL__USERNAME: ${AUTHENTIK_EMAIL}
+      AUTHENTIK_EMAIL__PASSWORD: "${AUTHENTIK_PASS}"
       AUTHENTIK_EMAIL__USE_TLS: "true"
       AUTHENTIK_EMAIL__USE_SSL: "false"
       AUTHENTIK_EMAIL__TIMEOUT: 10
-      AUTHENTIK_EMAIL__FROM: IMbachelor26@gmail.com
+      AUTHENTIK_EMAIL__FROM: ${AUTHENTIK_EMAIL}
     ports:
       - "9001:9000"
 
@@ -68,20 +68,20 @@ services:
       - authentik-postgresql
       - authentik-redis
     environment:
-      AUTHENTIK_SECRET_KEY: long_random_secret26
+      AUTHENTIK_SECRET_KEY: ${AUTHENTIK_KEY}
       AUTHENTIK_REDIS__HOST: authentik-redis
       AUTHENTIK_POSTGRESQL__HOST: authentik-postgresql
       AUTHENTIK_POSTGRESQL__USER: authentik
       AUTHENTIK_POSTGRESQL__NAME: authentik
-      AUTHENTIK_POSTGRESQL__PASSWORD: IMbachelor26
+      AUTHENTIK_POSTGRESQL__PASSWORD: ${AUTHENTIK_DB_PASS}
       AUTHENTIK_EMAIL__HOST: smtp.gmail.com
       AUTHENTIK_EMAIL__PORT: 587
-      AUTHENTIK_EMAIL__USERNAME: IMbachelor26@gmail.com
-      AUTHENTIK_EMAIL__PASSWORD: "smmzknaddjchftty"
+      AUTHENTIK_EMAIL__USERNAME: ${AUTHENTIK_EMAIL}
+      AUTHENTIK_EMAIL__PASSWORD: "${AUTHENTIK_PASS}"
       AUTHENTIK_EMAIL__USE_TLS: "true"
       AUTHENTIK_EMAIL__USE_SSL: "false"
       AUTHENTIK_EMAIL__TIMEOUT: 10
-      AUTHENTIK_EMAIL__FROM: IMbachelor26@gmail.com
+      AUTHENTIK_EMAIL__FROM: ${AUTHENTIK_EMAIL}
 
   authentik-proxy:
     image: ghcr.io/goauthentik/proxy:latest
@@ -93,7 +93,7 @@ services:
       AUTHENTIK_HOST: http://authentik-server:9000
       AUTHENTIK_HOST_BROWSER: http://localhost:9001
       AUTHENTIK_INSECURE: "true"
-      AUTHENTIK_TOKEN: ho4pmz4L57KE4InEKuCPqysRhSqsXcHUZjMcV3T7mrEeJZg5pABT8UxvwLys
+      AUTHENTIK_TOKEN: ${AUTHENTIK_TOKEN}
     networks:
       - default
       - scada_proxy
