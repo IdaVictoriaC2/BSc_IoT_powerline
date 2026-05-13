@@ -65,4 +65,5 @@ http:
     network-server:
       loadBalancer:
         servers:
-          - url: "http://chirpstack-docker_chirpstack_1:8080"
+          - url: "http://chirpstack:8080"
+          
