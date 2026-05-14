@@ -1,0 +1,11 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+
+ENV PYTHONUNBUFFERED=1
+
+COPY MQTT_listener /app/mqtt_listener
+
+RUN pip install --no-cache-dir paho-mqtt psycopg2-binary
+
+CMD ["python", "-m", "mqtt_listener.main"]

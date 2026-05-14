@@ -20,7 +20,7 @@ services:
   mqtt-listener:
     build:
       context: .
-      dockerfile: Dockerfile.listener
+      dockerfile: Dockerfile.mqtt-listener
     container_name: scada_mqtt_listener
     restart: unless-stopped
     env_file:
