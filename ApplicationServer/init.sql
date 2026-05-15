@@ -55,3 +55,24 @@ CREATE TABLE IF NOT EXISTS pending_recovery (
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
+
+ALTER TABLE sensor_data
+ADD CONSTRAINT fk_sensor_end_device
+  FOREIGN KEY (device_eui)
+  REFERENCES end_devices(dev_eui)
+  ON UPDATE CASCADE
+  ON DELETE RESTRICT;
+
+ALTER TABLE pending_recovery
+ADD CONSTRAINT fk_pending_end_device
+  FOREIGN KEY (device_eui)
+  REFERENCES end_devices(dev_eui)
+  ON UPDATE CASCADE
+  ON DELETE RESTRICT;
+
+-- Indexes to speed up pending_recovery scans and age-based checks
+CREATE INDEX IF NOT EXISTS idx_pending_recovery_updated_at
+ON pending_recovery (updated_at);
+
+CREATE INDEX IF NOT EXISTS idx_pending_recovery_last_requested_at
+ON pending_recovery (last_requested_at);
