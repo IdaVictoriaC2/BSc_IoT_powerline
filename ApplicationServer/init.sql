@@ -1,3 +1,11 @@
+-- Table over devices with their EUI and location. The dev_eui is the unique identifier for each device and serves as the primary key.
+CREATE TABLE IF NOT EXISTS end_devices(
+    dev_eui TEXT PRIMARY KEY,
+    location TEXT,
+
+    CONSTRAINT dev_eui_unique UNIQUE (dev_eui)
+);
+
 -- Table for telemetry data with the columns expected by mqtt-listener.py and api.py
 CREATE TABLE IF NOT EXISTS sensor_data (
     id SERIAL PRIMARY KEY,

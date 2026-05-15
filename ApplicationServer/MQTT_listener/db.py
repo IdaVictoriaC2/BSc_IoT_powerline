@@ -188,6 +188,7 @@ class Database:
 
     def upsert_pending_gap(
         self,
+        conn,
         dev_eui: str,
         app_id: str,
         start_ts: int,
@@ -195,35 +196,27 @@ class Database:
         last_requested_at: float,
         retry_count: int,
     ) -> None:
-        conn = self.connect()
-        try:
-            with conn:
-                with conn.cursor() as cursor:
-                    cursor.execute(
-                        """
-                        INSERT INTO pending_recovery
-                            (device_eui, app_id, start_ts, end_ts, last_requested_at, retry_count, updated_at)
-                        VALUES
-                            (%s, %s, %s, %s, %s, %s, NOW())
-                        ON CONFLICT (device_eui)
-                        DO UPDATE SET
-                            app_id = EXCLUDED.app_id,
-                            start_ts = EXCLUDED.start_ts,
-                            end_ts = EXCLUDED.end_ts,
-                            last_requested_at = EXCLUDED.last_requested_at,
-                            retry_count = EXCLUDED.retry_count,
-                            updated_at = NOW();
-                        """,
-                        (dev_eui, app_id, start_ts, end_ts, last_requested_at, retry_count),
-                    )
-        finally:
-            conn.close()
+        with conn:
+            with conn.cursor() as cursor:
+                cursor.execute(
+                    """
+                    INSERT INTO pending_recovery
+                        (device_eui, app_id, start_ts, end_ts, last_requested_at, retry_count, updated_at)
+                    VALUES
+                        (%s, %s, %s, %s, %s, %s, NOW())
+                    ON CONFLICT (device_eui)
+                    DO UPDATE SET
+                        app_id = EXCLUDED.app_id,
+                        start_ts = EXCLUDED.start_ts,
+                        end_ts = EXCLUDED.end_ts,
+                        last_requested_at = EXCLUDED.last_requested_at,
+                        retry_count = EXCLUDED.retry_count,
+                        updated_at = NOW();
+                    """,
+                    (dev_eui, app_id, start_ts, end_ts, last_requested_at, retry_count),
+                )
 
-    def delete_pending_gap(self, dev_eui: str) -> None:
-        conn = self.connect()
-        try:
-            with conn:
-                with conn.cursor() as cursor:
-                    cursor.execute("DELETE FROM pending_recovery WHERE device_eui = %s;", (dev_eui,))
-        finally:
-            conn.close()
+    def delete_pending_gap(self, conn, dev_eui: str) -> None:
+        with conn:
+            with conn.cursor() as cursor:
+                cursor.execute("DELETE FROM pending_recovery WHERE device_eui = %s;", (dev_eui,))
