@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from typing import Any
 
 import psycopg2
-
+import json
 from .config import AppConfig
 
 
@@ -93,6 +93,57 @@ class Database:
                         ),
                     )
                     return cursor.rowcount > 0
+        finally:
+            conn.close()
+
+    def insert_lora_uplink_metadata(
+        self,
+        *,
+        device_eui: str | None,
+        application_id: str | None,
+        gateway_id: str | None,
+        frequency_hz: int | None,
+        bandwidth_hz: int | None,
+        spreading_factor: int | None,
+        rssi_dbm: float | None,
+        snr_db: float | None,
+        f_cnt: int | None,
+        raw_event: dict[str, Any],
+    ) -> None:
+        conn = self.connect()
+        try:
+            with conn:
+                with conn.cursor() as cursor:
+                    cursor.execute(
+                        """
+                        INSERT INTO lora_uplink_metadata
+                        (
+                            device_eui,
+                            application_id,
+                            gateway_id,
+                            frequency_hz,
+                            bandwidth_hz,
+                            spreading_factor,
+                            rssi_dbm,
+                            snr_db,
+                            f_cnt,
+                            raw_event
+                        )
+                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s::jsonb);
+                        """,
+                        (
+                            device_eui,
+                            application_id,
+                            gateway_id,
+                            frequency_hz,
+                            bandwidth_hz,
+                            spreading_factor,
+                            rssi_dbm,
+                            snr_db,
+                            f_cnt,
+                            json.dumps(raw_event),
+                        ),
+                    )
         finally:
             conn.close()
 
