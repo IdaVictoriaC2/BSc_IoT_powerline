@@ -136,6 +136,29 @@ class Database:
         finally:
             conn.close()
 
+    def get_pending_gap_for_update(self, conn, dev_eui: str):
+        with conn.cursor() as cursor:
+            cursor.execute(
+                """
+                SELECT device_eui, app_id, start_ts, end_ts, last_requested_at, retry_count
+                FROM pending_recovery
+                WHERE device_eui = %s
+                FOR UPDATE;
+                """,
+                (dev_eui,),
+            )
+            row = cursor.fetchone()
+            if not row:
+                return None
+            return {
+                "device_eui": row[0],
+                "app_id": row[1],
+                "start_ts": row[2],
+                "end_ts": row[3],
+                "last_requested_at": row[4],
+                "retry_count": row[5],
+            }
+
     def get_pending_gap(self, dev_eui: str):
         conn = self.connect()
         try:
