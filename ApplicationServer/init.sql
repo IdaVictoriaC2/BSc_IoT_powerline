@@ -70,6 +70,41 @@ ADD CONSTRAINT fk_pending_end_device
   ON UPDATE CASCADE
   ON DELETE RESTRICT;
 
+-- Table for LoRaWAN radio metadata received from ChirpStack uplink events.
+-- This table supports long-range, ADR, RSSI/SNR, frequency and frame-counter analysis.
+CREATE TABLE IF NOT EXISTS lora_uplink_metadata (
+    id SERIAL PRIMARY KEY,
+    received_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+
+    device_eui TEXT,
+    application_id TEXT,
+    gateway_id TEXT,
+
+    frequency_hz BIGINT,
+    bandwidth_hz INTEGER,
+    spreading_factor INTEGER,
+
+    rssi_dbm DOUBLE PRECISION,
+    snr_db DOUBLE PRECISION,
+
+    f_cnt BIGINT,
+
+    raw_event JSONB
+);
+
+-- Indexes for LoRaWAN metadata analysis
+CREATE INDEX IF NOT EXISTS idx_lora_metadata_received_at
+ON lora_uplink_metadata (received_at);
+
+CREATE INDEX IF NOT EXISTS idx_lora_metadata_device_time
+ON lora_uplink_metadata (device_eui, received_at);
+
+CREATE INDEX IF NOT EXISTS idx_lora_metadata_sf
+ON lora_uplink_metadata (spreading_factor);
+
+CREATE INDEX IF NOT EXISTS idx_lora_metadata_f_cnt
+ON lora_uplink_metadata (device_eui, f_cnt);
+
 -- Indexes to speed up pending_recovery scans and age-based checks
 CREATE INDEX IF NOT EXISTS idx_pending_recovery_updated_at
 ON pending_recovery (updated_at);
