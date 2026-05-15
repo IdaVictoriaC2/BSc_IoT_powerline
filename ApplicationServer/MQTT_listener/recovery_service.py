@@ -108,7 +108,7 @@ class GapRecoveryService:
                     if not locked_gap:
                         continue
 
-                    if self.is_gap_filled_in_conn(conn, locked_gap["device_eui"], locked_gap["start_ts"], locked_gap["end_ts"]):
+                    if self.is_gap_filled(conn, locked_gap["device_eui"], locked_gap["start_ts"], locked_gap["end_ts"]):
                         self.database.log_event(
                             "RECOVERY_COMPLETED",
                             f"Recovery interval {locked_gap['start_ts']}-{locked_gap['end_ts']} completed for {locked_gap['device_eui']}.",
@@ -117,44 +117,8 @@ class GapRecoveryService:
             finally:
                 conn.close()
 
-    def is_gap_filled(self, dev_eui: str, start_ts: int, end_ts: int) -> bool:
-        conn = self.database.connect()
-        try:
-            with conn:
-                with conn.cursor() as cursor:
-                    timestamps = self._fetch_timestamps(cursor, dev_eui, start_ts, end_ts)
-        finally:
-            conn.close()
 
-        if not timestamps:
-            print(
-                f"Recovery check for {dev_eui}: no data in requested interval "
-                f"{start_ts}-{end_ts}"
-            )
-            return False
-
-        if timestamps[0] - start_ts > self.config.gap_fill_tolerance_seconds:
-            print(
-                f"Recovery not complete: missing beginning of interval "
-                f"({timestamps[0] - start_ts}s after requested start)."
-            )
-            return False
-        if end_ts - timestamps[-1] > self.config.gap_fill_tolerance_seconds:
-            print(
-                f"Recovery not complete: missing end of interval "
-                f"({end_ts - timestamps[-1]}s before requested end)."
-            )
-            return False
-        for prev_ts, next_ts in zip(timestamps, timestamps[1:]):
-            if next_ts - prev_ts > self.config.gap_fill_tolerance_seconds:
-                print(
-                    f"Recovery not complete: internal gap detected "
-                    f"from {prev_ts} to {next_ts} ({next_ts - prev_ts}s)."
-                )
-                return False
-        return True
-
-    def is_gap_filled_in_conn(self, conn, dev_eui: str, start_ts: int, end_ts: int) -> bool:
+    def is_gap_filled(self, conn, dev_eui: str, start_ts: int, end_ts: int) -> bool:
         with conn.cursor() as cursor:
             timestamps = self._fetch_timestamps(cursor, dev_eui, start_ts, end_ts)
 
@@ -232,7 +196,7 @@ class GapRecoveryService:
                         if not locked_gap:
                             continue
 
-                        if self.is_gap_filled_in_conn(conn, locked_gap["device_eui"], locked_gap["start_ts"], locked_gap["end_ts"]):
+                        if self.is_gap_filled(conn, locked_gap["device_eui"], locked_gap["start_ts"], locked_gap["end_ts"]):
                             self.database.log_event(
                                 "RECOVERY_COMPLETED",
                                 f"Recovery interval {locked_gap['start_ts']}-{locked_gap['end_ts']} completed for {locked_gap['device_eui']}.",
