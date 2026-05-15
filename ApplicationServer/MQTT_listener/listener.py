@@ -73,6 +73,96 @@ class MqttListener:
 
         return True
 
+    def _extract_lora_metadata_rows(self, payload_json: dict) -> list[dict]:
+        """
+        Extract LoRaWAN radio metadata from a ChirpStack uplink event.
+
+        ChirpStack event structures can vary slightly, so the function is
+        defensive and accepts missing fields. One row is returned per gateway
+        reception in rxInfo.
+        """
+        device_info = payload_json.get("deviceInfo", {}) or {}
+
+        device_eui = device_info.get("devEui")
+        application_id = device_info.get("applicationId")
+
+        f_cnt = (
+            payload_json.get("fCnt")
+            or payload_json.get("f_cnt")
+            or payload_json.get("fCntUp")
+        )
+
+        rx_info = payload_json.get("rxInfo", []) or []
+        tx_info = payload_json.get("txInfo", {}) or {}
+
+        frequency_hz = tx_info.get("frequency")
+
+        modulation = tx_info.get("modulation", {}) or {}
+        lora_mod = modulation.get("lora", {}) or {}
+
+        bandwidth_hz = (
+            lora_mod.get("bandwidth")
+            or tx_info.get("bandwidth")
+        )
+
+        spreading_factor = (
+            lora_mod.get("spreadingFactor")
+            or lora_mod.get("spreading_factor")
+            or tx_info.get("spreadingFactor")
+            or tx_info.get("spreading_factor")
+        )
+
+        rows = []
+
+        if not rx_info:
+            rows.append(
+                {
+                    "device_eui": device_eui,
+                    "application_id": application_id,
+                    "gateway_id": None,
+                    "frequency_hz": frequency_hz,
+                    "bandwidth_hz": bandwidth_hz,
+                    "spreading_factor": spreading_factor,
+                    "rssi_dbm": None,
+                    "snr_db": None,
+                    "f_cnt": f_cnt,
+                    "raw_event": payload_json,
+                }
+            )
+            return rows
+
+        for rx in rx_info:
+            rows.append(
+                {
+                    "device_eui": device_eui,
+                    "application_id": application_id,
+                    "gateway_id": rx.get("gatewayId") or rx.get("gateway_id"),
+                    "frequency_hz": frequency_hz,
+                    "bandwidth_hz": bandwidth_hz,
+                    "spreading_factor": spreading_factor,
+                    "rssi_dbm": rx.get("rssi"),
+                    "snr_db": rx.get("snr"),
+                    "f_cnt": f_cnt,
+                    "raw_event": payload_json,
+                }
+            )
+
+        return rows
+
+    def _store_lora_metadata(self, payload_json: dict) -> None:
+        """
+        Store LoRaWAN metadata for later long-range, ADR and link-quality analysis.
+        """
+        try:
+            for row in self._extract_lora_metadata_rows(payload_json):
+                self.database.insert_lora_uplink_metadata(**row)
+        except Exception as exc:
+            print(f"Failed to store LoRaWAN metadata: {exc}", flush=True)
+            self.database.log_event(
+                "LORA_METADATA_STORE_FAILED",
+                f"Failed to store LoRaWAN metadata: {exc}",
+            )
+
     def on_message(self, client, userdata, msg):
         self._auto_purge_old_data()
         print("\n--- New DLR Telemetry Received ---")
@@ -82,6 +172,8 @@ class MqttListener:
             dev_eui = payload_json.get("deviceInfo", {}).get("devEui", "UNKNOWN")
             app_id = payload_json.get("deviceInfo", {}).get("applicationId")
             base64_data = payload_json.get("data", "")
+
+            self._store_lora_metadata(payload_json)
 
             if not base64_data:
                 return
