@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS sensor_data (
     id SERIAL PRIMARY KEY,
     device_timestamp TIMESTAMP WITH TIME ZONE NOT NULL,
     server_timestamp TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    device_eui VARCHAR(50),
+    device_eui TEXT NOT NULL,
     ambient_temp NUMERIC(5,2),
     immediate_temp NUMERIC(5,2),
     conductor_temp NUMERIC(5,2),
@@ -42,8 +42,6 @@ CREATE TABLE IF NOT EXISTS audit_log (
     description TEXT
 );
 
-GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO app_user;
-GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO app_user;
 
 CREATE TABLE IF NOT EXISTS pending_recovery (
     device_eui TEXT PRIMARY KEY,
@@ -88,8 +86,13 @@ CREATE TABLE IF NOT EXISTS lora_uplink_metadata (
     snr_db DOUBLE PRECISION,
 
     f_cnt BIGINT,
-
-    raw_event JSONB
+    raw_event JSONB,
+    
+    CONSTRAINT fk_lora_metadata_end_device
+      FOREIGN KEY (device_eui)
+      REFERENCES end_devices(dev_eui)
+      ON UPDATE CASCADE
+      ON DELETE RESTRICT
 );
 
 -- Indexes for LoRaWAN metadata analysis
@@ -111,3 +114,6 @@ ON pending_recovery (updated_at);
 
 CREATE INDEX IF NOT EXISTS idx_pending_recovery_last_requested_at
 ON pending_recovery (last_requested_at);
+
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO app_user;
+GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO app_user;
