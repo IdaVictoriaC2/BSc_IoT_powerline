@@ -42,6 +42,15 @@ class Database:
         finally:
             conn.close()
 
+    def ensure_end_device(self, dev_eui, location="unknown"):
+        query = """
+            INSERT INTO end_devices (dev_eui, location)
+            VALUES (%s, %s)
+            ON CONFLICT (dev_eui)
+            DO NOTHING;
+        """
+        self.execute(query, (dev_eui, location))
+
     def get_last_measurement(self, dev_eui: str):
         conn = self.connect()
         try:
