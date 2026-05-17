@@ -173,6 +173,7 @@ class MqttListener:
             app_id = payload_json.get("deviceInfo", {}).get("applicationId")
             base64_data = payload_json.get("data", "")
 
+            self.db.ensure_end_device(dev_eui)
             self._store_lora_metadata(payload_json)
 
             if not base64_data:
