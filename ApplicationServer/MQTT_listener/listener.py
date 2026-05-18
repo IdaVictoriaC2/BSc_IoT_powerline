@@ -31,7 +31,17 @@ class MqttListener:
             callback_api_version=mqtt.CallbackAPIVersion.VERSION2,
             client_id=self.config.mqtt_client_id,
         )
-        self.client.tls_set(ca_certs=self.config.mqtt_ca_cert_path)
+        if self.config.mqtt_client_cert_path and self.config.mqtt_client_key_path:
+            self.client.tls_set(
+                ca_certs=self.config.mqtt_ca_cert_path,
+                certfile=self.config.mqtt_client_cert_path,
+                keyfile=self.config.mqtt_client_key_path,
+            )
+        else:
+            self.client.tls_set(
+                ca_certs=self.config.mqtt_ca_cert_path,
+            )
+
         self.client.tls_insecure_set(False)
         self.client.on_connect = self.on_connect
         self.client.on_disconnect = self.on_disconnect
