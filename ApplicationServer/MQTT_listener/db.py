@@ -42,14 +42,25 @@ class Database:
         finally:
             conn.close()
 
-    def ensure_end_device(self, dev_eui, location="unknown"):
-        query = """
-            INSERT INTO end_devices (dev_eui, location)
-            VALUES (%s, %s)
-            ON CONFLICT (dev_eui)
-            DO NOTHING;
-        """
-        self.execute(query, (dev_eui, location))
+    def ensure_end_device(self, dev_eui: str, location: str = "unknown") -> None:
+        if not dev_eui or dev_eui == "UNKNOWN":
+            return
+    
+        conn = self.connect()
+        try:
+            with conn:
+                with conn.cursor() as cursor:
+                    cursor.execute(
+                        """
+                        INSERT INTO end_devices (dev_eui, location)
+                        VALUES (%s, %s)
+                        ON CONFLICT (dev_eui)
+                        DO NOTHING;
+                        """,
+                        (dev_eui, location),
+                    )
+        finally:
+            conn.close()
 
     def get_last_measurement(self, dev_eui: str):
         conn = self.connect()
