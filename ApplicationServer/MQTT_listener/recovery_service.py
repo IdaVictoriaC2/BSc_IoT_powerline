@@ -217,7 +217,7 @@ class GapRecoveryService:
                             continue
 
                         self.database.upsert_pending_gap(
-                            conn,
+                            conn = conn,
                             dev_eui=locked_gap["device_eui"],
                             app_id=locked_gap["app_id"],
                             start_ts=locked_gap["start_ts"],
