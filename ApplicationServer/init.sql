@@ -117,3 +117,7 @@ ON pending_recovery (last_requested_at);
 
 GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO app_user;
 GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO app_user;
+GRANT SELECT ON end_devices TO grafana_viewer;
+GRANT SELECT ON sensor_data TO grafana_viewer;
+GRANT SELECT ON pending_recovery TO grafana_viewer;
+GRANT SELECT ON lora_uplink_metadata TO grafana_viewer;
