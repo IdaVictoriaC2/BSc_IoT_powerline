@@ -11,6 +11,8 @@ class AppConfig:
     mqtt_port: int = 8883
     mqtt_topic: str = "application/+/device/+/event/up"
     mqtt_ca_cert_path: str = ""
+    mqtt_client_cert_path: str = ""
+    mqtt_client_key_path: str = ""
     db_host: str = ""
     db_port: int = 5432 # fallback, PostgreSQL default
     db_name: str = ""
@@ -58,6 +60,8 @@ class AppConfig:
             mqtt_port=int(environ.get("MQTT_PORT", "8883")),
             mqtt_topic=environ.get("MQTT_TOPIC", "application/+/device/+/event/up"),
             mqtt_ca_cert_path=required_env["MQTT_CA_CERT_PATH"],
+            mqtt_client_cert_path=os.environ.get("MQTT_CLIENT_CERT_PATH", ""),
+            mqtt_client_key_path=os.environ.get("MQTT_CLIENT_KEY_PATH", ""),
             db_host=required_env["DB_HOST"],
             db_port=int(environ.get("DB_PORT", "5432")),
             db_name=required_env["DB_NAME"],
