@@ -2,6 +2,7 @@ from fastapi import FastAPI, HTTPException, Depends, Header, Request, Query
 from fastapi.responses import RedirectResponse
 from psycopg2.extras import RealDictCursor
 from typing import Optional
+from datetime import datetime
 import psycopg2
 import os
 import re
@@ -226,20 +227,32 @@ def health_check(user: dict = Depends(require_role(["admin", "as_admin", "viewer
     "/api/status/latest",
     tags=["Telemetry"],
     summary="Get latest telemetry measurement",
-    description="Returns the newest telemetry record stored in the database.",
+    description="Returns the newest telemetry record stored in the database. Can optionally be filtered by device EUI",
 )
-def get_latest(user: dict = Depends(require_role(["admin", "as_admin", "viewer"]))):
+def get_latest(
+    device_eui: Optional[str] = Query(default=None, description="Optional DevEUI filter"),
+    user: dict = Depends(require_role(["admin", "as_admin", "viewer"]))
+):
     conn = get_db_connection()
     if not conn:
         raise HTTPException(status_code=503, detail="Database unavailable")
 
     cursor = conn.cursor(cursor_factory=RealDictCursor)
-    cursor.execute("""
-        SELECT *
-        FROM sensor_data
-        ORDER BY device_timestamp DESC
-        LIMIT 1;
-    """)
+    if device_eui:
+        cursor.execute("""
+            SELECT *
+            FROM sensor_data
+            WHERE device_eui = %s
+            ORDER BY device_timestamp DESC
+            LIMIT 1;
+        """, (device_eui,))
+    else:
+        cursor.execute("""
+            SELECT *
+            FROM sensor_data
+            ORDER BY device_timestamp DESC
+            LIMIT 1;
+        """)
     result = cursor.fetchone()
     cursor.close()
     conn.close()
@@ -248,7 +261,7 @@ def get_latest(user: dict = Depends(require_role(["admin", "as_admin", "viewer"]
         "GET_LATEST",
         user["username"],
         user["role"],
-        "Retrieved latest telemetry measurement"
+        f"Retrieved latest telemetry measurement. Device: {device_eui or 'all'}"
     )
 
     return result or {"message": "No telemetry data available"}
@@ -260,8 +273,8 @@ def get_latest(user: dict = Depends(require_role(["admin", "as_admin", "viewer"]
     summary="Get telemetry history",
     description="""
 Returns telemetry records as JSON. Results can be filtered by device EUI and
-time interval. This endpoint is intended for dashboard and SCADA-related
-integration.
+time interval, and sorted by timestamp or device EUI. This endpoint is intended
+for dashboard and SCADA-related integration.
     """,
 )
 def get_history(
@@ -269,8 +282,46 @@ def get_history(
     start_time: Optional[str] = Query(default=None, description="Start time, e.g. 2026-05-07T00:00:00Z"),
     end_time: Optional[str] = Query(default=None, description="End time, e.g. 2026-05-08T00:00:00Z"),
     limit: int = Query(default=100, ge=1, le=5000, description="Maximum number of records"),
+    sort_by: str = Query(
+        default="device_timestamp",
+        description="Sort field: device_timestamp, device_eui, server_timestamp, conductor_temp, ambient_temp"
+    ),
+    sort_order: str = Query(
+        default="desc",
+        description="Sort order: asc or desc"
+    ),
     user: dict = Depends(require_role(["admin", "as_admin", "viewer"])),
 ):
+    allowed_sort_fields = {
+        "device_timestamp": "device_timestamp",
+        "server_timestamp": "server_timestamp",
+        "device_eui": "device_eui",
+        "ambient_temp": "ambient_temp",
+        "immediate_temp": "immediate_temp",
+        "conductor_temp": "conductor_temp",
+        "cpu_temp": "cpu_temp",
+    }
+
+    allowed_sort_orders = {
+        "asc": "ASC",
+        "desc": "DESC",
+    }
+
+    if sort_by not in allowed_sort_fields:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Invalid sort_by value. Allowed values: {list(allowed_sort_fields.keys())}"
+        )
+
+    if sort_order.lower() not in allowed_sort_orders:
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid sort_order value. Allowed values: asc, desc"
+        )
+
+    order_column = allowed_sort_fields[sort_by]
+    order_direction = allowed_sort_orders[sort_order.lower()]
+
     conn = get_db_connection()
     if not conn:
         raise HTTPException(status_code=503, detail="Database unavailable")
@@ -300,7 +351,7 @@ def get_history(
         SELECT *
         FROM sensor_data
         {where_sql}
-        ORDER BY device_timestamp DESC
+        ORDER BY {order_column} {order_direction}, device_timestamp DESC
         LIMIT %s;
     """
 
@@ -314,11 +365,17 @@ def get_history(
         "GET_HISTORY",
         user["username"],
         user["role"],
-        f"Retrieved telemetry history. Device: {device_eui}, start: {start_time}, end: {end_time}, limit: {limit}",
+        (
+            f"Retrieved telemetry history. Device: {device_eui}, "
+            f"start: {start_time}, end: {end_time}, limit: {limit}, "
+            f"sort_by: {sort_by}, sort_order: {sort_order}"
+        ),
     )
 
     return {
         "count": len(results),
+        "sort_by": sort_by,
+        "sort_order": sort_order.lower(),
         "records": results,
     }
 
@@ -336,13 +393,22 @@ def list_devices(user: dict = Depends(require_role(["admin", "as_admin", "viewer
     cursor = conn.cursor(cursor_factory=RealDictCursor)
     cursor.execute("""
         SELECT
-            device_eui,
-            COUNT(*) AS measurement_count,
-            MIN(device_timestamp) AS first_seen,
-            MAX(device_timestamp) AS last_seen
-        FROM sensor_data
-        GROUP BY device_eui
-        ORDER BY last_seen DESC;
+            e.dev_eui,
+            e.location,
+            COUNT(s.id) AS measurement_count,
+            MIN(s.device_timestamp) AS first_seen,
+            MAX(s.device_timestamp) AS last_seen,
+            CASE
+                WHEN MAX(s.device_timestamp) > NOW() - INTERVAL '2 minutes' THEN 'online'
+                WHEN MAX(s.device_timestamp) > NOW() - INTERVAL '10 minutes' THEN 'delayed'
+                WHEN MAX(s.device_timestamp) IS NULL THEN 'no_data'
+                ELSE 'offline'
+            END AS status
+        FROM end_devices e
+        LEFT JOIN sensor_data s
+            ON e.dev_eui = s.device_eui
+        GROUP BY e.dev_eui, e.location
+        ORDER BY last_seen DESC NULLS LAST;
     """)
     devices = cursor.fetchall()
     cursor.close()
@@ -353,7 +419,106 @@ def list_devices(user: dict = Depends(require_role(["admin", "as_admin", "viewer
         "devices": devices,
     }
 
+@app.get(
+    "/api/lora/metadata",
+    tags=["LoRaWAN"],
+    summary="Get LoRaWAN radio metadata",
+    description="Returns LoRaWAN metadata such as RSSI, SNR, spreading factor, frequency and frame counter.",
+)
+def get_lora_metadata(
+    device_eui: Optional[str] = Query(default=None, description="Optional DevEUI filter"),
+    limit: int = Query(default=100, ge=1, le=5000),
+    user: dict = Depends(require_role(["admin", "as_admin", "viewer"])),
+):
+    conn = get_db_connection()
+    if not conn:
+        raise HTTPException(status_code=503, detail="Database unavailable")
 
+    where_clauses = []
+    params = []
+
+    if device_eui:
+        where_clauses.append("device_eui = %s")
+        params.append(device_eui)
+
+    where_sql = ""
+    if where_clauses:
+        where_sql = "WHERE " + " AND ".join(where_clauses)
+
+    params.append(limit)
+
+    cursor = conn.cursor(cursor_factory=RealDictCursor)
+    cursor.execute(f"""
+        SELECT
+            received_at,
+            device_eui,
+            application_id,
+            gateway_id,
+            frequency_hz,
+            bandwidth_hz,
+            spreading_factor,
+            rssi_dbm,
+            snr_db,
+            f_cnt
+        FROM lora_uplink_metadata
+        {where_sql}
+        ORDER BY received_at DESC
+        LIMIT %s;
+    """, params)
+
+    records = cursor.fetchall()
+    cursor.close()
+    conn.close()
+
+    log_to_audit(
+        "GET_LORA_METADATA",
+        user["username"],
+        user["role"],
+        f"Retrieved LoRa metadata. Device: {device_eui or 'all'}, limit: {limit}",
+    )
+
+    return {
+        "count": len(records),
+        "records": records,
+    }
+    
+@app.get(
+    "/api/recovery/pending",
+    tags=["Recovery"],
+    summary="Get pending recovery intervals",
+    description="Returns active recovery intervals for End Devices.",
+)
+def get_pending_recovery(
+    user: dict = Depends(require_role(["admin", "as_admin", "viewer"]))
+):
+    conn = get_db_connection()
+    if not conn:
+        raise HTTPException(status_code=503, detail="Database unavailable")
+
+    cursor = conn.cursor(cursor_factory=RealDictCursor)
+    cursor.execute("""
+        SELECT
+            device_eui,
+            app_id,
+            to_timestamp(start_ts) AS start_time,
+            to_timestamp(end_ts) AS end_time,
+            end_ts - start_ts AS interval_seconds,
+            retry_count,
+            to_timestamp(last_requested_at) AS last_requested_at,
+            created_at,
+            updated_at
+        FROM pending_recovery
+        ORDER BY updated_at DESC;
+    """)
+    records = cursor.fetchall()
+    cursor.close()
+    conn.close()
+
+    return {
+        "count": len(records),
+        "records": records,
+    }
+    
 @app.get(
     "/api/admin/audit",
     tags=["Admin"],
