@@ -8,7 +8,7 @@ from typing import Self
 @dataclass(frozen=True)
 class AppConfig:
     mqtt_broker: str
-    mqtt_port: int = 8883
+    mqtt_port: int = 8884
     mqtt_topic: str = "application/+/device/+/event/up"
     mqtt_ca_cert_path: str = ""
     mqtt_client_cert_path: str = ""
