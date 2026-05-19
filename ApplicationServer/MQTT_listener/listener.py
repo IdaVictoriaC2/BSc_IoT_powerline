@@ -52,7 +52,7 @@ class MqttListener:
             f"Connected to MQTT with reason code {reason_code}, listening at {self.config.mqtt_topic}",
             flush=True,
         )
-        client.subscribe(self.config.mqtt_topic, qos=1)
+        client.subscribe(self.config.mqtt_topic, qos=1) # Should be a loop if more than one gateway exsists
 
     def on_disconnect(self, client, userdata, disconnect_flags, reason_code, properties):
         print(f"Disconnected from MQTT. Reason: {reason_code}", flush=True)
