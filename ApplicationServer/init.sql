@@ -31,7 +31,7 @@ CREATE INDEX IF NOT EXISTS idx_sensor_data_device_eui_timestamp
 ON sensor_data (device_eui, device_timestamp);
 
 -- Table for audit logs.
--- mqtt-listener.py uses event_type + description.
+-- MQTT_listener uses event_type + description.
 -- api.py uses event_type + performed_by + details.
 CREATE TABLE IF NOT EXISTS audit_log (
     id SERIAL PRIMARY KEY,
@@ -87,7 +87,7 @@ CREATE TABLE IF NOT EXISTS lora_uplink_metadata (
 
     f_cnt BIGINT,
     raw_event JSONB,
-    
+
     CONSTRAINT fk_lora_metadata_end_device
       FOREIGN KEY (device_eui)
       REFERENCES end_devices(dev_eui)
@@ -117,6 +117,7 @@ ON pending_recovery (last_requested_at);
 
 GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO app_user;
 GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO app_user;
+
 GRANT SELECT ON end_devices TO grafana_viewer;
 GRANT SELECT ON sensor_data TO grafana_viewer;
 GRANT SELECT ON pending_recovery TO grafana_viewer;
