@@ -1,0 +1,855 @@
+Fri May 15 11:42:05 2026 user.info chirpstack-concentratord-sx1302[1826]: Scheduled packet for TX, downlink_id: 1805982977, count_us: 3140061551, freq: 869525000, bw: 125000, mod: LoRa, dr: SF9
+Fri May 15 11:42:06 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:42:09 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 972762080, count_us: 3143387378, freq: 868500000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 11:42:09 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 972762080
+Fri May 15 11:42:09 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 972762080, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 11:42:09 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:42:12 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:42:15 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:42:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: P, freq_min: 869400000, freq_max: 869650000, dc_max: 10.00%] - current_dc: 0.07%
+Fri May 15 11:42:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: M, freq_min: 868000000, freq_max: 868600000, dc_max: 1.00%] - current_dc: 0.28%
+Fri May 15 11:42:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Publishing stats event, rx_received: 2, rx_received_ok: 2, tx_received: 0, tx_emitted: 1
+Fri May 15 11:42:16 2026 user.info chirpstack-mqtt-forwarder[2476]: received gateway stats
+Fri May 15 11:42:16 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending gateway stats event, topic: eu868/gateway/0016c001f1237a90/event/stats
+Fri May 15 11:42:18 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:42:21 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:42:25 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:42:28 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:42:28 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 3807295067, count_us: 3162446749, freq: 868100000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 11:42:28 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 3807295067
+Fri May 15 11:42:28 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 3807295067, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 11:42:31 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:42:34 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:42:37 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:42:40 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:42:43 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:42:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 3245728528, count_us: 3180170060, freq: 868300000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 11:42:46 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 3245728528
+Fri May 15 11:42:46 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 3245728528, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 11:42:46 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:42:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: M, freq_min: 868000000, freq_max: 868600000, dc_max: 1.00%] - current_dc: 0.28%
+Fri May 15 11:42:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: P, freq_min: 869400000, freq_max: 869650000, dc_max: 10.00%] - current_dc: 0.07%
+Fri May 15 11:42:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Publishing stats event, rx_received: 3, rx_received_ok: 2, tx_received: 0, tx_emitted: 0
+Fri May 15 11:42:46 2026 user.info chirpstack-mqtt-forwarder[2476]: received gateway stats
+Fri May 15 11:42:46 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending gateway stats event, topic: eu868/gateway/0016c001f1237a90/event/stats
+Fri May 15 11:42:49 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:42:52 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:42:55 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:42:59 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:43:02 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:43:03 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 679783532, count_us: 3197893841, freq: 868500000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 11:43:03 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 679783532
+Fri May 15 11:43:03 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 679783532, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 11:43:05 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:43:08 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:43:11 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:43:14 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:43:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: M, freq_min: 868000000, freq_max: 868600000, dc_max: 1.00%] - current_dc: 0.28%
+Fri May 15 11:43:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: P, freq_min: 869400000, freq_max: 869650000, dc_max: 10.00%] - current_dc: 0.07%
+Fri May 15 11:43:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Publishing stats event, rx_received: 1, rx_received_ok: 1, tx_received: 0, tx_emitted: 0
+Fri May 15 11:43:16 2026 user.info chirpstack-mqtt-forwarder[2476]: received gateway stats
+Fri May 15 11:43:16 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending gateway stats event, topic: eu868/gateway/0016c001f1237a90/event/stats
+Fri May 15 11:43:17 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:43:20 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:43:22 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 3063575178, count_us: 3216954054, freq: 868300000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 11:43:22 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 3063575178
+Fri May 15 11:43:22 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 3063575178, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 11:43:23 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:43:27 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:43:30 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:43:33 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:43:36 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:43:39 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:43:40 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 2413959614, count_us: 3234677350, freq: 868300000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 11:43:40 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 2413959614
+Fri May 15 11:43:40 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 2413959614, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 11:43:42 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:43:45 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:43:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: P, freq_min: 869400000, freq_max: 869650000, dc_max: 10.00%] - current_dc: 0.07%
+Fri May 15 11:43:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: M, freq_min: 868000000, freq_max: 868600000, dc_max: 1.00%] - current_dc: 0.28%
+Fri May 15 11:43:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Publishing stats event, rx_received: 3, rx_received_ok: 2, tx_received: 0, tx_emitted: 0
+Fri May 15 11:43:46 2026 user.info chirpstack-mqtt-forwarder[2476]: received gateway stats
+Fri May 15 11:43:46 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending gateway stats event, topic: eu868/gateway/0016c001f1237a90/event/stats
+Fri May 15 11:43:49 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:43:52 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:43:55 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:43:58 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 3620069287, count_us: 3252402108, freq: 868500000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 11:43:58 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 3620069287
+Fri May 15 11:43:58 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 3620069287, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 11:43:58 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:44:01 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:44:04 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:44:08 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:44:08 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 30221383, count_us: 3262525342, freq: 868500000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 11:44:08 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 30221383
+Fri May 15 11:44:08 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 30221383, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 11:44:09 2026 user.info chirpstack-concentratord-sx1302[1826]: Enqueueing packet on pps, downlink_id: 2717002896, counter_us: 3268062402, current_counter_us: 3263772601
+Fri May 15 11:44:09 2026 user.info chirpstack-concentratord-sx1302[1826]: Item tracked, band: [label: P, freq_min: 869400000, freq_max: 869650000, dc_max: 10.00%], freq: 869525000, tx_power_eirp: 14, start_counter_us: 3268062402, end_counter_us: 3268174402, duration: 112ms
+Fri May 15 11:44:09 2026 user.info chirpstack-concentratord-sx1302[1826]: Beacon enqueued, beacon_time_gps_epoch: 1462873472s
+Fri May 15 11:44:11 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:44:13 2026 user.info chirpstack-concentratord-sx1302[1826]: Scheduled packet for TX, downlink_id: 2717002896, count_us: 3268062402, freq: 869525000, bw: 125000, mod: LoRa, dr: SF9
+Fri May 15 11:44:14 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:44:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: M, freq_min: 868000000, freq_max: 868600000, dc_max: 1.00%] - current_dc: 0.28%
+Fri May 15 11:44:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: P, freq_min: 869400000, freq_max: 869650000, dc_max: 10.00%] - current_dc: 0.08%
+Fri May 15 11:44:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Publishing stats event, rx_received: 3, rx_received_ok: 2, tx_received: 0, tx_emitted: 1
+Fri May 15 11:44:16 2026 user.info chirpstack-mqtt-forwarder[2476]: received gateway stats
+Fri May 15 11:44:16 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending gateway stats event, topic: eu868/gateway/0016c001f1237a90/event/stats
+Fri May 15 11:44:17 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 3233090871, count_us: 3271461429, freq: 868300000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 11:44:17 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 3233090871
+Fri May 15 11:44:17 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 3233090871, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 11:44:17 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:44:21 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:44:24 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:44:27 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:44:28 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 2518520445, count_us: 3282534530, freq: 867500000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 11:44:28 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 2518520445
+Fri May 15 11:44:28 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 2518520445, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 11:44:30 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:44:33 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:44:35 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 3429578839, count_us: 3289185705, freq: 868500000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 11:44:35 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 3429578839
+Fri May 15 11:44:35 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 3429578839, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 11:44:36 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:44:40 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:44:43 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:44:46 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:44:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: P, freq_min: 869400000, freq_max: 869650000, dc_max: 10.00%] - current_dc: 0.08%
+Fri May 15 11:44:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: M, freq_min: 868000000, freq_max: 868600000, dc_max: 1.00%] - current_dc: 0.28%
+Fri May 15 11:44:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Publishing stats event, rx_received: 3, rx_received_ok: 3, tx_received: 0, tx_emitted: 0
+Fri May 15 11:44:46 2026 user.info chirpstack-mqtt-forwarder[2476]: received gateway stats
+Fri May 15 11:44:46 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending gateway stats event, topic: eu868/gateway/0016c001f1237a90/event/stats
+Fri May 15 11:44:49 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:44:52 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:44:52 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 4236470699, count_us: 3306910461, freq: 868100000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 11:44:52 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 4236470699
+Fri May 15 11:44:52 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 4236470699, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 11:44:55 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:44:58 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:45:02 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:45:05 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:45:08 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:45:11 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:45:11 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 2006276, count_us: 3325968804, freq: 868100000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 11:45:11 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 2006276
+Fri May 15 11:45:11 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 2006276, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 11:45:14 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:45:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: M, freq_min: 868000000, freq_max: 868600000, dc_max: 1.00%] - current_dc: 0.28%
+Fri May 15 11:45:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: P, freq_min: 869400000, freq_max: 869650000, dc_max: 10.00%] - current_dc: 0.08%
+Fri May 15 11:45:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Publishing stats event, rx_received: 3, rx_received_ok: 2, tx_received: 0, tx_emitted: 0
+Fri May 15 11:45:16 2026 user.info chirpstack-mqtt-forwarder[2476]: received gateway stats
+Fri May 15 11:45:16 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending gateway stats event, topic: eu868/gateway/0016c001f1237a90/event/stats
+Fri May 15 11:45:17 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:45:20 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:45:24 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:45:27 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:45:29 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 2404146229, count_us: 3343693119, freq: 868300000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 11:45:29 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 2404146229
+Fri May 15 11:45:29 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 2404146229, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 11:45:30 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:45:34 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:45:37 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:45:40 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:45:43 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:45:46 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:45:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: M, freq_min: 868000000, freq_max: 868600000, dc_max: 1.00%] - current_dc: 0.28%
+Fri May 15 11:45:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: P, freq_min: 869400000, freq_max: 869650000, dc_max: 10.00%] - current_dc: 0.08%
+Fri May 15 11:45:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Publishing stats event, rx_received: 1, rx_received_ok: 1, tx_received: 0, tx_emitted: 0
+Fri May 15 11:45:46 2026 user.info chirpstack-mqtt-forwarder[2476]: received gateway stats
+Fri May 15 11:45:46 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending gateway stats event, topic: eu868/gateway/0016c001f1237a90/event/stats
+Fri May 15 11:45:47 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 4001630978, count_us: 3361417875, freq: 868300000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 11:45:47 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 4001630978
+Fri May 15 11:45:47 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 4001630978, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 11:45:49 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:45:52 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:45:55 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:45:59 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:46:02 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:46:05 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:46:06 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 3696770660, count_us: 3380476399, freq: 868300000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 11:46:06 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 3696770660
+Fri May 15 11:46:06 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 3696770660, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 11:46:08 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:46:11 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:46:14 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:46:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 2767392321, count_us: 3390393724, freq: 867300000, bw: 125000, mod: LoRa, dr: SF11, ftime_received: false, ftime_ns: 0
+Fri May 15 11:46:16 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 2767392321
+Fri May 15 11:46:16 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 2767392321, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 11:46:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: M, freq_min: 868000000, freq_max: 868600000, dc_max: 1.00%] - current_dc: 0.28%
+Fri May 15 11:46:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: P, freq_min: 869400000, freq_max: 869650000, dc_max: 10.00%] - current_dc: 0.08%
+Fri May 15 11:46:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Publishing stats event, rx_received: 4, rx_received_ok: 3, tx_received: 0, tx_emitted: 0
+Fri May 15 11:46:16 2026 user.info chirpstack-mqtt-forwarder[2476]: received gateway stats
+Fri May 15 11:46:16 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending gateway stats event, topic: eu868/gateway/0016c001f1237a90/event/stats
+Fri May 15 11:46:17 2026 user.info chirpstack-concentratord-sx1302[1826]: Enqueueing packet on pps, downlink_id: 1772488850, counter_us: 3396062243, current_counter_us: 3391774198
+Fri May 15 11:46:17 2026 user.info chirpstack-concentratord-sx1302[1826]: Item tracked, band: [label: P, freq_min: 869400000, freq_max: 869650000, dc_max: 10.00%], freq: 869525000, tx_power_eirp: 14, start_counter_us: 3396062243, end_counter_us: 3396174243, duration: 112ms
+Fri May 15 11:46:17 2026 user.info chirpstack-concentratord-sx1302[1826]: Beacon enqueued, beacon_time_gps_epoch: 1462873600s
+Fri May 15 11:46:17 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:46:21 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:46:21 2026 user.info chirpstack-concentratord-sx1302[1826]: Scheduled packet for TX, downlink_id: 1772488850, count_us: 3396062243, freq: 869525000, bw: 125000, mod: LoRa, dr: SF9
+Fri May 15 11:46:24 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 368346438, count_us: 3398199737, freq: 868300000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 11:46:24 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 368346438
+Fri May 15 11:46:24 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 368346438, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 11:46:24 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:46:27 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:46:30 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:46:33 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:46:36 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:46:39 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:46:41 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 402249875, count_us: 3415924494, freq: 868300000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 11:46:41 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 402249875
+Fri May 15 11:46:41 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 402249875, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 11:46:42 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:46:46 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:46:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: M, freq_min: 868000000, freq_max: 868600000, dc_max: 1.00%] - current_dc: 0.28%
+Fri May 15 11:46:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: P, freq_min: 869400000, freq_max: 869650000, dc_max: 10.00%] - current_dc: 0.08%
+Fri May 15 11:46:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Publishing stats event, rx_received: 2, rx_received_ok: 2, tx_received: 0, tx_emitted: 1
+Fri May 15 11:46:46 2026 user.info chirpstack-mqtt-forwarder[2476]: received gateway stats
+Fri May 15 11:46:46 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending gateway stats event, topic: eu868/gateway/0016c001f1237a90/event/stats
+Fri May 15 11:46:49 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:46:52 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:46:55 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:46:58 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:47:00 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 2565494525, count_us: 3434986109, freq: 868500000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 11:47:00 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 2565494525
+Fri May 15 11:47:00 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 2565494525, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 11:47:01 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:47:04 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:47:07 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:47:10 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:47:14 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:47:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: P, freq_min: 869400000, freq_max: 869650000, dc_max: 10.00%] - current_dc: 0.08%
+Fri May 15 11:47:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: M, freq_min: 868000000, freq_max: 868600000, dc_max: 1.00%] - current_dc: 0.28%
+Fri May 15 11:47:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Publishing stats event, rx_received: 2, rx_received_ok: 1, tx_received: 0, tx_emitted: 0
+Fri May 15 11:47:16 2026 user.info chirpstack-mqtt-forwarder[2476]: received gateway stats
+Fri May 15 11:47:16 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending gateway stats event, topic: eu868/gateway/0016c001f1237a90/event/stats
+Fri May 15 11:47:17 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:47:18 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 2741898946, count_us: 3452709440, freq: 868300000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 11:47:18 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 2741898946
+Fri May 15 11:47:18 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 2741898946, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 11:47:20 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:47:23 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:47:26 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:47:29 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:47:32 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:47:36 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:47:36 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 2086559067, count_us: 3470433220, freq: 868300000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 11:47:36 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 2086559067
+Fri May 15 11:47:36 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 2086559067, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 11:47:39 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:47:42 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:47:44 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 3950347543, count_us: 3478949380, freq: 867500000, bw: 125000, mod: LoRa, dr: SF7, ftime_received: false, ftime_ns: 0
+Fri May 15 11:47:44 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 3950347543
+Fri May 15 11:47:44 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 3950347543, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 11:47:45 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:47:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: M, freq_min: 868000000, freq_max: 868600000, dc_max: 1.00%] - current_dc: 0.28%
+Fri May 15 11:47:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: P, freq_min: 869400000, freq_max: 869650000, dc_max: 10.00%] - current_dc: 0.08%
+Fri May 15 11:47:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Publishing stats event, rx_received: 3, rx_received_ok: 3, tx_received: 0, tx_emitted: 0
+Fri May 15 11:47:46 2026 user.info chirpstack-mqtt-forwarder[2476]: received gateway stats
+Fri May 15 11:47:46 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending gateway stats event, topic: eu868/gateway/0016c001f1237a90/event/stats
+Fri May 15 11:47:48 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:47:51 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:47:54 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:47:55 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 2810184021, count_us: 3489493694, freq: 868100000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 11:47:55 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 2810184021
+Fri May 15 11:47:55 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 2810184021, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 11:47:57 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:48:01 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:48:04 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:48:07 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:48:10 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:48:13 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 2974426116, count_us: 3507217000, freq: 868500000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 11:48:13 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 2974426116
+Fri May 15 11:48:13 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 2974426116, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 11:48:13 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:48:16 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:48:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: P, freq_min: 869400000, freq_max: 869650000, dc_max: 10.00%] - current_dc: 0.08%
+Fri May 15 11:48:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: M, freq_min: 868000000, freq_max: 868600000, dc_max: 1.00%] - current_dc: 0.28%
+Fri May 15 11:48:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Publishing stats event, rx_received: 3, rx_received_ok: 2, tx_received: 0, tx_emitted: 0
+Fri May 15 11:48:19 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:48:22 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:48:25 2026 user.info chirpstack-concentratord-sx1302[1826]: Enqueueing packet on pps, downlink_id: 208982086, counter_us: 3524062090, current_counter_us: 3519775396
+Fri May 15 11:48:25 2026 user.info chirpstack-concentratord-sx1302[1826]: Item tracked, band: [label: P, freq_min: 869400000, freq_max: 869650000, dc_max: 10.00%], freq: 869525000, tx_power_eirp: 14, start_counter_us: 3524062090, end_counter_us: 3524174090, duration: 112ms
+Fri May 15 11:48:25 2026 user.info chirpstack-concentratord-sx1302[1826]: Beacon enqueued, beacon_time_gps_epoch: 1462873728s
+Fri May 15 11:48:26 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:48:29 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:48:29 2026 user.info chirpstack-concentratord-sx1302[1826]: Scheduled packet for TX, downlink_id: 208982086, count_us: 3524062090, freq: 869525000, bw: 125000, mod: LoRa, dr: SF9
+Fri May 15 11:48:32 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:48:35 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:48:38 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:48:41 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:48:44 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:48:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: M, freq_min: 868000000, freq_max: 868600000, dc_max: 1.00%] - current_dc: 0.28%
+Fri May 15 11:48:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: P, freq_min: 869400000, freq_max: 869650000, dc_max: 10.00%] - current_dc: 0.08%
+Fri May 15 11:48:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Publishing stats event, rx_received: 1, rx_received_ok: 0, tx_received: 0, tx_emitted: 1
+Fri May 15 11:48:47 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:48:49 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 1924054252, count_us: 3544001311, freq: 868300000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 11:48:50 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:48:53 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:48:57 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:49:00 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:49:03 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:49:06 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:49:07 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 614736036, count_us: 3561725633, freq: 868100000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 11:49:09 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:49:11 2026 daemon.notice netifd: wwan (2170): udhcpc: sending renew to server 10.46.3.95
+Fri May 15 11:49:11 2026 daemon.notice netifd: wwan (2170): udhcpc: lease of 10.46.3.214 obtained from 10.46.3.95, lease time 3599
+Fri May 15 11:49:12 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:49:15 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:49:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: M, freq_min: 868000000, freq_max: 868600000, dc_max: 1.00%] - current_dc: 0.28%
+Fri May 15 11:49:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: P, freq_min: 869400000, freq_max: 869650000, dc_max: 10.00%] - current_dc: 0.08%
+Fri May 15 11:49:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Publishing stats event, rx_received: 5, rx_received_ok: 2, tx_received: 0, tx_emitted: 0
+Fri May 15 11:49:18 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:49:22 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:49:25 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:49:25 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 2380824589, count_us: 3579450386, freq: 868500000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 11:49:28 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:49:31 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:49:34 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:49:37 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:49:41 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:49:44 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:49:44 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 204415459, count_us: 3598509159, freq: 868500000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 11:49:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: M, freq_min: 868000000, freq_max: 868600000, dc_max: 1.00%] - current_dc: 0.28%
+Fri May 15 11:49:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: P, freq_min: 869400000, freq_max: 869650000, dc_max: 10.00%] - current_dc: 0.08%
+Fri May 15 11:49:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Publishing stats event, rx_received: 5, rx_received_ok: 2, tx_received: 0, tx_emitted: 0
+Fri May 15 11:49:47 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:49:50 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:49:53 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:49:56 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:49:59 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:50:02 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 2035308177, count_us: 3616234446, freq: 868500000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 11:50:02 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:50:05 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:50:08 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:50:11 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:50:15 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:50:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: P, freq_min: 869400000, freq_max: 869650000, dc_max: 10.00%] - current_dc: 0.08%
+Fri May 15 11:50:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: M, freq_min: 868000000, freq_max: 868600000, dc_max: 1.00%] - current_dc: 0.28%
+Fri May 15 11:50:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Publishing stats event, rx_received: 1, rx_received_ok: 1, tx_received: 0, tx_emitted: 0
+Fri May 15 11:50:18 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:50:19 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 3188587020, count_us: 3633959207, freq: 868500000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 11:50:21 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:50:24 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:50:27 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:50:30 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:50:33 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:50:33 2026 user.info chirpstack-concentratord-sx1302[1826]: Enqueueing packet on pps, downlink_id: 1630302676, counter_us: 3652061935, current_counter_us: 3647776295
+Fri May 15 11:50:33 2026 user.info chirpstack-concentratord-sx1302[1826]: Item tracked, band: [label: P, freq_min: 869400000, freq_max: 869650000, dc_max: 10.00%], freq: 869525000, tx_power_eirp: 14, start_counter_us: 3652061935, end_counter_us: 3652173935, duration: 112ms
+Fri May 15 11:50:33 2026 user.info chirpstack-concentratord-sx1302[1826]: Beacon enqueued, beacon_time_gps_epoch: 1462873856s
+Fri May 15 11:50:36 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:50:37 2026 user.info chirpstack-concentratord-sx1302[1826]: Scheduled packet for TX, downlink_id: 1630302676, count_us: 3652061935, freq: 869525000, bw: 125000, mod: LoRa, dr: SF9
+Fri May 15 11:50:38 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 3519949085, count_us: 3653016744, freq: 868500000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 11:50:39 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:50:43 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:50:46 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:50:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: P, freq_min: 869400000, freq_max: 869650000, dc_max: 10.00%] - current_dc: 0.09%
+Fri May 15 11:50:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: M, freq_min: 868000000, freq_max: 868600000, dc_max: 1.00%] - current_dc: 0.28%
+Fri May 15 11:50:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Publishing stats event, rx_received: 3, rx_received_ok: 2, tx_received: 0, tx_emitted: 1
+Fri May 15 11:50:49 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:50:52 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:50:55 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:50:56 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 3226000126, count_us: 3670740088, freq: 868500000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 11:50:58 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:51:01 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:51:05 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:51:08 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:51:11 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:51:14 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 1517108638, count_us: 3688463868, freq: 868500000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 11:51:14 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:51:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: M, freq_min: 868000000, freq_max: 868600000, dc_max: 1.00%] - current_dc: 0.28%
+Fri May 15 11:51:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: P, freq_min: 869400000, freq_max: 869650000, dc_max: 10.00%] - current_dc: 0.09%
+Fri May 15 11:51:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Publishing stats event, rx_received: 2, rx_received_ok: 2, tx_received: 0, tx_emitted: 0
+Fri May 15 11:51:17 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:51:20 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:51:23 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:51:26 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:51:30 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:51:33 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:51:33 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 307870329, count_us: 3707524438, freq: 868500000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 11:51:36 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:51:39 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:51:42 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:51:45 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:51:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: M, freq_min: 868000000, freq_max: 868600000, dc_max: 1.00%] - current_dc: 0.28%
+Fri May 15 11:51:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: P, freq_min: 869400000, freq_max: 869650000, dc_max: 10.00%] - current_dc: 0.09%
+Fri May 15 11:51:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Publishing stats event, rx_received: 2, rx_received_ok: 1, tx_received: 0, tx_emitted: 0
+Fri May 15 11:51:48 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:51:51 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 478999394, count_us: 3725247747, freq: 868300000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 11:51:51 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:51:55 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:51:58 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:52:01 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:52:04 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:52:07 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:52:08 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 2898367896, count_us: 3742971528, freq: 868500000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 11:52:10 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:52:13 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:52:16 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:52:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: P, freq_min: 869400000, freq_max: 869650000, dc_max: 10.00%] - current_dc: 0.09%
+Fri May 15 11:52:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: M, freq_min: 868000000, freq_max: 868600000, dc_max: 1.00%] - current_dc: 0.28%
+Fri May 15 11:52:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Publishing stats event, rx_received: 3, rx_received_ok: 2, tx_received: 0, tx_emitted: 0
+Fri May 15 11:52:19 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:52:22 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:52:26 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:52:28 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 3957379154, count_us: 3762032226, freq: 868300000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 11:52:29 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:52:32 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:52:35 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:52:38 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:52:41 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:52:41 2026 user.info chirpstack-concentratord-sx1302[1826]: Enqueueing packet on pps, downlink_id: 1138643529, counter_us: 3780061781, current_counter_us: 3775777292
+Fri May 15 11:52:41 2026 user.info chirpstack-concentratord-sx1302[1826]: Item tracked, band: [label: P, freq_min: 869400000, freq_max: 869650000, dc_max: 10.00%], freq: 869525000, tx_power_eirp: 14, start_counter_us: 3780061781, end_counter_us: 3780173781, duration: 112ms
+Fri May 15 11:52:41 2026 user.info chirpstack-concentratord-sx1302[1826]: Beacon enqueued, beacon_time_gps_epoch: 1462873984s
+Fri May 15 11:52:44 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:52:45 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 2307209382, count_us: 3779756529, freq: 868100000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 11:52:45 2026 user.info chirpstack-concentratord-sx1302[1826]: Scheduled packet for TX, downlink_id: 1138643529, count_us: 3780061781, freq: 869525000, bw: 125000, mod: LoRa, dr: SF9
+Fri May 15 11:52:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: P, freq_min: 869400000, freq_max: 869650000, dc_max: 10.00%] - current_dc: 0.09%
+Fri May 15 11:52:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: M, freq_min: 868000000, freq_max: 868600000, dc_max: 1.00%] - current_dc: 0.28%
+Fri May 15 11:52:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Publishing stats event, rx_received: 3, rx_received_ok: 2, tx_received: 0, tx_emitted: 1
+Fri May 15 11:52:48 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:52:51 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:52:54 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:52:57 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:53:00 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:53:03 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 1526314575, count_us: 3797481284, freq: 868300000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 11:53:04 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:53:07 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:53:10 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:53:13 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:53:16 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:53:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: M, freq_min: 868000000, freq_max: 868600000, dc_max: 1.00%] - current_dc: 0.28%
+Fri May 15 11:53:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: P, freq_min: 869400000, freq_max: 869650000, dc_max: 10.00%] - current_dc: 0.09%
+Fri May 15 11:53:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Publishing stats event, rx_received: 1, rx_received_ok: 1, tx_received: 0, tx_emitted: 0
+Fri May 15 11:53:19 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:53:22 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 1702901961, count_us: 3816539910, freq: 868300000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 11:53:22 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: TLS: I/O: Connection reset by peer (os error 104)
+Fri May 15 11:53:28 2026 user.err chirpstack-mqtt-forwarder[2476]: MQTT error, error: Timeout
+Fri May 15 11:53:28 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 3494768552, count_us: 3822794235, freq: 868500000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 11:53:29 2026 user.info chirpstack-mqtt-forwarder[2476]: Subscribing to command topic, topic: eu868/gateway/0016c001f1237a90/command/+
+Fri May 15 11:53:29 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending conn state, topic: eu868/gateway/0016c001f1237a90/state/conn
+Fri May 15 11:53:29 2026 user.info chirpstack-mqtt-forwarder[2476]: received gateway stats
+Fri May 15 11:53:29 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending gateway stats event, topic: eu868/gateway/0016c001f1237a90/event/stats
+Fri May 15 11:53:29 2026 user.info chirpstack-mqtt-forwarder[2476]: received gateway stats
+Fri May 15 11:53:29 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending gateway stats event, topic: eu868/gateway/0016c001f1237a90/event/stats
+Fri May 15 11:53:29 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 1924054252
+Fri May 15 11:53:29 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 1924054252, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 11:53:29 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 614736036
+Fri May 15 11:53:29 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 614736036, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 11:53:29 2026 user.info chirpstack-mqtt-forwarder[2476]: received gateway stats
+Fri May 15 11:53:29 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending gateway stats event, topic: eu868/gateway/0016c001f1237a90/event/stats
+Fri May 15 11:53:29 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 2380824589
+Fri May 15 11:53:29 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 2380824589, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 11:53:29 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 204415459
+Fri May 15 11:53:29 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 204415459, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 11:53:29 2026 user.info chirpstack-mqtt-forwarder[2476]: received gateway stats
+Fri May 15 11:53:29 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending gateway stats event, topic: eu868/gateway/0016c001f1237a90/event/stats
+Fri May 15 11:53:29 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 2035308177
+Fri May 15 11:53:29 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 2035308177, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 11:53:29 2026 user.info chirpstack-mqtt-forwarder[2476]: received gateway stats
+Fri May 15 11:53:29 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending gateway stats event, topic: eu868/gateway/0016c001f1237a90/event/stats
+Fri May 15 11:53:29 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 3188587020
+Fri May 15 11:53:29 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 3188587020, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 11:53:29 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 3519949085
+Fri May 15 11:53:29 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 3519949085, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 11:53:29 2026 user.info chirpstack-mqtt-forwarder[2476]: received gateway stats
+Fri May 15 11:53:29 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending gateway stats event, topic: eu868/gateway/0016c001f1237a90/event/stats
+Fri May 15 11:53:29 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 3226000126
+Fri May 15 11:53:29 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 3226000126, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 11:53:29 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 1517108638
+Fri May 15 11:53:29 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 1517108638, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 11:53:29 2026 user.info chirpstack-mqtt-forwarder[2476]: received gateway stats
+Fri May 15 11:53:29 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending gateway stats event, topic: eu868/gateway/0016c001f1237a90/event/stats
+Fri May 15 11:53:29 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 307870329
+Fri May 15 11:53:29 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 307870329, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 11:53:29 2026 user.info chirpstack-mqtt-forwarder[2476]: received gateway stats
+Fri May 15 11:53:29 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending gateway stats event, topic: eu868/gateway/0016c001f1237a90/event/stats
+Fri May 15 11:53:29 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 478999394
+Fri May 15 11:53:29 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 478999394, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 11:53:29 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 2898367896
+Fri May 15 11:53:29 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 2898367896, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 11:53:29 2026 user.info chirpstack-mqtt-forwarder[2476]: received gateway stats
+Fri May 15 11:53:29 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending gateway stats event, topic: eu868/gateway/0016c001f1237a90/event/stats
+Fri May 15 11:53:29 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 3957379154
+Fri May 15 11:53:29 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 3957379154, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 11:53:29 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 2307209382
+Fri May 15 11:53:29 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 2307209382, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 11:53:29 2026 user.info chirpstack-mqtt-forwarder[2476]: received gateway stats
+Fri May 15 11:53:29 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending gateway stats event, topic: eu868/gateway/0016c001f1237a90/event/stats
+Fri May 15 11:53:29 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 1526314575
+Fri May 15 11:53:29 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 1526314575, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 11:53:29 2026 user.info chirpstack-mqtt-forwarder[2476]: received gateway stats
+Fri May 15 11:53:29 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending gateway stats event, topic: eu868/gateway/0016c001f1237a90/event/stats
+Fri May 15 11:53:29 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 1702901961
+Fri May 15 11:53:29 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 1702901961, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 11:53:29 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 3494768552
+Fri May 15 11:53:29 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 3494768552, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 11:53:30 2026 user.info chirpstack-mqtt-forwarder[2476]: Collision on packet id = 7
+Fri May 15 11:53:30 2026 user.info chirpstack-mqtt-forwarder[2476]: Collision on packet id = 17
+Fri May 15 11:53:30 2026 user.info chirpstack-mqtt-forwarder[2476]: Collision on packet id = 18
+Fri May 15 11:53:40 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 998619830, count_us: 3834264216, freq: 868300000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 11:53:40 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 998619830
+Fri May 15 11:53:40 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 998619830, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 11:53:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: P, freq_min: 869400000, freq_max: 869650000, dc_max: 10.00%] - current_dc: 0.09%
+Fri May 15 11:53:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: M, freq_min: 868000000, freq_max: 868600000, dc_max: 1.00%] - current_dc: 0.28%
+Fri May 15 11:53:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Publishing stats event, rx_received: 5, rx_received_ok: 3, tx_received: 0, tx_emitted: 0
+Fri May 15 11:53:46 2026 user.info chirpstack-mqtt-forwarder[2476]: received gateway stats
+Fri May 15 11:53:46 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending gateway stats event, topic: eu868/gateway/0016c001f1237a90/event/stats
+Fri May 15 11:53:48 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 1599256925, count_us: 3842805203, freq: 867300000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 11:53:48 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 1599256925
+Fri May 15 11:53:48 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 1599256925, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 11:53:57 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 2062093628, count_us: 3851987995, freq: 868100000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 11:53:57 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 2062093628
+Fri May 15 11:53:57 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 2062093628, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 11:53:59 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 578898102, count_us: 3853671535, freq: 867700000, bw: 125000, mod: LoRa, dr: SF7, ftime_received: false, ftime_ns: 0
+Fri May 15 11:53:59 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 578898102
+Fri May 15 11:53:59 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 578898102, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 11:54:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: P, freq_min: 869400000, freq_max: 869650000, dc_max: 10.00%] - current_dc: 0.09%
+Fri May 15 11:54:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: M, freq_min: 868000000, freq_max: 868600000, dc_max: 1.00%] - current_dc: 0.28%
+Fri May 15 11:54:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Publishing stats event, rx_received: 5, rx_received_ok: 3, tx_received: 0, tx_emitted: 0
+Fri May 15 11:54:16 2026 user.info chirpstack-mqtt-forwarder[2476]: received gateway stats
+Fri May 15 11:54:16 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending gateway stats event, topic: eu868/gateway/0016c001f1237a90/event/stats
+Fri May 15 11:54:17 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 1197936032, count_us: 3871047548, freq: 868500000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 11:54:17 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 1197936032
+Fri May 15 11:54:17 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 1197936032, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 11:54:34 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 2603919907, count_us: 3888770867, freq: 868100000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 11:54:34 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 2603919907
+Fri May 15 11:54:34 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 2603919907, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 11:54:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: M, freq_min: 868000000, freq_max: 868600000, dc_max: 1.00%] - current_dc: 0.28%
+Fri May 15 11:54:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: P, freq_min: 869400000, freq_max: 869650000, dc_max: 10.00%] - current_dc: 0.09%
+Fri May 15 11:54:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Publishing stats event, rx_received: 2, rx_received_ok: 2, tx_received: 0, tx_emitted: 0
+Fri May 15 11:54:46 2026 user.info chirpstack-mqtt-forwarder[2476]: received gateway stats
+Fri May 15 11:54:46 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending gateway stats event, topic: eu868/gateway/0016c001f1237a90/event/stats
+Fri May 15 11:54:49 2026 user.info chirpstack-concentratord-sx1302[1826]: Enqueueing packet on pps, downlink_id: 986108364, counter_us: 3908062632, current_counter_us: 3903777473
+Fri May 15 11:54:49 2026 user.info chirpstack-concentratord-sx1302[1826]: Item tracked, band: [label: P, freq_min: 869400000, freq_max: 869650000, dc_max: 10.00%], freq: 869525000, tx_power_eirp: 14, start_counter_us: 3908062632, end_counter_us: 3908174632, duration: 112ms
+Fri May 15 11:54:49 2026 user.info chirpstack-concentratord-sx1302[1826]: Beacon enqueued, beacon_time_gps_epoch: 1462874112s
+Fri May 15 11:54:52 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 3932673889, count_us: 3906495625, freq: 868300000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 11:54:52 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 3932673889
+Fri May 15 11:54:52 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 3932673889, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 11:54:53 2026 user.info chirpstack-concentratord-sx1302[1826]: Scheduled packet for TX, downlink_id: 986108364, count_us: 3908062632, freq: 869525000, bw: 125000, mod: LoRa, dr: SF9
+Fri May 15 11:55:10 2026 daemon.err uwsgi[1094]: *** has_emperor mode detected (fd: 7) ***
+Fri May 15 11:55:10 2026 daemon.err uwsgi[1094]: [uWSGI] getting INI configuration from /etc/uwsgi/vassals/luci-cgi_io.ini
+Fri May 15 11:55:10 2026 daemon.err uwsgi[1094]: Fri May 15 11:55:10 2026 - [emperor] vassal /etc/uwsgi/vassals/luci-cgi_io.ini has been spawned
+Fri May 15 11:55:10 2026 daemon.err uwsgi[1094]: Fri May 15 11:55:10 2026 - [emperor] vassal /etc/uwsgi/vassals/luci-cgi_io.ini is ready to accept requests
+Fri May 15 11:55:10 2026 daemon.err uwsgi[1094]: Fri May 15 11:55:10 2026 - [emperor] vassal /etc/uwsgi/vassals/luci-cgi_io.ini is now loyal
+Fri May 15 11:55:11 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 180458702, count_us: 3925555093, freq: 868500000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 11:55:11 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 180458702
+Fri May 15 11:55:11 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 180458702, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 11:55:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: M, freq_min: 868000000, freq_max: 868600000, dc_max: 1.00%] - current_dc: 0.28%
+Fri May 15 11:55:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: P, freq_min: 869400000, freq_max: 869650000, dc_max: 10.00%] - current_dc: 0.09%
+Fri May 15 11:55:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Publishing stats event, rx_received: 3, rx_received_ok: 2, tx_received: 0, tx_emitted: 1
+Fri May 15 11:55:16 2026 user.info chirpstack-mqtt-forwarder[2476]: received gateway stats
+Fri May 15 11:55:16 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending gateway stats event, topic: eu868/gateway/0016c001f1237a90/event/stats
+Fri May 15 11:55:20 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 637497650, count_us: 3934687761, freq: 867300000, bw: 125000, mod: LoRa, dr: SF7, ftime_received: false, ftime_ns: 0
+Fri May 15 11:55:20 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 637497650
+Fri May 15 11:55:20 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 637497650, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 11:55:29 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 2001177037, count_us: 3943279402, freq: 868100000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 11:55:29 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 2001177037
+Fri May 15 11:55:29 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 2001177037, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 11:55:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: M, freq_min: 868000000, freq_max: 868600000, dc_max: 1.00%] - current_dc: 0.28%
+Fri May 15 11:55:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: P, freq_min: 869400000, freq_max: 869650000, dc_max: 10.00%] - current_dc: 0.09%
+Fri May 15 11:55:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Publishing stats event, rx_received: 4, rx_received_ok: 2, tx_received: 0, tx_emitted: 0
+Fri May 15 11:55:46 2026 user.info chirpstack-mqtt-forwarder[2476]: received gateway stats
+Fri May 15 11:55:46 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending gateway stats event, topic: eu868/gateway/0016c001f1237a90/event/stats
+Fri May 15 11:55:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 1802832695, count_us: 3961003194, freq: 868100000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 11:55:46 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 1802832695
+Fri May 15 11:55:46 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 1802832695, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 11:55:50 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 3337101949, count_us: 3964145415, freq: 868500000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 11:55:50 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 3337101949
+Fri May 15 11:55:50 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 3337101949, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 11:56:06 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 3343379683, count_us: 3980062793, freq: 868100000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 11:56:06 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 3343379683
+Fri May 15 11:56:06 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 3343379683, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 11:56:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 4049635682, count_us: 3990358406, freq: 867300000, bw: 125000, mod: LoRa, dr: SF11, ftime_received: false, ftime_ns: 0
+Fri May 15 11:56:16 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 4049635682
+Fri May 15 11:56:16 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 4049635682, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 11:56:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: M, freq_min: 868000000, freq_max: 868600000, dc_max: 1.00%] - current_dc: 0.28%
+Fri May 15 11:56:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: P, freq_min: 869400000, freq_max: 869650000, dc_max: 10.00%] - current_dc: 0.09%
+Fri May 15 11:56:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Publishing stats event, rx_received: 6, rx_received_ok: 4, tx_received: 0, tx_emitted: 0
+Fri May 15 11:56:16 2026 user.info chirpstack-mqtt-forwarder[2476]: received gateway stats
+Fri May 15 11:56:16 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending gateway stats event, topic: eu868/gateway/0016c001f1237a90/event/stats
+Fri May 15 11:56:23 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 2964220560, count_us: 3997786151, freq: 868300000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 11:56:23 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 2964220560
+Fri May 15 11:56:23 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 2964220560, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 11:56:41 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 1778140983, count_us: 4015509934, freq: 868100000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 11:56:41 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 1778140983
+Fri May 15 11:56:41 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 1778140983, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 11:56:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: P, freq_min: 869400000, freq_max: 869650000, dc_max: 10.00%] - current_dc: 0.09%
+Fri May 15 11:56:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: M, freq_min: 868000000, freq_max: 868600000, dc_max: 1.00%] - current_dc: 0.28%
+Fri May 15 11:56:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Publishing stats event, rx_received: 2, rx_received_ok: 2, tx_received: 0, tx_emitted: 0
+Fri May 15 11:56:46 2026 user.info chirpstack-mqtt-forwarder[2476]: received gateway stats
+Fri May 15 11:56:46 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending gateway stats event, topic: eu868/gateway/0016c001f1237a90/event/stats
+Fri May 15 11:56:57 2026 user.info chirpstack-concentratord-sx1302[1826]: Enqueueing packet on pps, downlink_id: 887977447, counter_us: 4036062474, current_counter_us: 4031778368
+Fri May 15 11:56:57 2026 user.info chirpstack-concentratord-sx1302[1826]: Item tracked, band: [label: P, freq_min: 869400000, freq_max: 869650000, dc_max: 10.00%], freq: 869525000, tx_power_eirp: 14, start_counter_us: 4036062474, end_counter_us: 4036174474, duration: 112ms
+Fri May 15 11:56:57 2026 user.info chirpstack-concentratord-sx1302[1826]: Beacon enqueued, beacon_time_gps_epoch: 1462874240s
+Fri May 15 11:57:00 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 716930819, count_us: 4034570594, freq: 868500000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 11:57:00 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 716930819
+Fri May 15 11:57:00 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 716930819, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 11:57:01 2026 user.info chirpstack-concentratord-sx1302[1826]: Scheduled packet for TX, downlink_id: 887977447, count_us: 4036062474, freq: 869525000, bw: 125000, mod: LoRa, dr: SF9
+Fri May 15 11:57:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: P, freq_min: 869400000, freq_max: 869650000, dc_max: 10.00%] - current_dc: 0.09%
+Fri May 15 11:57:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: M, freq_min: 868000000, freq_max: 868600000, dc_max: 1.00%] - current_dc: 0.28%
+Fri May 15 11:57:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Publishing stats event, rx_received: 2, rx_received_ok: 1, tx_received: 0, tx_emitted: 1
+Fri May 15 11:57:16 2026 user.info chirpstack-mqtt-forwarder[2476]: received gateway stats
+Fri May 15 11:57:16 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending gateway stats event, topic: eu868/gateway/0016c001f1237a90/event/stats
+Fri May 15 11:57:18 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 1021368383, count_us: 4052294913, freq: 868300000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 11:57:18 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 1021368383
+Fri May 15 11:57:18 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 1021368383, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 11:57:35 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 94636399, count_us: 4070018696, freq: 868100000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 11:57:35 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 94636399
+Fri May 15 11:57:35 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 94636399, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 11:57:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: P, freq_min: 869400000, freq_max: 869650000, dc_max: 10.00%] - current_dc: 0.09%
+Fri May 15 11:57:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: M, freq_min: 868000000, freq_max: 868600000, dc_max: 1.00%] - current_dc: 0.28%
+Fri May 15 11:57:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Publishing stats event, rx_received: 2, rx_received_ok: 2, tx_received: 0, tx_emitted: 0
+Fri May 15 11:57:46 2026 user.info chirpstack-mqtt-forwarder[2476]: received gateway stats
+Fri May 15 11:57:46 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending gateway stats event, topic: eu868/gateway/0016c001f1237a90/event/stats
+Fri May 15 11:57:55 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 22827839, count_us: 4089076234, freq: 868500000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 11:57:55 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 22827839
+Fri May 15 11:57:55 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 22827839, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 11:58:08 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 2806396249, count_us: 4102935211, freq: 868300000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 11:58:08 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 2806396249
+Fri May 15 11:58:08 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 2806396249, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 11:58:09 2026 user.info chirpstack-mqtt-forwarder[2476]: Received message, topic: eu868/gateway/0016c001f1237a90/command/down, qos: AtMostOnce
+Fri May 15 11:58:09 2026 user.info chirpstack-mqtt-forwarder[2476]: Received downlink command, downlink_id: 538863556, topic: eu868/gateway/0016c001f1237a90/command/down
+Fri May 15 11:58:09 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending downlink frame, downlink_id: 538863556
+Fri May 15 11:58:09 2026 user.info chirpstack-concentratord-sx1302[1826]: Enqueueing timestamped packet, downlink_id: 538863556, counter_us: 4103935211, current_counter_us: 4103355392
+Fri May 15 11:58:09 2026 user.info chirpstack-concentratord-sx1302[1826]: Item tracked, band: [label: M, freq_min: 868000000, freq_max: 868600000, dc_max: 1.00%], freq: 868300000, tx_power_eirp: 16, start_counter_us: 4103935211, end_counter_us: 4105156211, duration: 1.221s
+Fri May 15 11:58:09 2026 user.info chirpstack-mqtt-forwarder[2476]: Received ack, items: ["OK", "IGNORED"], downlink_id: 538863556
+Fri May 15 11:58:09 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending ack event, downlink_id: 538863556, topic: eu868/gateway/0016c001f1237a90/event/ack
+Fri May 15 11:58:09 2026 user.info chirpstack-concentratord-sx1302[1826]: Scheduled packet for TX, downlink_id: 538863556, count_us: 4103935211, freq: 868300000, bw: 125000, mod: LoRa, dr: SF12
+Fri May 15 11:58:12 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 1436337072, count_us: 4106801537, freq: 868500000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 11:58:12 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 1436337072
+Fri May 15 11:58:12 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 1436337072, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 11:58:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: M, freq_min: 868000000, freq_max: 868600000, dc_max: 1.00%] - current_dc: 0.31%
+Fri May 15 11:58:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: P, freq_min: 869400000, freq_max: 869650000, dc_max: 10.00%] - current_dc: 0.09%
+Fri May 15 11:58:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Publishing stats event, rx_received: 5, rx_received_ok: 3, tx_received: 1, tx_emitted: 1
+Fri May 15 11:58:16 2026 user.info chirpstack-mqtt-forwarder[2476]: received gateway stats
+Fri May 15 11:58:16 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending gateway stats event, topic: eu868/gateway/0016c001f1237a90/event/stats
+Fri May 15 11:58:28 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 2070956968, count_us: 4122946291, freq: 867300000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 11:58:28 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 2070956968
+Fri May 15 11:58:28 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 2070956968, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 11:58:29 2026 user.info chirpstack-mqtt-forwarder[2476]: Received message, topic: eu868/gateway/0016c001f1237a90/command/down, qos: AtMostOnce
+Fri May 15 11:58:29 2026 user.info chirpstack-mqtt-forwarder[2476]: Received downlink command, downlink_id: 1601399246, topic: eu868/gateway/0016c001f1237a90/command/down
+Fri May 15 11:58:29 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending downlink frame, downlink_id: 1601399246
+Fri May 15 11:58:29 2026 user.info chirpstack-concentratord-sx1302[1826]: Enqueueing timestamped packet, downlink_id: 1601399246, counter_us: 4123946291, current_counter_us: 4123437414
+Fri May 15 11:58:29 2026 user.info chirpstack-concentratord-sx1302[1826]: Item tracked, band: [label: L, freq_min: 865000000, freq_max: 868000000, dc_max: 1.00%], freq: 867300000, tx_power_eirp: 16, start_counter_us: 4123946291, end_counter_us: 4125167291, duration: 1.221s
+Fri May 15 11:58:29 2026 user.info chirpstack-mqtt-forwarder[2476]: Received ack, items: ["OK", "IGNORED"], downlink_id: 1601399246
+Fri May 15 11:58:29 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending ack event, downlink_id: 1601399246, topic: eu868/gateway/0016c001f1237a90/event/ack
+Fri May 15 11:58:29 2026 user.info chirpstack-concentratord-sx1302[1826]: Scheduled packet for TX, downlink_id: 1601399246, count_us: 4123946291, freq: 867300000, bw: 125000, mod: LoRa, dr: SF12
+Fri May 15 11:58:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: P, freq_min: 869400000, freq_max: 869650000, dc_max: 10.00%] - current_dc: 0.09%
+Fri May 15 11:58:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: M, freq_min: 868000000, freq_max: 868600000, dc_max: 1.00%] - current_dc: 0.31%
+Fri May 15 11:58:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: L, freq_min: 865000000, freq_max: 868000000, dc_max: 1.00%] - current_dc: 0.03%
+Fri May 15 11:58:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Publishing stats event, rx_received: 2, rx_received_ok: 1, tx_received: 1, tx_emitted: 1
+Fri May 15 11:58:46 2026 user.info chirpstack-mqtt-forwarder[2476]: received gateway stats
+Fri May 15 11:58:46 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending gateway stats event, topic: eu868/gateway/0016c001f1237a90/event/stats
+Fri May 15 11:58:49 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 4194065404, count_us: 4143579814, freq: 868500000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 11:58:49 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 4194065404
+Fri May 15 11:58:49 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 4194065404, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 11:59:05 2026 user.info chirpstack-concentratord-sx1302[1826]: Enqueueing packet on pps, downlink_id: 420555903, counter_us: 4164062326, current_counter_us: 4159779042
+Fri May 15 11:59:05 2026 user.info chirpstack-concentratord-sx1302[1826]: Item tracked, band: [label: P, freq_min: 869400000, freq_max: 869650000, dc_max: 10.00%], freq: 869525000, tx_power_eirp: 14, start_counter_us: 4164062326, end_counter_us: 4164174326, duration: 112ms
+Fri May 15 11:59:05 2026 user.info chirpstack-concentratord-sx1302[1826]: Beacon enqueued, beacon_time_gps_epoch: 1462874368s
+Fri May 15 11:59:07 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 3564997716, count_us: 4161304129, freq: 868500000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 11:59:07 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 3564997716
+Fri May 15 11:59:07 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 3564997716, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 11:59:09 2026 user.info chirpstack-concentratord-sx1302[1826]: Scheduled packet for TX, downlink_id: 420555903, count_us: 4164062326, freq: 869525000, bw: 125000, mod: LoRa, dr: SF9
+Fri May 15 11:59:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: M, freq_min: 868000000, freq_max: 868600000, dc_max: 1.00%] - current_dc: 0.31%
+Fri May 15 11:59:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: L, freq_min: 865000000, freq_max: 868000000, dc_max: 1.00%] - current_dc: 0.03%
+Fri May 15 11:59:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: P, freq_min: 869400000, freq_max: 869650000, dc_max: 10.00%] - current_dc: 0.09%
+Fri May 15 11:59:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Publishing stats event, rx_received: 3, rx_received_ok: 2, tx_received: 0, tx_emitted: 1
+Fri May 15 11:59:16 2026 user.info chirpstack-mqtt-forwarder[2476]: received gateway stats
+Fri May 15 11:59:16 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending gateway stats event, topic: eu868/gateway/0016c001f1237a90/event/stats
+Fri May 15 11:59:25 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 2206978378, count_us: 4179028887, freq: 868100000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 11:59:25 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 2206978378
+Fri May 15 11:59:25 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 2206978378, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 11:59:44 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 4286015428, count_us: 4198086172, freq: 868100000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 11:59:44 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 4286015428
+Fri May 15 11:59:44 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 4286015428, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 11:59:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: M, freq_min: 868000000, freq_max: 868600000, dc_max: 1.00%] - current_dc: 0.31%
+Fri May 15 11:59:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: L, freq_min: 865000000, freq_max: 868000000, dc_max: 1.00%] - current_dc: 0.03%
+Fri May 15 11:59:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: P, freq_min: 869400000, freq_max: 869650000, dc_max: 10.00%] - current_dc: 0.09%
+Fri May 15 11:59:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Publishing stats event, rx_received: 4, rx_received_ok: 2, tx_received: 0, tx_emitted: 0
+Fri May 15 11:59:46 2026 user.info chirpstack-mqtt-forwarder[2476]: received gateway stats
+Fri May 15 11:59:46 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending gateway stats event, topic: eu868/gateway/0016c001f1237a90/event/stats
+Fri May 15 12:00:01 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 3789667601, count_us: 4215810507, freq: 868500000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 12:00:01 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 3789667601
+Fri May 15 12:00:01 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 3789667601, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 12:00:14 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 2964107076, count_us: 4228821698, freq: 868500000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 12:00:14 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 2964107076
+Fri May 15 12:00:14 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 2964107076, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 12:00:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: P, freq_min: 869400000, freq_max: 869650000, dc_max: 10.00%] - current_dc: 0.09%
+Fri May 15 12:00:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: L, freq_min: 865000000, freq_max: 868000000, dc_max: 1.00%] - current_dc: 0.03%
+Fri May 15 12:00:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: M, freq_min: 868000000, freq_max: 868600000, dc_max: 1.00%] - current_dc: 0.27%
+Fri May 15 12:00:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Publishing stats event, rx_received: 2, rx_received_ok: 2, tx_received: 0, tx_emitted: 0
+Fri May 15 12:00:16 2026 user.info chirpstack-mqtt-forwarder[2476]: received gateway stats
+Fri May 15 12:00:16 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending gateway stats event, topic: eu868/gateway/0016c001f1237a90/event/stats
+Fri May 15 12:00:19 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 3305670118, count_us: 4233534290, freq: 868100000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 12:00:19 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 3305670118
+Fri May 15 12:00:19 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 3305670118, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 12:00:38 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 1188022041, count_us: 4252590617, freq: 868500000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 12:00:38 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 1188022041
+Fri May 15 12:00:38 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 1188022041, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 12:00:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: L, freq_min: 865000000, freq_max: 868000000, dc_max: 1.00%] - current_dc: 0.03%
+Fri May 15 12:00:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: P, freq_min: 869400000, freq_max: 869650000, dc_max: 10.00%] - current_dc: 0.09%
+Fri May 15 12:00:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: M, freq_min: 868000000, freq_max: 868600000, dc_max: 1.00%] - current_dc: 0.25%
+Fri May 15 12:00:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Publishing stats event, rx_received: 3, rx_received_ok: 2, tx_received: 0, tx_emitted: 0
+Fri May 15 12:00:46 2026 user.info chirpstack-mqtt-forwarder[2476]: received gateway stats
+Fri May 15 12:00:46 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending gateway stats event, topic: eu868/gateway/0016c001f1237a90/event/stats
+Fri May 15 12:00:56 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 881012555, count_us: 4270315910, freq: 868300000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 12:00:56 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 881012555
+Fri May 15 12:00:56 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 881012555, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 12:01:13 2026 user.info chirpstack-concentratord-sx1302[1826]: Enqueueing packet on pps, downlink_id: 3660434665, counter_us: 4292062175, current_counter_us: 4287779891
+Fri May 15 12:01:13 2026 user.info chirpstack-concentratord-sx1302[1826]: Item tracked, band: [label: P, freq_min: 869400000, freq_max: 869650000, dc_max: 10.00%], freq: 869525000, tx_power_eirp: 14, start_counter_us: 4292062175, end_counter_us: 4292174175, duration: 112ms
+Fri May 15 12:01:13 2026 user.info chirpstack-concentratord-sx1302[1826]: Beacon enqueued, beacon_time_gps_epoch: 1462874496s
+Fri May 15 12:01:14 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 2109902828, count_us: 4288040669, freq: 868100000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 12:01:14 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 2109902828
+Fri May 15 12:01:14 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 2109902828, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 12:01:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: M, freq_min: 868000000, freq_max: 868600000, dc_max: 1.00%] - current_dc: 0.21%
+Fri May 15 12:01:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: P, freq_min: 869400000, freq_max: 869650000, dc_max: 10.00%] - current_dc: 0.09%
+Fri May 15 12:01:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: L, freq_min: 865000000, freq_max: 868000000, dc_max: 1.00%] - current_dc: 0.03%
+Fri May 15 12:01:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Publishing stats event, rx_received: 2, rx_received_ok: 2, tx_received: 0, tx_emitted: 0
+Fri May 15 12:01:16 2026 user.info chirpstack-mqtt-forwarder[2476]: received gateway stats
+Fri May 15 12:01:16 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending gateway stats event, topic: eu868/gateway/0016c001f1237a90/event/stats
+Fri May 15 12:01:17 2026 user.info chirpstack-concentratord-sx1302[1826]: Scheduled packet for TX, downlink_id: 3660434665, count_us: 4292062175, freq: 869525000, bw: 125000, mod: LoRa, dr: SF9
+Fri May 15 12:01:33 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 3047943178, count_us: 12128117, freq: 868100000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 12:01:33 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 3047943178
+Fri May 15 12:01:33 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 3047943178, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 12:01:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: M, freq_min: 868000000, freq_max: 868600000, dc_max: 1.00%] - current_dc: 0.21%
+Fri May 15 12:01:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: P, freq_min: 869400000, freq_max: 869650000, dc_max: 10.00%] - current_dc: 0.09%
+Fri May 15 12:01:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: L, freq_min: 865000000, freq_max: 868000000, dc_max: 1.00%] - current_dc: 0.03%
+Fri May 15 12:01:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Publishing stats event, rx_received: 3, rx_received_ok: 1, tx_received: 0, tx_emitted: 1
+Fri May 15 12:01:46 2026 user.info chirpstack-mqtt-forwarder[2476]: received gateway stats
+Fri May 15 12:01:46 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending gateway stats event, topic: eu868/gateway/0016c001f1237a90/event/stats
+Fri May 15 12:01:50 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 3550544212, count_us: 29852429, freq: 868100000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 12:01:50 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 3550544212
+Fri May 15 12:01:50 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 3550544212, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 12:02:08 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 1819245268, count_us: 47577184, freq: 868100000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 12:02:08 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 1819245268
+Fri May 15 12:02:08 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 1819245268, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 12:02:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: P, freq_min: 869400000, freq_max: 869650000, dc_max: 10.00%] - current_dc: 0.09%
+Fri May 15 12:02:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: M, freq_min: 868000000, freq_max: 868600000, dc_max: 1.00%] - current_dc: 0.21%
+Fri May 15 12:02:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: L, freq_min: 865000000, freq_max: 868000000, dc_max: 1.00%] - current_dc: 0.03%
+Fri May 15 12:02:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Publishing stats event, rx_received: 2, rx_received_ok: 2, tx_received: 0, tx_emitted: 0
+Fri May 15 12:02:16 2026 user.info chirpstack-mqtt-forwarder[2476]: received gateway stats
+Fri May 15 12:02:16 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending gateway stats event, topic: eu868/gateway/0016c001f1237a90/event/stats
+Fri May 15 12:02:27 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 83007608, count_us: 66632974, freq: 868500000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 12:02:27 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 83007608
+Fri May 15 12:02:27 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 83007608, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 12:02:45 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 903882829, count_us: 84357278, freq: 868100000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 12:02:45 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 903882829
+Fri May 15 12:02:45 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 903882829, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 12:02:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: M, freq_min: 868000000, freq_max: 868600000, dc_max: 1.00%] - current_dc: 0.21%
+Fri May 15 12:02:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: L, freq_min: 865000000, freq_max: 868000000, dc_max: 1.00%] - current_dc: 0.03%
+Fri May 15 12:02:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: P, freq_min: 869400000, freq_max: 869650000, dc_max: 10.00%] - current_dc: 0.09%
+Fri May 15 12:02:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Publishing stats event, rx_received: 4, rx_received_ok: 2, tx_received: 0, tx_emitted: 0
+Fri May 15 12:02:46 2026 user.info chirpstack-mqtt-forwarder[2476]: received gateway stats
+Fri May 15 12:02:46 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending gateway stats event, topic: eu868/gateway/0016c001f1237a90/event/stats
+Fri May 15 12:02:49 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 166815507, count_us: 88105459, freq: 868300000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 12:02:49 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 166815507
+Fri May 15 12:02:49 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 166815507, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 12:03:03 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 1855434599, count_us: 102082039, freq: 868100000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 12:03:03 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 1855434599
+Fri May 15 12:03:03 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 1855434599, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 12:03:09 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 1374613469, count_us: 108114439, freq: 867900000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 12:03:09 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 1374613469
+Fri May 15 12:03:09 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 1374613469, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 12:03:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: L, freq_min: 865000000, freq_max: 868000000, dc_max: 1.00%] - current_dc: 0.03%
+Fri May 15 12:03:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: P, freq_min: 869400000, freq_max: 869650000, dc_max: 10.00%] - current_dc: 0.09%
+Fri May 15 12:03:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: M, freq_min: 868000000, freq_max: 868600000, dc_max: 1.00%] - current_dc: 0.21%
+Fri May 15 12:03:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Publishing stats event, rx_received: 3, rx_received_ok: 3, tx_received: 0, tx_emitted: 0
+Fri May 15 12:03:16 2026 user.info chirpstack-mqtt-forwarder[2476]: received gateway stats
+Fri May 15 12:03:16 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending gateway stats event, topic: eu868/gateway/0016c001f1237a90/event/stats
+Fri May 15 12:03:21 2026 user.info chirpstack-concentratord-sx1302[1826]: Enqueueing packet on pps, downlink_id: 3965682633, counter_us: 125094722, current_counter_us: 120812997
+Fri May 15 12:03:21 2026 user.info chirpstack-concentratord-sx1302[1826]: Item tracked, band: [label: P, freq_min: 869400000, freq_max: 869650000, dc_max: 10.00%], freq: 869525000, tx_power_eirp: 14, start_counter_us: 125094722, end_counter_us: 125206722, duration: 112ms
+Fri May 15 12:03:21 2026 user.info chirpstack-concentratord-sx1302[1826]: Beacon enqueued, beacon_time_gps_epoch: 1462874624s
+Fri May 15 12:03:22 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 161743220, count_us: 121137894, freq: 868500000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 12:03:22 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 161743220
+Fri May 15 12:03:22 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 161743220, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 12:03:25 2026 user.info chirpstack-concentratord-sx1302[1826]: Scheduled packet for TX, downlink_id: 3965682633, count_us: 125094722, freq: 869525000, bw: 125000, mod: LoRa, dr: SF9
+Fri May 15 12:03:39 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 3187986429, count_us: 138862222, freq: 868100000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 12:03:39 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 3187986429
+Fri May 15 12:03:39 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 3187986429, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 12:03:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: M, freq_min: 868000000, freq_max: 868600000, dc_max: 1.00%] - current_dc: 0.21%
+Fri May 15 12:03:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: P, freq_min: 869400000, freq_max: 869650000, dc_max: 10.00%] - current_dc: 0.09%
+Fri May 15 12:03:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: L, freq_min: 865000000, freq_max: 868000000, dc_max: 1.00%] - current_dc: 0.03%
+Fri May 15 12:03:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Publishing stats event, rx_received: 3, rx_received_ok: 2, tx_received: 0, tx_emitted: 1
+Fri May 15 12:03:46 2026 user.info chirpstack-mqtt-forwarder[2476]: received gateway stats
+Fri May 15 12:03:46 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending gateway stats event, topic: eu868/gateway/0016c001f1237a90/event/stats
+Fri May 15 12:03:57 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 1770891335, count_us: 156586007, freq: 868300000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 12:03:57 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 1770891335
+Fri May 15 12:03:57 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 1770891335, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 12:04:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 2185291216, count_us: 175643332, freq: 868100000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 12:04:16 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 2185291216
+Fri May 15 12:04:16 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 2185291216, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 12:04:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: M, freq_min: 868000000, freq_max: 868600000, dc_max: 1.00%] - current_dc: 0.21%
+Fri May 15 12:04:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: L, freq_min: 865000000, freq_max: 868000000, dc_max: 1.00%] - current_dc: 0.03%
+Fri May 15 12:04:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: P, freq_min: 869400000, freq_max: 869650000, dc_max: 10.00%] - current_dc: 0.09%
+Fri May 15 12:04:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Publishing stats event, rx_received: 3, rx_received_ok: 2, tx_received: 0, tx_emitted: 0
+Fri May 15 12:04:16 2026 user.info chirpstack-mqtt-forwarder[2476]: received gateway stats
+Fri May 15 12:04:16 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending gateway stats event, topic: eu868/gateway/0016c001f1237a90/event/stats
+Fri May 15 12:04:34 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 150407091, count_us: 193367623, freq: 868500000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 12:04:34 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 150407091
+Fri May 15 12:04:34 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 150407091, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 12:04:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: P, freq_min: 869400000, freq_max: 869650000, dc_max: 10.00%] - current_dc: 0.09%
+Fri May 15 12:04:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: M, freq_min: 868000000, freq_max: 868600000, dc_max: 1.00%] - current_dc: 0.21%
+Fri May 15 12:04:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: L, freq_min: 865000000, freq_max: 868000000, dc_max: 1.00%] - current_dc: 0.03%
+Fri May 15 12:04:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Publishing stats event, rx_received: 2, rx_received_ok: 1, tx_received: 0, tx_emitted: 0
+Fri May 15 12:04:46 2026 user.info chirpstack-mqtt-forwarder[2476]: received gateway stats
+Fri May 15 12:04:46 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending gateway stats event, topic: eu868/gateway/0016c001f1237a90/event/stats
+Fri May 15 12:04:52 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 3682795269, count_us: 211091403, freq: 868500000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 12:04:52 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 3682795269
+Fri May 15 12:04:52 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 3682795269, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 12:05:11 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 2351284795, count_us: 230148909, freq: 868300000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 12:05:11 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 2351284795
+Fri May 15 12:05:11 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 2351284795, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 12:05:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: P, freq_min: 869400000, freq_max: 869650000, dc_max: 10.00%] - current_dc: 0.09%
+Fri May 15 12:05:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: L, freq_min: 865000000, freq_max: 868000000, dc_max: 1.00%] - current_dc: 0.03%
+Fri May 15 12:05:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: M, freq_min: 868000000, freq_max: 868600000, dc_max: 1.00%] - current_dc: 0.21%
+Fri May 15 12:05:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Publishing stats event, rx_received: 5, rx_received_ok: 2, tx_received: 0, tx_emitted: 0
+Fri May 15 12:05:16 2026 user.info chirpstack-mqtt-forwarder[2476]: received gateway stats
+Fri May 15 12:05:16 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending gateway stats event, topic: eu868/gateway/0016c001f1237a90/event/stats
+Fri May 15 12:05:28 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 348858322, count_us: 247873207, freq: 868300000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 12:05:28 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 348858322
+Fri May 15 12:05:28 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 348858322, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 12:05:29 2026 user.info chirpstack-concentratord-sx1302[1826]: Enqueueing packet on pps, downlink_id: 2733657936, counter_us: 253095579, current_counter_us: 248813059
+Fri May 15 12:05:29 2026 user.info chirpstack-concentratord-sx1302[1826]: Item tracked, band: [label: P, freq_min: 869400000, freq_max: 869650000, dc_max: 10.00%], freq: 869525000, tx_power_eirp: 14, start_counter_us: 253095579, end_counter_us: 253207579, duration: 112ms
+Fri May 15 12:05:29 2026 user.info chirpstack-concentratord-sx1302[1826]: Beacon enqueued, beacon_time_gps_epoch: 1462874752s
+Fri May 15 12:05:33 2026 user.info chirpstack-concentratord-sx1302[1826]: Scheduled packet for TX, downlink_id: 2733657936, count_us: 253095579, freq: 869525000, bw: 125000, mod: LoRa, dr: SF9
+Fri May 15 12:05:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 269157935, count_us: 265596988, freq: 868100000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 12:05:46 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 269157935
+Fri May 15 12:05:46 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 269157935, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 12:05:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: L, freq_min: 865000000, freq_max: 868000000, dc_max: 1.00%] - current_dc: 0.03%
+Fri May 15 12:05:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: P, freq_min: 869400000, freq_max: 869650000, dc_max: 10.00%] - current_dc: 0.09%
+Fri May 15 12:05:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: M, freq_min: 868000000, freq_max: 868600000, dc_max: 1.00%] - current_dc: 0.21%
+Fri May 15 12:05:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Publishing stats event, rx_received: 3, rx_received_ok: 2, tx_received: 0, tx_emitted: 1
+Fri May 15 12:05:46 2026 user.info chirpstack-mqtt-forwarder[2476]: received gateway stats
+Fri May 15 12:05:46 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending gateway stats event, topic: eu868/gateway/0016c001f1237a90/event/stats
+Fri May 15 12:05:50 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 265318368, count_us: 269488870, freq: 867900000, bw: 125000, mod: LoRa, dr: SF10, ftime_received: false, ftime_ns: 0
+Fri May 15 12:05:50 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 265318368
+Fri May 15 12:05:50 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 265318368, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 12:06:05 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 2688787894, count_us: 284654387, freq: 868300000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 12:06:05 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 2688787894
+Fri May 15 12:06:05 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 2688787894, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 12:06:07 2026 daemon.err uwsgi[1094]: *** has_emperor mode detected (fd: 8) ***
+Fri May 15 12:06:07 2026 daemon.err uwsgi[1094]: [uWSGI] getting INI configuration from /etc/uwsgi/vassals/luci-webui.ini
+Fri May 15 12:06:07 2026 daemon.err uwsgi[1094]: Fri May 15 12:06:07 2026 - [emperor] vassal /etc/uwsgi/vassals/luci-webui.ini has been spawned
+Fri May 15 12:06:07 2026 daemon.err uwsgi[1094]: Fri May 15 12:06:07 2026 - [emperor] vassal /etc/uwsgi/vassals/luci-webui.ini is ready to accept requests
+Fri May 15 12:06:07 2026 daemon.info uwsgi-luci: spawned uWSGI master process (pid: 3676)
+Fri May 15 12:06:07 2026 daemon.err uwsgi[1094]: Fri May 15 12:06:07 2026 - [emperor] vassal /etc/uwsgi/vassals/luci-webui.ini is now loyal
+Fri May 15 12:06:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 355544692, count_us: 295351867, freq: 867700000, bw: 125000, mod: LoRa, dr: SF11, ftime_received: false, ftime_ns: 0
+Fri May 15 12:06:16 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 355544692
+Fri May 15 12:06:16 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 355544692, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 12:06:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: P, freq_min: 869400000, freq_max: 869650000, dc_max: 10.00%] - current_dc: 0.09%
+Fri May 15 12:06:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: M, freq_min: 868000000, freq_max: 868600000, dc_max: 1.00%] - current_dc: 0.21%
+Fri May 15 12:06:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: L, freq_min: 865000000, freq_max: 868000000, dc_max: 1.00%] - current_dc: 0.03%
+Fri May 15 12:06:16 2026 user.info chirpstack-concentratord-sx1302[1826]: Publishing stats event, rx_received: 4, rx_received_ok: 3, tx_received: 0, tx_emitted: 0
+Fri May 15 12:06:16 2026 user.info chirpstack-mqtt-forwarder[2476]: received gateway stats
+Fri May 15 12:06:16 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending gateway stats event, topic: eu868/gateway/0016c001f1237a90/event/stats
+Fri May 15 12:06:23 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 3732534258, count_us: 302378701, freq: 868500000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 12:06:23 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 3732534258
+Fri May 15 12:06:23 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 3732534258, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 12:06:41 2026 user.info chirpstack-concentratord-sx1302[1826]: Frame received, uplink_id: 3363447325, count_us: 320103459, freq: 868300000, bw: 125000, mod: LoRa, dr: SF12, ftime_received: false, ftime_ns: 0
+Fri May 15 12:06:41 2026 user.info chirpstack-mqtt-forwarder[2476]: Received uplink frame, uplink_id: 3363447325
+Fri May 15 12:06:41 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending uplink event, uplink_id: 3363447325, topic: eu868/gateway/0016c001f1237a90/event/up
+Fri May 15 12:06:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: P, freq_min: 869400000, freq_max: 869650000, dc_max: 10.00%] - current_dc: 0.09%
+Fri May 15 12:06:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: M, freq_min: 868000000, freq_max: 868600000, dc_max: 1.00%] - current_dc: 0.21%
+Fri May 15 12:06:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Duty-cyle stats: [label: L, freq_min: 865000000, freq_max: 868000000, dc_max: 1.00%] - current_dc: 0.03%
+Fri May 15 12:06:46 2026 user.info chirpstack-concentratord-sx1302[1826]: Publishing stats event, rx_received: 2, rx_received_ok: 2, tx_received: 0, tx_emitted: 0
+Fri May 15 12:06:46 2026 user.info chirpstack-mqtt-forwarder[2476]: received gateway stats
+Fri May 15 12:06:46 2026 user.info chirpstack-mqtt-forwarder[2476]: Sending gateway stats event, topic: eu868/gateway/0016c001f1237a90/event/stats
