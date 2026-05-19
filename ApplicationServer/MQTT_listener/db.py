@@ -45,7 +45,7 @@ class Database:
     def ensure_end_device(self, dev_eui: str, location: str = "unknown") -> None:
         if not dev_eui or dev_eui == "UNKNOWN":
             return
-    
+
         conn = self.connect()
         try:
             with conn:
