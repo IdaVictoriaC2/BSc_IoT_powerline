@@ -1,0 +1,13 @@
+apiVersion: 1
+
+providers:
+  - name: Powerline Dashboards
+    orgId: 1
+    folder: Powerline Monitoring
+    type: file
+    disableDeletion: false
+    editable: true
+    allowUiUpdates: true
+    updateIntervalSeconds: 10
+    options:
+      path: /var/lib/grafana/dashboards

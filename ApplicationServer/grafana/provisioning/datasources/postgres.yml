@@ -1,0 +1,18 @@
+apiVersion: 1
+
+datasources:
+  - name: Powerline PostgreSQL
+    uid: powerline-postgres
+    type: postgres
+    access: proxy
+    url: scada-postgres:5432
+    user: $GRAFANA_DB_USER
+    secureJsonData:
+      password: $GRAFANA_DB_PASSWORD
+    jsonData:
+      database: powerline_telemetry
+      sslmode: disable
+      postgresVersion: 1400
+      timescaledb: false
+    isDefault: true
+    editable: false

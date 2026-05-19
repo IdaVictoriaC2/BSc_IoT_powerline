@@ -15,8 +15,6 @@ class Measurement:
     cpu_temp: float
     raw_payload_hex: str
 
-
-
 def decode_payload(base64_data: str) -> tuple[list[Measurement], str]:
     """Decode base64 payload into measurement rows.
 
