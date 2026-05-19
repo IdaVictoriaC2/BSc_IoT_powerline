@@ -481,7 +481,7 @@ def get_lora_metadata(
         "count": len(records),
         "records": records,
     }
-    
+
 @app.get(
     "/api/recovery/pending",
     tags=["Recovery"],
@@ -518,7 +518,7 @@ def get_pending_recovery(
         "count": len(records),
         "records": records,
     }
-    
+
 @app.get(
     "/api/admin/audit",
     tags=["Admin"],
