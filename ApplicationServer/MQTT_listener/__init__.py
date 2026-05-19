@@ -1,8 +1,10 @@
-"""Refactor package for the ApplicationServer MQTT listener.
+"""
+Application Server MQTT listener package.
 
-This package starts as a non-invasive extraction of the legacy
-`mqtt-listener.py` script. The live deployment still uses the legacy file,
-while this package grows into the refactored implementation.
+This package contains the active class-based MQTT listener used by the
+Docker deployment. It handles MQTT subscription, payload decoding,
+telemetry validation, PostgreSQL insertion, LoRaWAN metadata storage,
+retention cleanup, audit logging and recovery requests.
 """
 
 from .config import AppConfig, load_config
