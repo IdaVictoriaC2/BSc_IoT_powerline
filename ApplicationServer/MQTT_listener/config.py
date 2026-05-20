@@ -8,7 +8,7 @@ from typing import Self
 @dataclass(frozen=True)
 class AppConfig:
     mqtt_broker: str
-    mqtt_port: int = 8883
+    mqtt_port: int = 8884
     mqtt_topic: str = "application/+/device/+/event/up"
     mqtt_ca_cert_path: str = ""
     mqtt_client_cert_path: str = ""
@@ -57,7 +57,7 @@ class AppConfig:
 
         return cls(
             mqtt_broker=required_env["MQTT_BROKER"],
-            mqtt_port=int(environ.get("MQTT_PORT", "8883")),
+            mqtt_port=int(environ.get("MQTT_PORT", "8884")),
             mqtt_topic=environ.get("MQTT_TOPIC", "application/+/device/+/event/up"),
             mqtt_ca_cert_path=required_env["MQTT_CA_CERT_PATH"],
             mqtt_client_cert_path=environ.get("MQTT_CLIENT_CERT_PATH", ""),
