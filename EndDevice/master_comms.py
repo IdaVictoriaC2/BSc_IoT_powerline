@@ -93,27 +93,42 @@ def is_lora_alive(lora_serial):
     return False
 
 def sync_pi_time(lora_serial):
-    """Fetches Time from RAK and updates Raspberry PI system time"""
+    """Fetches time from RAK and updates Raspberry Pi system time."""
     lora_serial.write(b'AT+LTIME=?\r\n')
-    time.sleep(0.5)
-    res = ""
-    if lora_serial.in_waiting > 0:
-        res = lora_serial.read_all().decode(errors='ignore').strip()
-        print(f"RAK LTIME response: {res}")
-        
-        try:
-            if "=" in res:
-                time_part = res.split('=')[1].split('\n')[0].strip()
-                dt_obj = datetime.datetime.strptime(time_part, "%Hh%Mm%Ss on %m/%d/%Y")
-                formatted_time = dt_obj.strftime("%Y-%m-%d %H:%M:%S")
-                os.system(f"sudo date -s '{formatted_time} UTC'")
-                print(f"System Clock Synced to UTC: {formatted_time}")
-            else:
-                print(f"could not find '=' in response")
-        except Exception as e:
-            print(f"Failed to parse LTIME: {e}")
-    else:
-        print(f"NO response from RAK module during LTIME request")
+    time.sleep(1.0)
+
+    if lora_serial.in_waiting <= 0:
+        print("No response from RAK module during LTIME request.")
+        return False
+
+    res = lora_serial.read_all().decode(errors='ignore').strip()
+    print(f"RAK LTIME response: {res}")
+
+    try:
+        if "=" not in res:
+            print("Could not find '=' in LTIME response.")
+            return False
+
+        time_part = res.split("=")[1].split("\n")[0].strip()
+        dt_obj = datetime.datetime.strptime(time_part, "%Hh%Mm%Ss on %m/%d/%Y")
+
+        if dt_obj.year < 2026:
+            print(f"Invalid RAK time received: {dt_obj}. Time sync rejected.")
+            return False
+
+        formatted_time = dt_obj.strftime("%Y-%m-%d %H:%M:%S")
+        ret = os.system(f"sudo date -u -s '{formatted_time}'")
+
+        if ret == 0:
+            print(f"System clock synced to UTC: {formatted_time}")
+            return True
+        else:
+            print("sudo date command failed.")
+            return False
+
+    except Exception as e:
+        print(f"Failed to parse LTIME: {e}")
+        return False
 
 def lora_setup_connection(lora_serial):
     """Initializes LoRaWAN OTAA session."""
@@ -158,7 +173,6 @@ def get_combined_payload():
 
     conn = sqlite3.connect(BUFFER_DB)
     cursor = conn.cursor()
-    
     # If last_payload is default (fresh start after reboot), send only the newest payload
     # Let the server downlink a request if it wants payloads from a time gap
     if last_ts == -1:
@@ -178,7 +192,7 @@ def get_combined_payload():
             """,
             (last_ts,),
         )
-    
+
     rows = cursor.fetchall()
     conn.close()
 
@@ -203,8 +217,13 @@ def send_payload_and_listen(lora_serial, hex_payload):
         if lora_serial.in_waiting > 0:
             line = lora_serial.readline().decode(errors='ignore').strip()
             if "+EVT:TIMEREQ_OK" in line:
-                print(f"Time Request Successful!")
-                sync_pi_time(lora_serial)
+                print("Time Request Successful!")
+
+                if sync_pi_time(lora_serial):
+                    return "time_synced"
+                else:
+                    return "time_failed"
+
             if "+EVT:RX" in line:
                 print(f"Downlink detected!")
                 parts = line.split(':')
@@ -276,7 +295,6 @@ def main():
                 print(f"New day registered ({current_date}). Requesting time...")
                 lora_serial.write(b'AT+TIMEREQ=1\r\n')
                 time.sleep(0.5)
-                last_sync_date = current_date
                 # Check if oldest DB entries are from a previous day before clearing
                 conn = sqlite3.connect(BUFFER_DB)
                 cursor = conn.cursor()
@@ -303,7 +321,12 @@ def main():
                 if payload:
                     payload_parts = [payload[i:i+24] for i in range(0, len(payload), 24)]
                     print(f"SENDING {len(payload_parts)} reading(s): {payload_parts}")
-                    send_payload_and_listen(lora_serial, payload)
+                    result = send_payload_and_listen(lora_serial, payload)
+                    if result == "time_synced":
+                        last_sync_date = datetime.date.today()
+                        print(f"Time sync completed for {last_sync_date}.")
+                    elif result == "time_failed":
+                        print("Time sync failed. It will be retried later.")
                 else:
                     print("No new buffered payloads to transmit.")
             else:
