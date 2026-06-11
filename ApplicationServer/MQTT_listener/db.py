@@ -42,13 +42,13 @@ class Database:
         finally:
             conn.close()
 
-    def ensure_end_device(self, dev_eui: str, location: str = "unknown") -> None:
-        if not dev_eui or dev_eui == "UNKNOWN":
-            return
+    def ensure_end_device(self, dev_eui: str, location: str = "unknown") -> None: 
+        if not dev_eui or dev_eui == "UNKNOWN": 
+            return        # Ensure that the end_device exsists in the end_devices table
 
         conn = self.connect()
-        try:
-            with conn:
+        try:              # Otherwise add it to the table.
+            with conn:    # No function is implemented atm to manually add an end_device and specify the location other than accessing the db directly and using SQL
                 with conn.cursor() as cursor:
                     cursor.execute(
                         """
