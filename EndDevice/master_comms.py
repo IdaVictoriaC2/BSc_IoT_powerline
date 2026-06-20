@@ -260,7 +260,7 @@ def handle_downlink(hex_cmd, lora_serial):
                 # send current packet, then start new one with p
                 print(f"📦 Sending packet: {packet}")
                 lora_serial.write(f"AT+SEND=2:{packet}\r\n".encode())
-                time.sleep(10)
+                time.sleep(15) # overholder 1% dutycycle for SF7
 
         except Exception as e:
             print(f"Error during buffer dump: {e}")
